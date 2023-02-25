@@ -4,12 +4,12 @@ using TodoList.Application.TodoItem.Dtos;
 
 namespace TodoList.Application.TodoItem.Queries;
 
-public record GetTodoItemByIdQuery : IRequest<TempResponse>
+public record GetTodoItemByIdQuery : IRequest<TodoItemDto?>
 {
     public Guid Id { get; set; }
 }
 
-public class GetTodoItemByIdQueryHandler : IRequestHandler<GetTodoItemByIdQuery, TempResponse>
+public class GetTodoItemByIdQueryHandler : IRequestHandler<GetTodoItemByIdQuery, TodoItemDto?>
 {
     private readonly ITodoItemRepository _todoItemRepository;
 
@@ -18,10 +18,10 @@ public class GetTodoItemByIdQueryHandler : IRequestHandler<GetTodoItemByIdQuery,
         _todoItemRepository = todoItemRepository;
     }
 
-    public Task<TempResponse> Handle(GetTodoItemByIdQuery request, CancellationToken cancellationToken)
+    public Task<TodoItemDto?> Handle(GetTodoItemByIdQuery request, CancellationToken cancellationToken)
     {
         TodoItemDto? todoItem = _todoItemRepository.GetTodoItem(request.Id);
 
-        return Task.FromResult(new TempResponse { Temp = "Temporary response", ResultObj = todoItem });
+        return Task.FromResult(todoItem);
     }
 }
