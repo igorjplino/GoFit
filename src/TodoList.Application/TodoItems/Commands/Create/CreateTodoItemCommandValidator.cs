@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 
-namespace TodoList.Application.TodoItem.Commands.Create;
+namespace TodoList.Application.TodoItems.Commands.Create;
 
 public class CreateTodoItemCommandValidator : AbstractValidator<CreateTodoItemCommand>
 {

@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using TodoList.Application.Interfaces;
-using TodoList.Application.TodoItem.Dtos;
+using TodoList.Application.TodoItems.Dtos;
+using TodoList.Domain.Entities;
 
-namespace TodoList.Application.TodoItem.Queries;
+namespace TodoList.Application.TodoItems.Queries;
 
 public record GetTodoItemByIdQuery : IRequest<TodoItemDto?>
 {
@@ -20,8 +21,11 @@ public class GetTodoItemByIdQueryHandler : IRequestHandler<GetTodoItemByIdQuery,
 
     public Task<TodoItemDto?> Handle(GetTodoItemByIdQuery request, CancellationToken cancellationToken)
     {
-        TodoItemDto? todoItem = _todoItemRepository.GetTodoItem(request.Id);
+        TodoItem? todoItem = _todoItemRepository.GetTodoItem(request.Id);
 
-        return Task.FromResult(todoItem);
+        if (todoItem is null)
+            return Task.FromResult(null as TodoItemDto);
+
+        return Task.FromResult<TodoItemDto?>(new TodoItemDto { Title = todoItem.Title, Note = todoItem.Note });
     }
 }

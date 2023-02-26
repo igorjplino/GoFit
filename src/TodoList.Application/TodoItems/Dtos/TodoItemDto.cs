@@ -1,4 +1,4 @@
-﻿namespace TodoList.Application.TodoItem.Dtos;
+﻿namespace TodoList.Application.TodoItems.Dtos;
 
 public record TodoItemDto
 {

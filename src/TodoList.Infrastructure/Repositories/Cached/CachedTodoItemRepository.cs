@@ -1,12 +1,12 @@
 ﻿using System.Collections.Concurrent;
 using TodoList.Application.Interfaces;
-using TodoList.Application.TodoItem.Dtos;
+using TodoList.Domain.Entities;
 
 namespace TodoList.Infrastructure.Repositories;
 
 public class CachedTodoItemRepository : ITodoItemRepository
 {
-    private readonly ConcurrentDictionary<Guid, TodoItemDto?> _todoItems = new();
+    private readonly ConcurrentDictionary<Guid, TodoItem?> _todoItems = new();
 
     private readonly ITodoItemRepository _todoItemRepository;
     
@@ -15,9 +15,14 @@ public class CachedTodoItemRepository : ITodoItemRepository
         _todoItemRepository = todoItemRepository;
     }
 
-    public TodoItemDto? GetTodoItem(Guid todoItemId)
+    public Guid Create(TodoItem todoItem)
     {
-        if (_todoItems.TryGetValue(todoItemId, out TodoItemDto? todoItem))
+        return _todoItemRepository.Create(todoItem);
+    }
+
+    public TodoItem? GetTodoItem(Guid todoItemId)
+    {
+        if (_todoItems.TryGetValue(todoItemId, out TodoItem? todoItem))
         {
             return todoItem;
         }

@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using TodoList.Application;
-using TodoList.Application.TodoItem.Commands.Create;
-using TodoList.Application.TodoItem.Dtos;
-using TodoList.Application.TodoItem.Queries;
+using TodoList.Application.TodoItems.Commands.Create;
+using TodoList.Application.TodoItems.Dtos;
+using TodoList.Application.TodoItems.Queries;
 
 namespace TodoList.Api.Controllers;
 

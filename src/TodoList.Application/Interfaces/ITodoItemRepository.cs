@@ -1,8 +1,10 @@
-﻿using TodoList.Application.TodoItem.Dtos;
+﻿using TodoList.Application.TodoItems.Dtos;
+using TodoList.Domain.Entities;
 
 namespace TodoList.Application.Interfaces;
 
 public interface ITodoItemRepository
 {
-    TodoItemDto? GetTodoItem(Guid todoItemId);
+    Guid Create(TodoItem todoItem);
+    TodoItem? GetTodoItem(Guid todoItemId);
 }
