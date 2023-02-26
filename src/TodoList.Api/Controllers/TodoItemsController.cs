@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 using TodoList.Application.TodoItems.Commands.Create;
 using TodoList.Application.TodoItems.Dtos;
 using TodoList.Application.TodoItems.Queries;
@@ -7,6 +8,9 @@ namespace TodoList.Api.Controllers;
 
 public class TodoItemsController : ApiControllerBase
 {
+    public TodoItemsController(IMediator mediator) : base(mediator)
+    { }
+
     [HttpGet("{id}")]
     public async Task<ActionResult<TodoItemDto>> GetById([FromRoute] Guid id)
     {

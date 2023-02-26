@@ -6,7 +6,10 @@ namespace TodoList.Api.Controllers;
 [Route("api/[controller]")]
 public abstract class ApiControllerBase : ControllerBase
 {
-    private ISender? _mediator;
+    protected readonly IMediator Mediator;
 
-    protected ISender Mediator => _mediator ??= HttpContext.RequestServices.GetRequiredService<ISender>();
+    protected ApiControllerBase(IMediator mediator)
+    {
+        Mediator = mediator;
+    }
 }
