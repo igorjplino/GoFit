@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32929.385
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{70F8A7FD-E142-4C3B-8AEF-71CF3916EEDA}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "2 - Domain", "2 - Domain", "{70F8A7FD-E142-4C3B-8AEF-71CF3916EEDA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Domain", "src\TodoList.Domain\TodoList.Domain.csproj", "{51984FE4-FC2A-4F78-A632-4327B7FB5462}"
 EndProject
@@ -13,9 +13,15 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "1 - Presentation", "1 - Pre
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Api", "src\TodoList.Api\TodoList.Api.csproj", "{90705F16-373D-45AC-A376-0BD689BFAB3A}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{AA677D86-6999-4AB0-81D6-0249C5076818}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3 - Infrastructure", "3 - Infrastructure", "{AA677D86-6999-4AB0-81D6-0249C5076818}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Infrastructure", "src\TodoList.Infrastructure\TodoList.Infrastructure.csproj", "{22424EAE-7944-4770-9E6D-A651D4C56EC2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TodoList.Infrastructure", "src\TodoList.Infrastructure\TodoList.Infrastructure.csproj", "{22424EAE-7944-4770-9E6D-A651D4C56EC2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{BBB79C4C-F362-4272-AE9A-1D508F9CA46C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{820D463F-A809-48CD-908B-A76F299A3F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TodoList.Api.UnitTests", "tests\TodoList.Api.UnitTests\TodoList.Api.UnitTests.csproj", "{9AE23E1C-AF8B-41A8-84F5-696434B83B1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,15 +45,23 @@ Global
 		{22424EAE-7944-4770-9E6D-A651D4C56EC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{22424EAE-7944-4770-9E6D-A651D4C56EC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{22424EAE-7944-4770-9E6D-A651D4C56EC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9AE23E1C-AF8B-41A8-84F5-696434B83B1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9AE23E1C-AF8B-41A8-84F5-696434B83B1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9AE23E1C-AF8B-41A8-84F5-696434B83B1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9AE23E1C-AF8B-41A8-84F5-696434B83B1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
+		{70F8A7FD-E142-4C3B-8AEF-71CF3916EEDA} = {BBB79C4C-F362-4272-AE9A-1D508F9CA46C}
 		{51984FE4-FC2A-4F78-A632-4327B7FB5462} = {70F8A7FD-E142-4C3B-8AEF-71CF3916EEDA}
 		{75060077-4282-4BA1-B06B-2AE145C586BC} = {70F8A7FD-E142-4C3B-8AEF-71CF3916EEDA}
+		{CB01A615-5F53-4B02-B5C6-023ACCEE6226} = {BBB79C4C-F362-4272-AE9A-1D508F9CA46C}
 		{90705F16-373D-45AC-A376-0BD689BFAB3A} = {CB01A615-5F53-4B02-B5C6-023ACCEE6226}
+		{AA677D86-6999-4AB0-81D6-0249C5076818} = {BBB79C4C-F362-4272-AE9A-1D508F9CA46C}
 		{22424EAE-7944-4770-9E6D-A651D4C56EC2} = {AA677D86-6999-4AB0-81D6-0249C5076818}
+		{9AE23E1C-AF8B-41A8-84F5-696434B83B1D} = {820D463F-A809-48CD-908B-A76F299A3F04}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {741A8256-B99B-47C5-A865-E84B766866CC}
