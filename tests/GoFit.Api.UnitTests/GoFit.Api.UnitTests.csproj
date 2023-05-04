@@ -24,8 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TodoList.Api\TodoList.Api.csproj" />
-    <ProjectReference Include="..\..\src\TodoList.Application\TodoList.Application.csproj" />
+    <ProjectReference Include="..\..\src\GoFit.Api\GoFit.Api.csproj" />
   </ItemGroup>
 
 </Project>

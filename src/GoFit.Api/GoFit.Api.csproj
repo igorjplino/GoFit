@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TodoList.Application\TodoList.Application.csproj" />
-    <ProjectReference Include="..\TodoList.Infrastructure\TodoList.Infrastructure.csproj" />
+    <ProjectReference Include="..\GoFit.Application\GoFit.Application.csproj" />
+    <ProjectReference Include="..\GoFit.Infrastructure\GoFit.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
