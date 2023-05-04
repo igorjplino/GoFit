@@ -1,4 +1,4 @@
-﻿namespace TodoList.Application.TodoItems.Dtos;
+﻿namespace GoFit.Application.TodoItems.Dtos;
 
 public record TodoItemDto
 {

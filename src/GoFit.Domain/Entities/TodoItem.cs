@@ -1,4 +1,4 @@
-﻿namespace TodoList.Domain.Entities;
+﻿namespace GoFit.Domain.Entities;
 
 public class TodoItem
 {

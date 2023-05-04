@@ -1,9 +1,9 @@
 ﻿using MediatR;
-using TodoList.Application.Interfaces;
-using TodoList.Application.TodoItems.Dtos;
-using TodoList.Domain.Entities;
+using GoFit.Application.Interfaces;
+using GoFit.Application.TodoItems.Dtos;
+using GoFit.Domain.Entities;
 
-namespace TodoList.Application.TodoItems.Queries;
+namespace GoFit.Application.TodoItems.Queries;
 
 public record GetTodoItemByIdQuery : IRequest<TodoItemDto?>
 {

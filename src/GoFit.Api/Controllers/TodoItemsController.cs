@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using TodoList.Application.TodoItems.Commands.Create;
-using TodoList.Application.TodoItems.Dtos;
-using TodoList.Application.TodoItems.Queries;
+using GoFit.Application.TodoItems.Commands.Create;
+using GoFit.Application.TodoItems.Dtos;
+using GoFit.Application.TodoItems.Queries;
 
-namespace TodoList.Api.Controllers;
+namespace GoFit.Api.Controllers;
 
 public class TodoItemsController : ApiControllerBase
 {

@@ -1,7 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
-namespace TodoList.Api.Controllers;
+namespace GoFit.Api.Controllers;
 [ApiController]
 [Route("api/[controller]")]
 public abstract class ApiControllerBase : ControllerBase

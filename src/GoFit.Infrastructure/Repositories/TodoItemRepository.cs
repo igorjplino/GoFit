@@ -1,9 +1,9 @@
 ﻿using System.Collections.Concurrent;
-using TodoList.Application.Interfaces;
-using TodoList.Application.TodoItems.Dtos;
-using TodoList.Domain.Entities;
+using GoFit.Application.Interfaces;
+using GoFit.Application.TodoItems.Dtos;
+using GoFit.Domain.Entities;
 
-namespace TodoList.Infrastructure.Repositories;
+namespace GoFit.Infrastructure.Repositories;
 
 public class TodoItemRepository : ITodoItemRepository
 {

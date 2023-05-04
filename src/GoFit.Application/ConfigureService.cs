@@ -2,9 +2,9 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
-using TodoList.Application.Common.PipelineBehaviours;
+using GoFit.Application.Common.PipelineBehaviours;
 
-namespace TodoList.Application;
+namespace GoFit.Application;
 public static class ConfigureService
 {
     public static IServiceCollection AddApplicationServices(this IServiceCollection services)

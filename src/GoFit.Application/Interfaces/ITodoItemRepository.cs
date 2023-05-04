@@ -1,7 +1,7 @@
-﻿using TodoList.Application.TodoItems.Dtos;
-using TodoList.Domain.Entities;
+﻿using GoFit.Application.TodoItems.Dtos;
+using GoFit.Domain.Entities;
 
-namespace TodoList.Application.Interfaces;
+namespace GoFit.Application.Interfaces;
 
 public interface ITodoItemRepository
 {

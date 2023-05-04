@@ -1,8 +1,8 @@
 ﻿using System.Collections.Concurrent;
-using TodoList.Application.Interfaces;
-using TodoList.Domain.Entities;
+using GoFit.Application.Interfaces;
+using GoFit.Domain.Entities;
 
-namespace TodoList.Infrastructure.Repositories;
+namespace GoFit.Infrastructure.Repositories;
 
 public class CachedTodoItemRepository : ITodoItemRepository
 {

@@ -1,4 +1,4 @@
-namespace TodoList.Api;
+namespace GoFit.Api;
 
 public class WeatherForecast
 {

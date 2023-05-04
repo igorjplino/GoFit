@@ -4,13 +4,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using TodoList.Api.Controllers;
-using TodoList.Application.Interfaces;
-using TodoList.Application.TodoItems.Commands.Create;
-using TodoList.Application.TodoItems.Dtos;
-using TodoList.Application.TodoItems.Queries;
+using GoFit.Api.Controllers;
+using GoFit.Application.Interfaces;
+using GoFit.Application.TodoItems.Commands.Create;
+using GoFit.Application.TodoItems.Dtos;
+using GoFit.Application.TodoItems.Queries;
 
-namespace TodoList.Api.UnitTests.Controllers;
+namespace GoFit.Api.UnitTests.Controllers;
 
 public class TodoItemsControllerTests
 {

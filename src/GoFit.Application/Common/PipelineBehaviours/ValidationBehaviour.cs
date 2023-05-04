@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using MediatR;
 
-namespace TodoList.Application.Common.PipelineBehaviours;
+namespace GoFit.Application.Common.PipelineBehaviours;
 public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     where TRequest : IRequest<TResponse>
 {

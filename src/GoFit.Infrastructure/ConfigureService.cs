@@ -1,8 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using TodoList.Application.Interfaces;
-using TodoList.Infrastructure.Repositories;
+using GoFit.Application.Interfaces;
+using GoFit.Infrastructure.Repositories;
 
-namespace TodoList.Infrastructure;
+namespace GoFit.Infrastructure;
 public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)

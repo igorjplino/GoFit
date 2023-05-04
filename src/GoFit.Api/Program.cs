@@ -1,6 +1,6 @@
 using System.Reflection;
-using TodoList.Application;
-using TodoList.Infrastructure;
+using GoFit.Application;
+using GoFit.Infrastructure;
 
 var builder = WebApplication.CreateBuilder(args);
 

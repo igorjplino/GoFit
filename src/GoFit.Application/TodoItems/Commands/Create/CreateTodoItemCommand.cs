@@ -1,8 +1,8 @@
 ﻿using MediatR;
-using TodoList.Application.Interfaces;
-using TodoList.Domain.Entities;
+using GoFit.Application.Interfaces;
+using GoFit.Domain.Entities;
 
-namespace TodoList.Application.TodoItems.Commands.Create;
+namespace GoFit.Application.TodoItems.Commands.Create;
 
 public record CreateTodoItemCommand : IRequest<Guid>
 {
