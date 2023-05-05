@@ -1,5 +1,5 @@
 ﻿namespace GoFit.Domain.Entities;
-public class ExerciseSet
+public class WorkoutSet
 {
     public float Weight { get; set; }
     public int Repetitions { get; set; }
