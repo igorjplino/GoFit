@@ -10,6 +10,9 @@ public static class ConfigureService
         services.AddSingleton<ITodoItemRepository, TodoItemRepository>();
         services.Decorate<ITodoItemRepository, CachedTodoItemRepository>();
 
+        services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
+        services.AddSingleton<IWorkoutPlanRepository, WorkoutPlanRepository>();
+
         return services;
     }
 }
