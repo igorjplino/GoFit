@@ -1,15 +1,14 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using GoFit.Application.TodoItems.Queries;
 using GoFit.Application.WorkoutPlans.Commands.Create;
 using GoFit.Application.WorkoutPlans.Dtos;
 using GoFit.Application.WorkoutPlans.Queries;
 
 namespace GoFit.Api.Controllers;
 
-public class WorkoutPlansController : ApiControllerBase
+public class WorkoutPlanController : ApiControllerBase
 {
-    public WorkoutPlansController(IMediator mediator) : base(mediator)
+    public WorkoutPlanController(IMediator mediator) : base(mediator)
     { }
 
     [HttpGet("{id}")]

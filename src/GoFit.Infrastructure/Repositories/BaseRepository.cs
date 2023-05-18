@@ -9,7 +9,7 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         throw new NotImplementedException();
     }
 
-    public T Get(int id)
+    public virtual T Get(Guid id)
     {
         throw new NotImplementedException();
     }

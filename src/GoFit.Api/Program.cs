@@ -1,3 +1,4 @@
+using FastEndpoints;
 using GoFit.Application;
 using GoFit.Infrastructure;
 
@@ -9,6 +10,7 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddFastEndpoints();
 
 // Services containers
 builder.Services.AddApplicationServices();
@@ -26,6 +28,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+app.UseFastEndpoints();
 
 app.MapControllers();
 
