@@ -2,4 +2,5 @@
 
 public record WorkoutPlanDto
 {
+    public string Title { get; set; }
 }

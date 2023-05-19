@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using GoFit.Application.Interfaces;
+using GoFit.Domain.Entities;
 using GoFit.Application.WorkoutPlans.Dtos;
 
 namespace GoFit.Application.WorkoutPlans.Queries;
@@ -20,11 +21,16 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutPlanD
 
     public Task<WorkoutPlanDto?> Handle(GetWorkoutPlanDtoByIdQuery request, CancellationToken cancellationToken)
     {
-        WorkoutPlanDto? workoutPlan = null;//_workoutPlanRepository.GetTodoItem(request.Id);
+        WorkoutPlan? workoutPlan = _workoutPlanRepository.Get(request.Id);
 
         if (workoutPlan is null)
             return Task.FromResult(null as WorkoutPlanDto);
 
-        return Task.FromResult<WorkoutPlanDto?>(new WorkoutPlanDto { });
+        var dto = new WorkoutPlanDto
+        {
+            Title = workoutPlan.Title
+        };
+
+        return Task.FromResult<WorkoutPlanDto?>(dto);
     }
 }

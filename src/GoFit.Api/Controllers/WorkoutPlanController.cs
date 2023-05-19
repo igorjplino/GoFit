@@ -1,8 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using GoFit.Application.WorkoutPlans.Commands.Create;
-using GoFit.Application.WorkoutPlans.Dtos;
 using GoFit.Application.WorkoutPlans.Queries;
+using GoFit.Application.WorkoutPlans.Dtos;
 
 namespace GoFit.Api.Controllers;
 
