@@ -2,10 +2,10 @@
 using GoFit.Domain.Entities;
 
 namespace GoFit.Infrastructure.Repositories;
-public class WorkoutRepository : BaseRepository<Exercise>, IWorkoutRepository
+public class WorkoutRepository : BaseRepository<Workout>, IWorkoutRepository
 {
-    public override Exercise Get(Guid id)
+    public override Workout Get(Guid id)
     {
-        return new Exercise { Name = "Test", Description = "Testing.." };
+        return new Workout { };
     }
 }

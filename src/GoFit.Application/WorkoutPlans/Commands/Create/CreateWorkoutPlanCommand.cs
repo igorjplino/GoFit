@@ -25,8 +25,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         var workoutPlan = new WorkoutPlan
         {
             Title = request.Title,
-            Description = request.Description,
-            Workouts = request.Workouts,
+            Description = request.Description
         };
 
         _workoutPlanRepository.Create(workoutPlan);

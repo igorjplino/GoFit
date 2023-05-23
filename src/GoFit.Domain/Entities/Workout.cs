@@ -1,7 +1,7 @@
 ﻿using GoFit.Domain.Common;
 
 namespace GoFit.Domain.Entities;
-public class WorkoutBuild : BaseEntity
+public class Workout : BaseEntity
 {
     public Guid ExerciseId { get; set; }
     public int Order { get; set; }
