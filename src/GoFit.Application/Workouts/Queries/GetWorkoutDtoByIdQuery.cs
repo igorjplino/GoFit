@@ -20,7 +20,7 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoBy
 
     public Task<WorkoutDto?> Handle(GetWorkoutDtoByIdQuery request, CancellationToken cancellationToken)
     {
-        Workout? workout = _workoutRepository.Get(request.Id);
+        Exercise? workout = _workoutRepository.Get(request.Id);
 
         if (workout is null)
             return Task.FromResult(null as WorkoutDto);

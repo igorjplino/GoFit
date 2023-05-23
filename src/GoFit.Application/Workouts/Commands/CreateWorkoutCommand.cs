@@ -21,7 +21,7 @@ public class CreateWorkoutCommandHandler : IRequestHandler<CreateWorkoutCommand,
 
     public Task<Guid> Handle(CreateWorkoutCommand request, CancellationToken cancellationToken)
     {
-        var workoutPlan = new Workout
+        var workoutPlan = new Exercise
         {
         };
 

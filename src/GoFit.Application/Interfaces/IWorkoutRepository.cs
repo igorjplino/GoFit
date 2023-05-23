@@ -1,5 +1,5 @@
 ﻿using GoFit.Domain.Entities;
 
 namespace GoFit.Application.Interfaces;
-public interface IWorkoutRepository : IBaseRepository<Workout>
+public interface IWorkoutRepository : IBaseRepository<Exercise>
 { }
