@@ -7,9 +7,6 @@ public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
     {
-        services.AddSingleton<ITodoItemRepository, TodoItemRepository>();
-        services.Decorate<ITodoItemRepository, CachedTodoItemRepository>();
-
         services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
         services.AddSingleton<IWorkoutPlanRepository, WorkoutPlanRepository>();
 

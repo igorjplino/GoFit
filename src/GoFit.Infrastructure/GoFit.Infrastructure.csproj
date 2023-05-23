@@ -15,4 +15,8 @@
     <ProjectReference Include="..\GoFit.Domain\GoFit.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\Cached\" />
+  </ItemGroup>
+
 </Project>
