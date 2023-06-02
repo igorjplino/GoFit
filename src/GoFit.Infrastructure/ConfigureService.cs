@@ -20,8 +20,8 @@ public static class ConfigureService
             //TODO: connect to a real database
         }
 
-        services.AddSingleton<IWorkoutRepository, WorkoutRepository>();
-        services.AddSingleton<IWorkoutPlanRepository, WorkoutPlanRepository>();
+        services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+        services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
 
         return services;
     }
