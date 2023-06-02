@@ -25,5 +25,37 @@ public class GoFitDbContext : DbContext
             model.Property(o => o.Id)
                 .ValueGeneratedOnAdd();
         });
+
+        modelBuilder.Entity<Workout>(model =>
+        {
+            model.ToTable("Workout");
+
+            model.HasKey(o => o.Id);
+
+            model.Property(o => o.Id)
+                .ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<WorkoutSet>(model =>
+        {
+            model.ToTable("WorkoutSet");
+
+            model.HasKey(o => o.Id);
+
+            model.Property(o => o.Id)
+                .ValueGeneratedOnAdd();
+        });
+
+        modelBuilder.Entity<WorkoutPlan>(model =>
+        {
+            model.ToTable("WorkoutPlan");
+
+            model.HasKey(o => o.Id);
+
+            model.Property(o => o.Id)
+                .ValueGeneratedOnAdd();
+
+            model.Ignore(o => o.WorkoutsId);
+        });
     }
 }
