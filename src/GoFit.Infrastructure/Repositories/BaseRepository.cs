@@ -1,16 +1,27 @@
 ﻿using GoFit.Application.Interfaces;
 using GoFit.Domain.Common;
+using GoFit.Infrastructure.Contexts;
 
 namespace GoFit.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
 {
-    public Guid Create(T entity)
+    protected readonly GoFitDbContext _context;
+
+    public BaseRepository(GoFitDbContext context)
     {
-        throw new NotImplementedException();
+        _context = context;
     }
 
-    public virtual T Get(Guid id)
+    public Guid Create(T entity)
     {
-        throw new NotImplementedException();
+        _context.Add(entity);
+        _context.SaveChanges();
+
+        return entity.Id;
+    }
+
+    public virtual T? Get(Guid id)
+    {
+        return _context.Find<T>(id);
     }
 }

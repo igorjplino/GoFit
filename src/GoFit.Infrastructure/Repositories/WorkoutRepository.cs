@@ -1,11 +1,11 @@
 ﻿using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
+using GoFit.Infrastructure.Contexts;
 
 namespace GoFit.Infrastructure.Repositories;
 public class WorkoutRepository : BaseRepository<Workout>, IWorkoutRepository
 {
-    public override Workout Get(Guid id)
-    {
-        return new Workout { };
-    }
+    public WorkoutRepository(GoFitDbContext context)
+        : base(context)
+    { }
 }

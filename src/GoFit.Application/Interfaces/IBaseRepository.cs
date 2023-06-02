@@ -4,5 +4,5 @@ namespace GoFit.Application.Interfaces;
 public interface IBaseRepository<T> where T : BaseEntity
 {
     Guid Create(T entity);
-    T Get(Guid id);
+    T? Get(Guid id);
 }

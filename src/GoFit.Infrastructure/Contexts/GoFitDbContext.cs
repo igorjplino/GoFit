@@ -13,4 +13,17 @@ public class GoFitDbContext : DbContext
         : base(options)
     {
     }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<Exercise>(model => 
+        {
+            model.ToTable("Exercises");
+
+            model.HasKey(o => o.Id);
+
+            model.Property(o => o.Id)
+                .ValueGeneratedOnAdd();
+        });
+    }
 }
