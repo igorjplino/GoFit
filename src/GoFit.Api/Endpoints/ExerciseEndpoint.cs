@@ -24,8 +24,12 @@ public class ExerciseEndpoint :
     {
         ExerciseDto? result = await Mediator.Send(new GetExerciseDtoByIdQuery { Id = req.Id });
 
-        var response = Map.FromEntity(result);
+        if (result is null)
+        {
+            await SendNotFoundAsync(ct);
+            return;
+        }
 
-        await SendAsync(response, cancellation: ct);
+        await SendAsync(Map.FromEntity(result), cancellation: ct);
     }
 }
