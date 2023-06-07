@@ -6,16 +6,15 @@ using GoFit.Application.Workouts.Dtos;
 using GoFit.Application.Workouts.Queries;
 using MediatR;
 
-namespace GoFit.Api.Endpoints;
+namespace GoFit.Api.Endpoints.Workout;
 
-public class WorkoutEndpoint :
+public class GetWorkoutByIdEndpoint :
     Endpoint<WorkoutRequest, WorkoutResponse, WorkoutMapper>
 {
     public IMediator Mediator { get; init; }
 
     public override void Configure()
     {
-        Verbs(Http.GET);
         Get("Workout/{id}");
         AllowAnonymous();
     }
