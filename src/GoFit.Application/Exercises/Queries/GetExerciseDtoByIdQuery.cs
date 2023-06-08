@@ -19,12 +19,12 @@ internal class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoBy
         _exerciseRepository = exerciseRepository;
     }
 
-    Task<ExerciseDto?> IRequestHandler<GetExerciseDtoByIdQuery, ExerciseDto?>.Handle(GetExerciseDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ExerciseDto?> Handle(GetExerciseDtoByIdQuery request, CancellationToken cancellationToken)
     {
-        Exercise? exercise = _exerciseRepository.Get(request.Id);
+        Exercise? exercise = await _exerciseRepository.GetAsync(request.Id);
 
         if (exercise is null)
-            return Task.FromResult(null as ExerciseDto);
+            return null;
 
         var exerciseDto = new ExerciseDto
         {
@@ -32,6 +32,6 @@ internal class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoBy
             Description = exercise.Description
         };
 
-        return Task.FromResult<ExerciseDto?>(exerciseDto);
+        return exerciseDto;
     }
 }

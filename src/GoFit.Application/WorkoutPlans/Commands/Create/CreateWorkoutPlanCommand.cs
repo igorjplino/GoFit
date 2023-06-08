@@ -20,7 +20,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         _workoutPlanRepository = workoutPlanRepository;
     }
 
-    public Task<Guid> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
+    public async Task<Guid> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
     {
         var workoutPlan = new WorkoutPlan
         {
@@ -28,8 +28,6 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
             Description = request.Description
         };
 
-        _workoutPlanRepository.Create(workoutPlan);
-
-        return Task.FromResult(Guid.NewGuid());
+        return await _workoutPlanRepository.CreateAsync(workoutPlan);
     }
 }

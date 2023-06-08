@@ -12,16 +12,16 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         _context = context;
     }
 
-    public Guid Create(T entity)
+    public async Task<Guid> CreateAsync(T entity)
     {
-        _context.Add(entity);
-        _context.SaveChanges();
+        await _context.AddAsync(entity);
+        await _context.SaveChangesAsync();
 
         return entity.Id;
     }
 
-    public virtual T? Get(Guid id)
+    public virtual async Task<T?> GetAsync(Guid id)
     {
-        return _context.Find<T>(id);
+        return await _context.FindAsync<T>(id);
     }
 }

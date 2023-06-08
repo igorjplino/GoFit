@@ -18,17 +18,15 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoBy
         _workoutRepository = workoutRepository;
     }
 
-    public Task<WorkoutDto?> Handle(GetWorkoutDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<WorkoutDto?> Handle(GetWorkoutDtoByIdQuery request, CancellationToken cancellationToken)
     {
-        Workout? workout = _workoutRepository.Get(request.Id);
+        Workout? workout = await _workoutRepository.GetAsync(request.Id);
 
         if (workout is null)
-            return Task.FromResult(null as WorkoutDto);
+            return null;
 
-        var dto = new WorkoutDto
+        return new WorkoutDto
         {
         };
-
-        return Task.FromResult<WorkoutDto?>(dto);
     }
 }
