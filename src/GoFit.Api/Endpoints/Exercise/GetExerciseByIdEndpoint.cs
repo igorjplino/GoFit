@@ -1,7 +1,4 @@
 ﻿using FastEndpoints;
-using GoFit.Api.Contracts.Mappers;
-using GoFit.Api.Contracts.Requests;
-using GoFit.Api.Contracts.Responses;
 using GoFit.Application.Exercises.Dtos;
 using GoFit.Application.Exercises.Queries;
 using MediatR;
@@ -9,7 +6,7 @@ using MediatR;
 namespace GoFit.Api.Endpoints.Exercise;
 
 public class GetExerciseByIdEndpoint :
-    Endpoint<ExerciseRequest, ExerciseResponse, ExerciseMapper>
+    Endpoint<GetExerciseDtoByIdQuery, ExerciseDto>
 {
     public IMediator Mediator { get; init; }
 
@@ -19,9 +16,9 @@ public class GetExerciseByIdEndpoint :
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(ExerciseRequest req, CancellationToken ct)
+    public override async Task HandleAsync(GetExerciseDtoByIdQuery req, CancellationToken ct)
     {
-        ExerciseDto? result = await Mediator.Send(new GetExerciseDtoByIdQuery { Id = req.Id });
+        ExerciseDto? result = await Mediator.Send(req);
 
         if (result is null)
         {
@@ -29,6 +26,6 @@ public class GetExerciseByIdEndpoint :
             return;
         }
 
-        await SendAsync(Map.FromEntity(result), cancellation: ct);
+        await SendAsync(result, cancellation: ct);
     }
 }
