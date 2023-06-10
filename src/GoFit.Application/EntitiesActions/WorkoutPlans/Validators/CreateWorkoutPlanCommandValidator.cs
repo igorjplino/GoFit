@@ -1,6 +1,7 @@
 ﻿using FluentValidation;
+using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
-namespace GoFit.Application.WorkoutPlans.Commands.Create;
+namespace GoFit.Application.EntitiesActions.WorkoutPlans.Validators;
 
 public class CreateWorkoutPlanCommandValidator : AbstractValidator<CreateWorkoutPlanCommand>
 {

@@ -1,9 +1,9 @@
-﻿using GoFit.Application.Exercises.Dtos;
+﻿using GoFit.Application.EntitiesActions.Exercises.Dtos;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using MediatR;
 
-namespace GoFit.Application.Exercises.Queries;
+namespace GoFit.Application.EntitiesActions.Exercises.Queries;
 
 public record GetExerciseDtoByIdQuery : IRequest<ExerciseDto?>
 {

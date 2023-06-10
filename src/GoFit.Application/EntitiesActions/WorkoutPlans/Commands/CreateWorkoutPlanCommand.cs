@@ -2,7 +2,7 @@
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 
-namespace GoFit.Application.WorkoutPlans.Commands.Create;
+namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
 public record CreateWorkoutPlanCommand : IRequest<Guid>
 {

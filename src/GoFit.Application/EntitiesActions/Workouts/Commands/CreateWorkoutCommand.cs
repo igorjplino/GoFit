@@ -2,7 +2,7 @@
 using GoFit.Domain.Entities;
 using MediatR;
 
-namespace GoFit.Application.Workouts.Commands;
+namespace GoFit.Application.EntitiesActions.Workouts.Commands;
 public record CreateWorkoutCommand : IRequest<Guid>
 {
     public string? Name { get; set; }
@@ -23,7 +23,7 @@ public class CreateWorkoutCommandHandler : IRequestHandler<CreateWorkoutCommand,
     {
         var workoutPlan = new Workout
         {
-            
+
         };
 
         return await _workoutRepository.CreateAsync(workoutPlan);

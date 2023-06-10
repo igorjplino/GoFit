@@ -2,7 +2,7 @@
 using GoFit.Domain.Entities;
 using MediatR;
 
-namespace GoFit.Application.Exercises;
+namespace GoFit.Application.EntitiesActions.Exercises.Commands;
 
 public record CreateExerciseCommand : IRequest<Guid>
 {
@@ -12,7 +12,7 @@ public record CreateExerciseCommand : IRequest<Guid>
 
 public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseCommand, Guid>
 {
-    IExerciseRepository _exerciseRepository;
+    private readonly IExerciseRepository _exerciseRepository;
 
     public CreateExerciseCommandhandler(IExerciseRepository exerciseRepository)
     {

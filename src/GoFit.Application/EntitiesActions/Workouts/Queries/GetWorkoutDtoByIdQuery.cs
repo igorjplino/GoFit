@@ -1,9 +1,9 @@
-﻿using GoFit.Application.Interfaces;
-using GoFit.Application.Workouts.Dtos;
+﻿using GoFit.Application.EntitiesActions.Workouts.Dtos;
+using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using MediatR;
 
-namespace GoFit.Application.Workouts.Queries;
+namespace GoFit.Application.EntitiesActions.Workouts.Queries;
 public record GetWorkoutDtoByIdQuery : IRequest<WorkoutDto?>
 {
     public Guid Id { get; set; }

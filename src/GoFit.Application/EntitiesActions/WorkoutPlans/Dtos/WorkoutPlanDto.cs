@@ -1,4 +1,4 @@
-﻿namespace GoFit.Application.WorkoutPlans.Dtos;
+﻿namespace GoFit.Application.EntitiesActions.WorkoutPlans.Dtos;
 
 public record WorkoutPlanDto
 {
