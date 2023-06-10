@@ -1,6 +1,6 @@
 ﻿using FastEndpoints;
-using GoFit.Application.Exercises.Dtos;
-using GoFit.Application.Exercises.Queries;
+using GoFit.Application.EntitiesActions.Exercises.Dtos;
+using GoFit.Application.EntitiesActions.Exercises.Queries;
 using MediatR;
 
 namespace GoFit.Api.Endpoints.Exercise;

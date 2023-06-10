@@ -1,5 +1,5 @@
 ﻿using FastEndpoints;
-using GoFit.Application.Workouts.Commands;
+using GoFit.Application.EntitiesActions.Workouts.Commands;
 using MediatR;
 
 namespace GoFit.Api.Endpoints.Workout;
@@ -7,7 +7,7 @@ namespace GoFit.Api.Endpoints.Workout;
 public class CreateWorkoutEndpoint :
     Endpoint<CreateWorkoutCommand, Guid>
 {
-    public IMediator Mediator { get; init; }
+    public required IMediator Mediator { get; init; }
 
     public override void Configure()
     {
@@ -17,7 +17,7 @@ public class CreateWorkoutEndpoint :
 
     public override async Task HandleAsync(CreateWorkoutCommand req, CancellationToken ct)
     {
-        Guid id = await Mediator.Send(req);
+        Guid id = await Mediator.Send(req, ct);
 
         await SendAsync(id, cancellation: ct);
     }
