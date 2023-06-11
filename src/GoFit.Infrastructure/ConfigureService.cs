@@ -14,6 +14,11 @@ public static class ConfigureService
         {
             services.AddDbContext<GoFitDbContext>(options =>
                 options.UseInMemoryDatabase("GoFitDb"));
+
+            services
+                .BuildServiceProvider()
+                .GetRequiredService<GoFitDbContext>()
+                .Seed();
         }
         else
         {

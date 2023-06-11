@@ -1,21 +1,15 @@
 ﻿using GoFit.Domain.Entities;
 
 namespace GoFit.Infrastructure.Contexts;
-public class GoFitDbContextInitialise
+
+public static class GoFitDbContextInitialise
 {
-	private readonly GoFitDbContext _context;
-
-    public GoFitDbContextInitialise(GoFitDbContext context)
-    {
-        _context = context;
-    }
-
-    public async Task SeedAsync()
+    public static void Seed(this GoFitDbContext context)
     {
         // Default data for tests
-        if (!_context.Exercises.Any())
+        if (!context.Exercises.Any())
         {
-            await _context.Exercises.AddRangeAsync(new List<Exercise>
+            context.Exercises.AddRangeAsync(new List<Exercise>
             {
                 new Exercise { Name = "Arnald Press", Description = "" },
                 new Exercise { Name = "Alternating Dumbell Bicep Curls", Description = "" },
@@ -24,7 +18,7 @@ public class GoFitDbContextInitialise
                 new Exercise { Name = "Pull Ups", Description = "" }
             });
 
-            await _context.SaveChangesAsync();
+            context.SaveChanges();
         }
     }
 }
