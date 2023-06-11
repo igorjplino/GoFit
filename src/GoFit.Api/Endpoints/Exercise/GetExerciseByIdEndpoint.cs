@@ -8,7 +8,7 @@ namespace GoFit.Api.Endpoints.Exercise;
 public class GetExerciseByIdEndpoint :
     Endpoint<GetExerciseDtoByIdQuery, ExerciseDto>
 {
-    public IMediator Mediator { get; init; }
+    public required IMediator Mediator { get; init; }
 
     public override void Configure()
     {
@@ -18,7 +18,7 @@ public class GetExerciseByIdEndpoint :
 
     public override async Task HandleAsync(GetExerciseDtoByIdQuery req, CancellationToken ct)
     {
-        ExerciseDto? result = await Mediator.Send(req);
+        ExerciseDto? result = await Mediator.Send(req, ct);
 
         if (result is null)
         {

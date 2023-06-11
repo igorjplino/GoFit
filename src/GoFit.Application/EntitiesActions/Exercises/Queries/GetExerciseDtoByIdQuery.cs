@@ -10,7 +10,7 @@ public record GetExerciseDtoByIdQuery : IRequest<ExerciseDto?>
     public Guid Id { get; set; }
 }
 
-internal class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoByIdQuery, ExerciseDto?>
+public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoByIdQuery, ExerciseDto?>
 {
     private readonly IExerciseRepository _exerciseRepository;
 

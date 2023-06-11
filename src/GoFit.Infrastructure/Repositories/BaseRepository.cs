@@ -1,6 +1,7 @@
 ﻿using GoFit.Application.Interfaces;
 using GoFit.Domain.Common;
 using GoFit.Infrastructure.Contexts;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoFit.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
@@ -18,6 +19,11 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         await _context.SaveChangesAsync();
 
         return entity.Id;
+    }
+
+    public async Task<IEnumerable<T>> GetAllAsync()
+    {
+        return await _context.Set<T>().ToListAsync();
     }
 
     public virtual async Task<T?> GetAsync(Guid id)
