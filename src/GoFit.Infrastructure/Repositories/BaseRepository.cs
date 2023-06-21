@@ -13,6 +13,8 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         _context = context;
     }
 
+    protected GoFitDbContext Context => _context;
+
     public async Task<Guid> CreateAsync(T entity)
     {
         await _context.AddAsync(entity);
