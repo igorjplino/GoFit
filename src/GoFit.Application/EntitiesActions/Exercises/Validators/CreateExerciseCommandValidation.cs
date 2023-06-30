@@ -23,7 +23,7 @@ public class CreateExerciseCommandValidation : AbstractValidator<CreateExerciseC
         RuleFor(x => x.Description)
             .NotEmpty()
             .MinimumLength(3)
-            .MaximumLength(100);
+            .MaximumLength(300);
     }
 
     private async Task<bool> IsUniqueName(string name, CancellationToken ct)
