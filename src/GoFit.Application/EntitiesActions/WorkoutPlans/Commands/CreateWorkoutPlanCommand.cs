@@ -1,17 +1,18 @@
 ﻿using MediatR;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
+using GoFit.Application.Common;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
-public record CreateWorkoutPlanCommand : IRequest<Guid>
+public record CreateWorkoutPlanCommand : IRequest<ValidatorResponse<Guid>>
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
     public IEnumerable<Guid>? Workouts { get; set; }
 }
 
-public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Guid>
+public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, ValidatorResponse<Guid>>
 {
     private readonly IWorkoutPlanRepository _workoutPlanRepository;
 
@@ -20,7 +21,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         _workoutPlanRepository = workoutPlanRepository;
     }
 
-    public async Task<Guid> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
+    public async Task<ValidatorResponse<Guid>> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
     {
         var workoutPlan = new WorkoutPlan
         {
@@ -28,6 +29,8 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
             Description = request.Description
         };
 
-        return await _workoutPlanRepository.CreateAsync(workoutPlan);
+        Guid id = await _workoutPlanRepository.CreateAsync(workoutPlan);
+
+        return ValidatorResponse<Guid>.Success(id);
     }
 }

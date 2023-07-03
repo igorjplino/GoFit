@@ -1,16 +1,17 @@
-﻿using GoFit.Application.EntitiesActions.Exercises.Dtos;
+﻿using GoFit.Application.Common;
+using GoFit.Application.EntitiesActions.Exercises.Dtos;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Queries;
 
-public record GetExerciseDtoByIdQuery : IRequest<ExerciseDto?>
+public record GetExerciseDtoByIdQuery : IRequest<ValidatorResponse<ExerciseDto?>>
 {
     public Guid Id { get; set; }
 }
 
-public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoByIdQuery, ExerciseDto?>
+public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoByIdQuery, ValidatorResponse<ExerciseDto?>>
 {
     private readonly IExerciseRepository _exerciseRepository;
 
@@ -19,12 +20,12 @@ public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoById
         _exerciseRepository = exerciseRepository;
     }
 
-    public async Task<ExerciseDto?> Handle(GetExerciseDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<ValidatorResponse<ExerciseDto?>> Handle(GetExerciseDtoByIdQuery request, CancellationToken cancellationToken)
     {
         Exercise? exercise = await _exerciseRepository.GetAsync(request.Id);
 
         if (exercise is null)
-            return null;
+            return ValidatorResponse<ExerciseDto?>.Success(null);
 
         var exerciseDto = new ExerciseDto
         {
@@ -32,6 +33,6 @@ public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoById
             Description = exercise.Description
         };
 
-        return exerciseDto;
+        return ValidatorResponse<ExerciseDto?>.Success(exerciseDto);
     }
 }
