@@ -1,17 +1,17 @@
-﻿using GoFit.Application.Common;
-using GoFit.Application.Interfaces;
+﻿using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
+using LanguageExt.Common;
 using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Commands;
 
-public record CreateExerciseCommand : IRequest<ValidatorResponse<Guid>>
+public record CreateExerciseCommand : IRequest<Result<Guid>>
 {
     public string? Name { get; set; }
     public string? Description { get; set; }
 }
 
-public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseCommand, ValidatorResponse<Guid>>
+public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseCommand, Result<Guid>>
 {
     private readonly IExerciseRepository _exerciseRepository;
 
@@ -20,7 +20,7 @@ public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseComman
         _exerciseRepository = exerciseRepository;
     }
 
-    public async Task<ValidatorResponse<Guid>> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateExerciseCommand request, CancellationToken cancellationToken)
     {
         var exercise = new Exercise
         {
@@ -28,8 +28,6 @@ public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseComman
             Description = request.Description
         };
 
-        Guid id = await _exerciseRepository.CreateAsync(exercise);
-
-        return ValidatorResponse<Guid>.Success(id);
+        return await _exerciseRepository.CreateAsync(exercise);
     }
 }

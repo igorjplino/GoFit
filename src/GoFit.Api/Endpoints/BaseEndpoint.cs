@@ -1,4 +1,6 @@
 ﻿using FastEndpoints;
+using FluentValidation;
+using FluentValidation.Results;
 using GoFit.Application.Common;
 using MediatR;
 
@@ -9,6 +11,24 @@ public abstract class BaseEndpoint<TRequest, TResponse>
      where TRequest : notnull
 {
     public required IMediator Mediator { get; init; }
+
+    protected async Task MapToResponse(Exception ex, CancellationToken ct)
+    {
+        switch (ex)
+        {
+            case ValidationException validationFailure:
+                ValidationFailures.AddRange(validationFailure.Errors);
+                break;
+            default:
+                ValidationFailures.Add(new ValidationFailure
+                {
+                    ErrorMessage = "An unexpected error occurred",
+                });
+                break;
+        }
+
+        await SendErrorsAsync(cancellation: ct);
+    }
 
     public async Task ResolveResponseAsync(ValidatorResponse<TResponse?> response, CancellationToken ct)
     {

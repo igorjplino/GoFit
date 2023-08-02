@@ -1,14 +1,16 @@
-﻿using GoFit.Application.Common;
-using GoFit.Application.EntitiesActions.Exercises.Dtos;
+﻿using GoFit.Application.EntitiesActions.Exercises.Dtos;
 using GoFit.Application.Interfaces;
+using GoFit.Domain.Entities;
+using LanguageExt;
+using LanguageExt.Common;
 using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Queries;
 
-public record GetAllExercisesQuery : IRequest<ValidatorResponse<IEnumerable<ExerciseDto>>>
+public record GetAllExercisesQuery : IRequest<Result<Seq<ExerciseDto>>>
 { }
 
-public class GetAllExercisesQueryHandler : IRequestHandler<GetAllExercisesQuery, ValidatorResponse<IEnumerable<ExerciseDto>>>
+public class GetAllExercisesQueryHandler : IRequestHandler<GetAllExercisesQuery, Result<Seq<ExerciseDto>>>
 {
     private readonly IExerciseRepository _exerciseRepository;
 
@@ -17,19 +19,17 @@ public class GetAllExercisesQueryHandler : IRequestHandler<GetAllExercisesQuery,
         _exerciseRepository = exerciseRepository;
     }
 
-    public async Task<ValidatorResponse<IEnumerable<ExerciseDto>>> Handle(GetAllExercisesQuery request, CancellationToken cancellationToken)
+    public async Task<Result<Seq<ExerciseDto>>> Handle(GetAllExercisesQuery request, CancellationToken cancellationToken)
     {
-        var exercises = await _exerciseRepository.GetAllAsync();
+        IEnumerable<Exercise> exercises = await _exerciseRepository.GetAllAsync();
 
         if (exercises is null)
-            return ValidatorResponse<IEnumerable<ExerciseDto>>.Success(Enumerable.Empty<ExerciseDto>());
+            return Seq.empty<ExerciseDto>();
 
-        IEnumerable<ExerciseDto> exercisesDto = exercises.Select(x => new ExerciseDto
+        return exercises.Select(x => new ExerciseDto
         {
             Name = x.Name,
             Description = x.Description
-        });
-
-        return ValidatorResponse<IEnumerable<ExerciseDto>>.Success(exercisesDto);
+        }).ToSeq();
     }
 }

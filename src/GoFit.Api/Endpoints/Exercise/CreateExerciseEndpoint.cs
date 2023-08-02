@@ -1,5 +1,5 @@
-﻿using GoFit.Application.Common;
-using GoFit.Application.EntitiesActions.Exercises.Commands;
+﻿using GoFit.Application.EntitiesActions.Exercises.Commands;
+using LanguageExt.Common;
 
 namespace GoFit.Api.Endpoints.Exercise;
 
@@ -14,8 +14,10 @@ public class CreateExerciseEndpoint :
 
     public override async Task HandleAsync(CreateExerciseCommand req, CancellationToken ct)
     {
-        ValidatorResponse<Guid> response = await Mediator.Send(req, ct);
+        Result<Guid> result = await Mediator.Send(req, ct);
 
-        await ResolveResponseAsync(response, ct);
+        await result.Match(
+            async succ => await SendAsync(succ, cancellation: ct),
+            async fail => await MapToResponse(fail, ct));
     }
 }
