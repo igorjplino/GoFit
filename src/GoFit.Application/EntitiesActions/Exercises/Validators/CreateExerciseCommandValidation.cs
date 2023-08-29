@@ -21,6 +21,7 @@ public class CreateExerciseCommandValidation : AbstractValidator<CreateExerciseC
             .MustAsync(IsUniqueName).WithMessage("The exercise name '{PropertyValue}' already exists");
 
         RuleFor(x => x.Description)
+            .NotNull()
             .NotEmpty()
             .MinimumLength(3)
             .MaximumLength(300);
