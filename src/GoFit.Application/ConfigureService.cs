@@ -4,7 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using GoFit.Application.Common.PipelineBehaviours;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
-using LanguageExt.Common;
+using GoFit.Application.Common;
 
 namespace GoFit.Application;
 public static class ConfigureService

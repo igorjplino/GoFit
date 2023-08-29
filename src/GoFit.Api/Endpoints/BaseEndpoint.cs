@@ -12,7 +12,24 @@ public abstract class BaseEndpoint<TRequest, TResponse>
 {
     public required IMediator Mediator { get; init; }
 
-    protected async Task MapToResponse(Exception ex, CancellationToken ct)
+    protected async Task HandleResultResponse(Result<TResponse> result, CancellationToken ct)
+    {
+        await result.Match(
+            async succ => await MapSuccessResponse(succ, ct),
+            async fail => await MapFailResponse(fail, ct));
+    }
+
+    private async Task MapSuccessResponse(TResponse response, CancellationToken ct)
+    {
+        if (response is null)
+        {
+            await SendNotFoundAsync(ct);
+        }
+
+        await SendAsync(response, cancellation: ct);
+    }
+
+    private async Task MapFailResponse(Exception ex, CancellationToken ct)
     {
         switch (ex)
         {
@@ -26,41 +43,6 @@ public abstract class BaseEndpoint<TRequest, TResponse>
                 });
                 break;
         }
-
-        await SendErrorsAsync(cancellation: ct);
-    }
-
-    public async Task ResolveResponseAsync(ValidatorResponse<TResponse?> response, CancellationToken ct)
-    {
-        if (!response.IsValidResponse)
-        {
-            await ResolveInvalidResponse(response, ct);
-            return;
-        }
-
-        await SendAsync(response: response.Result, cancellation: ct);
-    }
-
-    public async Task ResolveGetByIdResponseAsync(ValidatorResponse<TResponse?> response, CancellationToken ct)
-    {
-        if (!response.IsValidResponse)
-        {
-            await ResolveInvalidResponse(response, ct);
-            return;
-        }
-
-        if (response.Result is null)
-        {
-            await SendNotFoundAsync(ct);
-            return;
-        }
-
-        await SendAsync(response: response.Result, cancellation: ct);
-    }
-
-    private async Task ResolveInvalidResponse(ValidatorResponse<TResponse?> response, CancellationToken ct)
-    {
-        ValidationFailures.AddRange(response.Erros);
 
         await SendErrorsAsync(cancellation: ct);
     }

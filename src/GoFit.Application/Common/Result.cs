@@ -26,7 +26,7 @@ public readonly struct Result<TValue>
 
     public TResult Match<TResult>(
         Func<TValue, TResult> succ,
-        Func<Exception> fail)
+        Func<Exception, TResult> fail)
     {
         return IsError ? fail(_error!) : succ(_value!);
     }

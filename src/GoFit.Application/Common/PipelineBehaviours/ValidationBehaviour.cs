@@ -1,6 +1,5 @@
 ﻿using FluentValidation;
 using FluentValidation.Results;
-using LanguageExt.Common;
 using MediatR;
 
 namespace GoFit.Application.Common.PipelineBehaviours;
@@ -32,7 +31,7 @@ public class ValidationBehaviour<TRequest, TResponse> : IPipelineBehavior<TReque
                 .ToList();
 
             if (failures.Any())
-                return new Result<TResponse>(new ValidationException(failures));
+                return new ValidationException(failures);
         }
 
         return await next();

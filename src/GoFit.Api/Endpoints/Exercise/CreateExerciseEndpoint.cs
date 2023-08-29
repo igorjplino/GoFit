@@ -1,5 +1,5 @@
-﻿using GoFit.Application.EntitiesActions.Exercises.Commands;
-using LanguageExt.Common;
+﻿using GoFit.Application.Common;
+using GoFit.Application.EntitiesActions.Exercises.Commands;
 
 namespace GoFit.Api.Endpoints.Exercise;
 
@@ -16,8 +16,6 @@ public class CreateExerciseEndpoint :
     {
         Result<Guid> result = await Mediator.Send(req, ct);
 
-        await result.Match(
-            async succ => await SendAsync(succ, cancellation: ct),
-            async fail => await MapToResponse(fail, ct));
+        await HandleResultResponse(result, ct);
     }
 }

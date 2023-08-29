@@ -1,6 +1,6 @@
-﻿using GoFit.Application.Interfaces;
+﻿using GoFit.Application.Common;
+using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
-using LanguageExt.Common;
 using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Commands;
