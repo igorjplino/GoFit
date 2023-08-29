@@ -14,8 +14,8 @@ public class CreateWorkoutEndpoint :
 
     public override async Task HandleAsync(CreateWorkoutCommand req, CancellationToken ct)
     {
-        ValidatorResponse<Guid> response = await Mediator.Send(req, ct);
+        Result<Guid> result = await Mediator.Send(req, ct);
 
-        await ResolveResponseAsync(response, ct);
+        await HandleResultResponse(result, ct);
     }
 }

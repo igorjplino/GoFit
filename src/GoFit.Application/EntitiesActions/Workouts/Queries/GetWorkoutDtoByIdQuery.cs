@@ -5,12 +5,13 @@ using GoFit.Domain.Entities;
 using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Workouts.Queries;
-public record GetWorkoutDtoByIdQuery : IRequest<ValidatorResponse<WorkoutDto?>>
+
+public record GetWorkoutDtoByIdQuery : IRequest<Result<WorkoutDto?>>
 {
     public Guid Id { get; set; }
 }
 
-public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoByIdQuery, ValidatorResponse<WorkoutDto?>>
+public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoByIdQuery, Result<WorkoutDto?>>
 {
     private readonly IWorkoutRepository _workoutRepository;
 
@@ -19,17 +20,17 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoBy
         _workoutRepository = workoutRepository;
     }
 
-    public async Task<ValidatorResponse<WorkoutDto?>> Handle(GetWorkoutDtoByIdQuery request, CancellationToken cancellationToken)
+    public async Task<Result<WorkoutDto?>> Handle(GetWorkoutDtoByIdQuery request, CancellationToken cancellationToken)
     {
         Workout? workout = await _workoutRepository.GetAsync(request.Id);
 
         if (workout is null)
-            return ValidatorResponse<WorkoutDto?>.Success(null);
+            return default;
 
         var workoutDto = new WorkoutDto
         {
         };
 
-        return ValidatorResponse<WorkoutDto?>.Success(workoutDto);
+        return workoutDto;
     }
 }

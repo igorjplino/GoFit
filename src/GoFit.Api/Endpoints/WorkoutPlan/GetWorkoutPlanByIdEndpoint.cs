@@ -15,8 +15,8 @@ public class GetWorkoutPlanByIdEndpoint :
 
     public override async Task HandleAsync(GetWorkoutPlanDtoByIdQuery req, CancellationToken ct)
     {
-        ValidatorResponse<WorkoutPlanDto?> result = await Mediator.Send(req, ct);
+        Result<WorkoutPlanDto?> result = await Mediator.Send(req, ct);
 
-        await ResolveGetByIdResponseAsync(result, ct);
+        await HandleResultResponse(result, ct);
     }
 }

@@ -5,14 +5,14 @@ using GoFit.Application.Common;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
-public record CreateWorkoutPlanCommand : IRequest<ValidatorResponse<Guid>>
+public record CreateWorkoutPlanCommand : IRequest<Result<Guid>>
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
     public IEnumerable<Guid>? Workouts { get; set; }
 }
 
-public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, ValidatorResponse<Guid>>
+public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>
 {
     private readonly IWorkoutPlanRepository _workoutPlanRepository;
 
@@ -21,7 +21,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         _workoutPlanRepository = workoutPlanRepository;
     }
 
-    public async Task<ValidatorResponse<Guid>> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
     {
         var workoutPlan = new WorkoutPlan
         {
@@ -29,8 +29,6 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
             Description = request.Description
         };
 
-        Guid id = await _workoutPlanRepository.CreateAsync(workoutPlan);
-
-        return ValidatorResponse<Guid>.Success(id);
+        return await _workoutPlanRepository.CreateAsync(workoutPlan);
     }
 }

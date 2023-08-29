@@ -1,4 +1,6 @@
 ﻿using FastEndpoints;
+using FluentValidation;
+using FluentValidation.Results;
 using GoFit.Application.Common;
 using MediatR;
 
@@ -10,37 +12,37 @@ public abstract class BaseEndpoint<TRequest, TResponse>
 {
     public required IMediator Mediator { get; init; }
 
-    public async Task ResolveResponseAsync(ValidatorResponse<TResponse?> response, CancellationToken ct)
+    protected async Task HandleResultResponse(Result<TResponse> result, CancellationToken ct)
     {
-        if (!response.IsValidResponse)
-        {
-            await ResolveInvalidResponse(response, ct);
-            return;
-        }
-
-        await SendAsync(response: response.Result, cancellation: ct);
+        await result.Match(
+            async succ => await MapSuccessResponse(succ, ct),
+            async fail => await MapFailResponse(fail, ct));
     }
 
-    public async Task ResolveGetByIdResponseAsync(ValidatorResponse<TResponse?> response, CancellationToken ct)
+    private async Task MapSuccessResponse(TResponse response, CancellationToken ct)
     {
-        if (!response.IsValidResponse)
-        {
-            await ResolveInvalidResponse(response, ct);
-            return;
-        }
-
-        if (response.Result is null)
+        if (response is null)
         {
             await SendNotFoundAsync(ct);
-            return;
         }
 
-        await SendAsync(response: response.Result, cancellation: ct);
+        await SendAsync(response, cancellation: ct);
     }
 
-    private async Task ResolveInvalidResponse(ValidatorResponse<TResponse?> response, CancellationToken ct)
+    private async Task MapFailResponse(Exception ex, CancellationToken ct)
     {
-        ValidationFailures.AddRange(response.Erros);
+        switch (ex)
+        {
+            case ValidationException validationFailure:
+                ValidationFailures.AddRange(validationFailure.Errors);
+                break;
+            default:
+                ValidationFailures.Add(new ValidationFailure
+                {
+                    ErrorMessage = "An unexpected error occurred",
+                });
+                break;
+        }
 
         await SendErrorsAsync(cancellation: ct);
     }
