@@ -24,6 +24,7 @@ public abstract class BaseEndpoint<TRequest, TResponse>
         if (response is null)
         {
             await SendNotFoundAsync(ct);
+            return;
         }
 
         await SendAsync(response, cancellation: ct);
