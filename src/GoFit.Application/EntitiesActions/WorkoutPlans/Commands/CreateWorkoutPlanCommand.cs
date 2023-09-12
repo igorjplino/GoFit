@@ -10,7 +10,7 @@ public record CreateWorkoutPlanCommand : IRequest<Result<Guid>>
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
-    public IEnumerable<WorkoutExerciseDto> Exercises { get; set; }
+    public IEnumerable<WorkoutExerciseDto> Exercises { get; set; } = new List<WorkoutExerciseDto>();
 }
 
 public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>
@@ -34,7 +34,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         {
             Title = request.Title,
             Description = request.Description,
-            Workouts = request.Exercises?.Select(w => new Workout
+            Workouts = request.Exercises.Select(w => new Workout
             {
                 ExerciseId = w.ExerciseId,
                 Order = w.Order,
