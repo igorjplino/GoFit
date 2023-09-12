@@ -22,16 +22,35 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutPlanD
 
     public async Task<Result<WorkoutPlanDto?>> Handle(GetWorkoutPlanDtoByIdQuery request, CancellationToken cancellationToken)
     {
-        WorkoutPlan? workoutPlan = await _workoutPlanRepository.GetAsync(request.Id);
+        WorkoutPlan? workoutPlan = await _workoutPlanRepository.GetPlanWithDetailsAsync(request.Id);
 
         if (workoutPlan is null)
             return default;
 
-        var workoutPlanDto = new WorkoutPlanDto
-        {
-            Title = workoutPlan.Title
-        };
-
-        return workoutPlanDto;
+        return ToDto(workoutPlan);
     }
+
+    private WorkoutPlanDto ToDto(WorkoutPlan workoutPlan)
+        => new()
+        {
+            Title = workoutPlan.Title,
+            Description= workoutPlan.Description,
+            Workouts = workoutPlan.Workouts.Select(w => new WorkoutExerciseDto
+            {
+                ExerciseId = w.ExerciseId,
+                ExerciseName = w.Exercise.Name,
+                ExerciseDescription = w.Exercise.Description,
+                Order = w.Order,
+                Sets = w.Sets.Select(ws => new WorkoutExerciseSetDto
+                {
+                    WarmUp = ws.WarmUp,
+                    UntilFailure = ws.UntilFailure,
+                    MinRepetitions = ws.MinRepetitions,
+                    MaxRepetitions = ws.MaxRepetitions,
+                    ResetTime = ws.ResetTime,
+                    Weight = ws.Weight,
+                    Order = ws.Order                    
+                })
+            })
+        };
 }

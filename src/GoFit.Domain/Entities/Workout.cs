@@ -8,5 +8,5 @@ public class Workout : BaseEntity
     public Guid ExerciseId { get; set; }
     public Exercise Exercise { get; set; }
     public int Order { get; set; }
-    public ICollection<WorkoutSet>? Sets { get; set; }
+    public ICollection<WorkoutSet> Sets { get; set; } = new List<WorkoutSet>();
 }
