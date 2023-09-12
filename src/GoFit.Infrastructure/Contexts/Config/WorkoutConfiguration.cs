@@ -16,7 +16,8 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
             .ValueGeneratedOnAdd();
 
         builder.HasMany(o => o.Sets)
-            .WithOne()
-            .HasForeignKey(o => o.WorkoutId);
+            .WithOne(o => o.Workout)
+            .HasForeignKey(o => o.WorkoutId)
+            .IsRequired();
     }
 }
