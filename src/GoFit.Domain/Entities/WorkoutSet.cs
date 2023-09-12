@@ -3,6 +3,12 @@
 namespace GoFit.Domain.Entities;
 public class WorkoutSet : BaseEntity
 {
-    public float Weight { get; set; }
-    public int Repetitions { get; set; }
+    public Guid WorkoutId { get; set; }
+    public bool WarmUp { get; set; }
+    public bool UntilFailure { get; set; }
+    public int MinRepetitions { get; set; }
+    public int MaxRepetitions { get; set; }
+    public float ResetTime { get; set; }
+    public float? Weight { get; set; }
+    public int Order { get; set; }
 }
