@@ -27,6 +27,7 @@ public class GetAllExercisesQueryHandler : IRequestHandler<GetAllExercisesQuery,
 
         return exercises.Select(x => new ExerciseDto
         {
+            Id = x.Id,
             Name = x.Name,
             Description = x.Description
         }).ToList();
