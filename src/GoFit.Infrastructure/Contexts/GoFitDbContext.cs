@@ -1,7 +1,9 @@
 ﻿using GoFit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection;
 
 namespace GoFit.Infrastructure.Contexts;
+
 public class GoFitDbContext : DbContext
 {
     public DbSet<Exercise> Exercises { get; set; }
@@ -11,51 +13,12 @@ public class GoFitDbContext : DbContext
 
     public GoFitDbContext(DbContextOptions<GoFitDbContext> options)
         : base(options)
-    {
-    }
+    { }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Exercise>(model => 
-        {
-            model.ToTable("Exercises");
+        base.OnModelCreating(modelBuilder);
 
-            model.HasKey(o => o.Id);
-
-            model.Property(o => o.Id)
-                .ValueGeneratedOnAdd();
-        });
-
-        modelBuilder.Entity<Workout>(model =>
-        {
-            model.ToTable("Workout");
-
-            model.HasKey(o => o.Id);
-
-            model.Property(o => o.Id)
-                .ValueGeneratedOnAdd();
-        });
-
-        modelBuilder.Entity<WorkoutSet>(model =>
-        {
-            model.ToTable("WorkoutSet");
-
-            model.HasKey(o => o.Id);
-
-            model.Property(o => o.Id)
-                .ValueGeneratedOnAdd();
-        });
-
-        modelBuilder.Entity<WorkoutPlan>(model =>
-        {
-            model.ToTable("WorkoutPlan");
-
-            model.HasKey(o => o.Id);
-
-            model.Property(o => o.Id)
-                .ValueGeneratedOnAdd();
-
-            model.Ignore(o => o.WorkoutsId);
-        });
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
     }
 }
