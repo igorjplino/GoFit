@@ -29,6 +29,7 @@ public class GetExerciseDtoByIdQueryHandler : IRequestHandler<GetExerciseDtoById
 
         var exerciseDto = new ExerciseDto
         {
+            Id = exercise.Id,
             Name = exercise.Name,
             Description = exercise.Description
         };

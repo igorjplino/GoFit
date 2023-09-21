@@ -1,4 +1,5 @@
 ﻿using GoFit.Domain.Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace GoFit.Infrastructure.Contexts;
 
@@ -6,6 +7,8 @@ public static class GoFitDbContextInitialise
 {
     public static void Seed(this GoFitDbContext context)
     {
+        context.Database.Migrate();
+
         // Default data for tests
         if (!context.Exercises.Any())
         {

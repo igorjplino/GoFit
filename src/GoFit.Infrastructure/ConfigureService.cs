@@ -10,20 +10,13 @@ public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        if (configuration.GetValue<bool>("UseInMemoryDatabase"))
-        {
-            services.AddDbContext<GoFitDbContext>(options =>
-                options.UseInMemoryDatabase("GoFitDb"));
+        services.AddDbContext<GoFitDbContext>(options =>
+                options.UseSqlite(configuration.GetConnectionString("GoFitDb")));
 
-            services
-                .BuildServiceProvider()
-                .GetRequiredService<GoFitDbContext>()
-                .Seed();
-        }
-        else
-        {
-            //TODO: connect to a real database
-        }
+        services
+            .BuildServiceProvider()
+            .GetRequiredService<GoFitDbContext>()
+            .Seed();
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
