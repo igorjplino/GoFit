@@ -10,6 +10,7 @@ builder.Services.AddFastEndpoints();
 
 builder.Services.SwaggerDocument(o =>
 {
+    o.EnableJWTBearerAuth = false;
     o.DocumentSettings = s =>
     {
         s.Title= "API GoFit";
