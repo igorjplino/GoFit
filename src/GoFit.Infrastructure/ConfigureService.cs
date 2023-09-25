@@ -19,6 +19,7 @@ public static class ConfigureService
             .Seed();
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
+        services.AddScoped<IWorkoutTrackingRepository, WorkoutTrackingRepository>();
         services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
 
