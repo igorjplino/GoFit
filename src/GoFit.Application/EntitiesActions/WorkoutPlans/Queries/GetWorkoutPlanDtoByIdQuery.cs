@@ -37,6 +37,7 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutPlanD
             Description= workoutPlan.Description,
             Workouts = workoutPlan.Workouts.Select(w => new WorkoutExerciseDto
             {
+                Id = w.Id,
                 ExerciseId = w.ExerciseId,
                 ExerciseName = w.Exercise.Name,
                 ExerciseDescription = w.Exercise.Description,
