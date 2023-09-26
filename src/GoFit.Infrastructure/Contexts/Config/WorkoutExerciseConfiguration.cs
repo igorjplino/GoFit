@@ -4,25 +4,26 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace GoFit.Infrastructure.Contexts.Config;
 
-public class WorkoutTrackingConfiguration : IEntityTypeConfiguration<WorkoutTracking>
+public class WorkoutExerciseConfiguration : IEntityTypeConfiguration<WorkoutExercise>
 {
-    public void Configure(EntityTypeBuilder<WorkoutTracking> builder)
+    public void Configure(EntityTypeBuilder<WorkoutExercise> builder)
     {
-        builder.ToTable("WorkoutsTracking");
+        builder.ToTable("WorkoutExercises");
 
         builder.HasKey(o => o.Id);
 
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
 
-        builder.HasOne(o => o.Workout)
+        builder.HasOne(o => o.Exercise)
             .WithMany()
-            .HasForeignKey(o => o.WorkoutId)
+            .HasForeignKey(o => o.ExerciseId)
             .IsRequired();
 
         builder.HasMany(o => o.Sets)
-            .WithOne(o => o.WorkoutTracking)
-            .HasForeignKey(o => o.WorkoutTrackingId)
+            .WithOne(o => o.WorkoutExercise)
+            .HasForeignKey(o => o.WorkoutExerciseId)
             .IsRequired();
+
     }
 }

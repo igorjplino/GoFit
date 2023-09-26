@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GoFit.Infrastructure.Migrations
 {
     [DbContext(typeof(GoFitDbContext))]
-    [Migration("20230925112722_AddWorkoutTracking")]
-    partial class AddWorkoutTracking
+    [Migration("20230926142144_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -43,7 +43,12 @@ namespace GoFit.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("ExerciseId")
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<int>("Order")
@@ -54,11 +59,9 @@ namespace GoFit.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseId");
-
                     b.HasIndex("WorkoutPlanId");
 
-                    b.ToTable("Workout", (string)null);
+                    b.ToTable("Workouts", (string)null);
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutPlan", b =>
@@ -75,7 +78,7 @@ namespace GoFit.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("WorkoutPlan", (string)null);
+                    b.ToTable("WorkoutsPlan", (string)null);
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutSet", b =>
@@ -105,14 +108,14 @@ namespace GoFit.Infrastructure.Migrations
                     b.Property<float?>("Weight")
                         .HasColumnType("REAL");
 
-                    b.Property<Guid>("WorkoutId")
+                    b.Property<Guid>("WorkoutExerciseId")
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("WorkoutId");
+                    b.HasIndex("WorkoutExerciseId");
 
-                    b.ToTable("WorkoutSet", (string)null);
+                    b.ToTable("WorkoutSets", (string)null);
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutSetTracking", b =>
@@ -137,7 +140,7 @@ namespace GoFit.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutTrackingId");
 
-                    b.ToTable("WorkoutSetTracking", (string)null);
+                    b.ToTable("WorkoutSetsTracking", (string)null);
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutTracking", b =>
@@ -163,37 +166,53 @@ namespace GoFit.Infrastructure.Migrations
 
                     b.HasIndex("WorkoutId");
 
-                    b.ToTable("WorkoutTracking", (string)null);
+                    b.ToTable("WorkoutsTracking", (string)null);
+                });
+
+            modelBuilder.Entity("GoFit.Domain.WorkoutExercise", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TEXT");
+
+                    b.Property<Guid>("ExerciseId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("Order")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<Guid>("WorkoutId")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExerciseId");
+
+                    b.HasIndex("WorkoutId");
+
+                    b.ToTable("WorkoutExercises", (string)null);
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.Workout", b =>
                 {
-                    b.HasOne("GoFit.Domain.Entities.Exercise", "Exercise")
-                        .WithMany()
-                        .HasForeignKey("ExerciseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("GoFit.Domain.Entities.WorkoutPlan", "WorkoutPlan")
                         .WithMany("Workouts")
                         .HasForeignKey("WorkoutPlanId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Exercise");
-
                     b.Navigation("WorkoutPlan");
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutSet", b =>
                 {
-                    b.HasOne("GoFit.Domain.Entities.Workout", "Workout")
+                    b.HasOne("GoFit.Domain.WorkoutExercise", "WorkoutExercise")
                         .WithMany("Sets")
-                        .HasForeignKey("WorkoutId")
+                        .HasForeignKey("WorkoutExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Workout");
+                    b.Navigation("WorkoutExercise");
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutSetTracking", b =>
@@ -218,9 +237,28 @@ namespace GoFit.Infrastructure.Migrations
                     b.Navigation("Workout");
                 });
 
+            modelBuilder.Entity("GoFit.Domain.WorkoutExercise", b =>
+                {
+                    b.HasOne("GoFit.Domain.Entities.Exercise", "Exercise")
+                        .WithMany()
+                        .HasForeignKey("ExerciseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("GoFit.Domain.Entities.Workout", "Workout")
+                        .WithMany("WorkoutExercises")
+                        .HasForeignKey("WorkoutId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Exercise");
+
+                    b.Navigation("Workout");
+                });
+
             modelBuilder.Entity("GoFit.Domain.Entities.Workout", b =>
                 {
-                    b.Navigation("Sets");
+                    b.Navigation("WorkoutExercises");
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutPlan", b =>
@@ -229,6 +267,11 @@ namespace GoFit.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("GoFit.Domain.Entities.WorkoutTracking", b =>
+                {
+                    b.Navigation("Sets");
+                });
+
+            modelBuilder.Entity("GoFit.Domain.WorkoutExercise", b =>
                 {
                     b.Navigation("Sets");
                 });

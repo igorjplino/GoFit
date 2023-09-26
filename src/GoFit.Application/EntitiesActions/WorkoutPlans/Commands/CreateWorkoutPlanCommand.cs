@@ -3,6 +3,7 @@ using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Dtos;
+using GoFit.Domain;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
@@ -10,7 +11,7 @@ public record CreateWorkoutPlanCommand : IRequest<Result<Guid>>
 {
     public string? Title { get; set; }
     public string? Description { get; set; }
-    public IEnumerable<WorkoutExerciseDto> Exercises { get; set; } = new List<WorkoutExerciseDto>();
+    public IEnumerable<WorkoutDto> Workouts { get; set; }
 }
 
 public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>
@@ -34,18 +35,25 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
         {
             Title = request.Title,
             Description = request.Description,
-            Workouts = request.Exercises.Select(w => new Workout
+            Workouts = request.Workouts.Select(w => new Workout
             {
-                ExerciseId = w.ExerciseId,
+                Name = w.Name,
+                Description = w.Description,
                 Order = w.Order,
-                Sets = w.Sets.Select(ws => new WorkoutSet
+                WorkoutExercises = w.WorkoutExercises.Select(we => new WorkoutExercise
                 {
-                    WarmUp = ws.WarmUp,
-                    UntilFailure = ws.UntilFailure,
-                    MinRepetitions = ws.MinRepetitions,
-                    MaxRepetitions = ws.MaxRepetitions,
-                    ResetTime = ws.ResetTime,
-                    Order = ws.Order
+                    ExerciseId = we.ExerciseId,
+                    Order = we.Order,
+                    Sets = we.Sets.Select(ws => new WorkoutSet
+                    {
+                        WarmUp = ws.WarmUp,
+                        UntilFailure = ws.UntilFailure,
+                        MinRepetitions = ws.MinRepetitions,
+                        MaxRepetitions = ws.MaxRepetitions,
+                        ResetTime = ws.ResetTime,
+                        Weight = ws.Weight,
+                        Order = ws.Order
+                    }).ToList()
                 }).ToList()
             }).ToList()
         };

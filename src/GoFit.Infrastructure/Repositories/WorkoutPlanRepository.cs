@@ -18,8 +18,10 @@ public class WorkoutPlanRepository : BaseRepository<WorkoutPlan>, IWorkoutPlanRe
             includes: source => 
                 source
                     .Include(plan => plan.Workouts)
-                        .ThenInclude(workout => workout.Sets)
+                        .ThenInclude(workout => workout.WorkoutExercises)
+                            .ThenInclude(workoutSets => workoutSets.Sets)
                     .Include(plan => plan.Workouts)
-                        .ThenInclude(workout => workout.Exercise));
+                        .ThenInclude(workout => workout.WorkoutExercises)
+                            .ThenInclude(workoutExercise => workoutExercise.Exercise));
     }
 }

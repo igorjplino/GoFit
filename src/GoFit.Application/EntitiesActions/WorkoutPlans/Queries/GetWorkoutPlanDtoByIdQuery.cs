@@ -30,27 +30,30 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutPlanD
         return ToDto(workoutPlan);
     }
 
-    private WorkoutPlanDto ToDto(WorkoutPlan workoutPlan)
+    private static WorkoutPlanDto ToDto(WorkoutPlan workoutPlan)
         => new()
         {
             Title = workoutPlan.Title,
             Description= workoutPlan.Description,
-            Workouts = workoutPlan.Workouts.Select(w => new WorkoutExerciseDto
+            Workouts = workoutPlan.Workouts.Select(w => new WorkoutDto
             {
-                Id = w.Id,
-                ExerciseId = w.ExerciseId,
-                ExerciseName = w.Exercise.Name,
-                ExerciseDescription = w.Exercise.Description,
+                Name = w.Name,
+                Description = w.Description,
                 Order = w.Order,
-                Sets = w.Sets.Select(ws => new WorkoutExerciseSetDto
+                WorkoutExercises = w.WorkoutExercises.Select(we => new WorkoutExerciseDto
                 {
-                    WarmUp = ws.WarmUp,
-                    UntilFailure = ws.UntilFailure,
-                    MinRepetitions = ws.MinRepetitions,
-                    MaxRepetitions = ws.MaxRepetitions,
-                    ResetTime = ws.ResetTime,
-                    Weight = ws.Weight,
-                    Order = ws.Order                    
+                    ExerciseId = we.ExerciseId,
+                    Order = we.Order,
+                    Sets = we.Sets.Select(ws => new WorkoutExerciseSetDto
+                    {
+                        WarmUp = ws.WarmUp,
+                        UntilFailure = ws.UntilFailure,
+                        MinRepetitions = ws.MinRepetitions,
+                        MaxRepetitions = ws.MaxRepetitions,
+                        ResetTime = ws.ResetTime,
+                        Weight = ws.Weight,
+                        Order = ws.Order
+                    })
                 })
             })
         };
