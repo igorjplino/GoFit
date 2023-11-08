@@ -5,5 +5,5 @@ public record WorkoutDto
     public string Name { get; set; }
     public string Description { get; set; }
     public int Order { get; set; }
-    public IEnumerable<WorkoutExerciseDto> WorkoutExercises { get; set; }
+    public IEnumerable<WorkoutExerciseDto> WorkoutExercises { get; set; } = Enumerable.Empty<WorkoutExerciseDto>();
 }

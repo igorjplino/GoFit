@@ -5,6 +5,7 @@ using System.Reflection;
 using GoFit.Application.Common.PipelineBehaviours;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Common;
+using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
 namespace GoFit.Application;
 public static class ConfigureService
@@ -15,6 +16,7 @@ public static class ConfigureService
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddValidation<CreateExerciseCommand, Guid>();
+            cfg.AddValidation<CreateWorkoutPlanCommand, Guid>();
         });
 
         return services;
