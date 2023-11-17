@@ -8,6 +8,6 @@ public class WorkoutTracking : BaseEntity
     public Workout Workout { get; set; }
     public DateTime StartWorkoutDate { get; set; }
     public DateTime EndWorkoutDate { get; set; }
-    public string Note { get; set; }
+    public string? Note { get; set; }
     public ICollection<WorkoutSetTracking> Sets { get; set; }
 }

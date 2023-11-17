@@ -11,7 +11,7 @@ public record CreateWorkoutTrackingCommand : IRequest<Result<Guid>>
     public Guid WorkoutId { get; set; }
     public DateTime StartWorkoutDate { get; set; }
     public DateTime EndWorkoutDate { get; set; }
-    public string Note { get; set; }
+    public string? Note { get; set; }
     public ICollection<WorkoutSetTrackingDto> Sets { get; set; }
 }
 
