@@ -6,6 +6,7 @@ using GoFit.Application.Common.PipelineBehaviours;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
+using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 
 namespace GoFit.Application;
 public static class ConfigureService
@@ -17,6 +18,7 @@ public static class ConfigureService
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddValidation<CreateExerciseCommand, Guid>();
             cfg.AddValidation<CreateWorkoutPlanCommand, Guid>();
+            cfg.AddValidation<CreateWorkoutTrackingCommand, Guid>();
         });
 
         return services;
