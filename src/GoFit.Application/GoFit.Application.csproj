@@ -15,8 +15,4 @@
     <ProjectReference Include="..\GoFit.Domain\GoFit.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="EntitiesActions\WorkoutsTracking\Validators\" />
-  </ItemGroup>
-
 </Project>
