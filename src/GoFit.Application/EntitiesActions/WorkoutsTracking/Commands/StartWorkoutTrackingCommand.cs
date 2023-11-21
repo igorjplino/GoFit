@@ -9,8 +9,6 @@ namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 public record StartWorkoutTrackingCommand : IRequest<Result<Guid>>
 {
     public Guid WorkoutId { get; set; }
-    public DateTime StartWorkoutDate { get; set; }
-    public DateTime EndWorkoutDate { get; set; }
     public string? Note { get; set; }
     public ICollection<WorkoutSetTrackingDto> Sets { get; set; }
 }
@@ -35,8 +33,7 @@ public class StartWorkoutCommandHandler : IRequestHandler<StartWorkoutTrackingCo
         => new()
         {
             WorkoutId = request.WorkoutId,
-            StartWorkoutDate = request.StartWorkoutDate,
-            EndWorkoutDate = request.EndWorkoutDate,
+            StartWorkoutDate = DateTime.UtcNow,
             Note = request.Note,
             Sets = request.Sets.Select(o => new WorkoutSetTracking
             {
