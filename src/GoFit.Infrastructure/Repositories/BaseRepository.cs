@@ -24,6 +24,12 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return entity.Id;
     }
 
+    public async Task UpdateAsync(T entity)
+    {
+        _context.Set<T>().Update(entity);
+        await _context.SaveChangesAsync();
+    }
+
     public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _context.Set<T>().ToListAsync();
