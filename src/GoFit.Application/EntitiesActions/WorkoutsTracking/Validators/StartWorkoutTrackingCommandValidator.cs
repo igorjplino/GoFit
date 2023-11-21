@@ -5,9 +5,9 @@ using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 
 namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Validators;
-public class CreateWorkoutTrackingCommandValidator : AbstractValidator<CreateWorkoutTrackingCommand>
+public class StartWorkoutTrackingCommandValidator : AbstractValidator<StartWorkoutTrackingCommand>
 {
-    public CreateWorkoutTrackingCommandValidator(IWorkoutRepository workoutRepository)
+    public StartWorkoutTrackingCommandValidator(IWorkoutRepository workoutRepository)
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
 

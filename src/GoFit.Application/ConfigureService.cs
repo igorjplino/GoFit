@@ -18,7 +18,7 @@ public static class ConfigureService
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
             cfg.AddValidation<CreateExerciseCommand, Guid>();
             cfg.AddValidation<CreateWorkoutPlanCommand, Guid>();
-            cfg.AddValidation<CreateWorkoutTrackingCommand, Guid>();
+            cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
         });
 
         return services;

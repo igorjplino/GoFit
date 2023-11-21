@@ -6,7 +6,7 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 
-public record CreateWorkoutTrackingCommand : IRequest<Result<Guid>>
+public record StartWorkoutTrackingCommand : IRequest<Result<Guid>>
 {
     public Guid WorkoutId { get; set; }
     public DateTime StartWorkoutDate { get; set; }
@@ -15,23 +15,23 @@ public record CreateWorkoutTrackingCommand : IRequest<Result<Guid>>
     public ICollection<WorkoutSetTrackingDto> Sets { get; set; }
 }
 
-public class CreateWorkoutCommandHandler : IRequestHandler<CreateWorkoutTrackingCommand, Result<Guid>>
+public class StartWorkoutCommandHandler : IRequestHandler<StartWorkoutTrackingCommand, Result<Guid>>
 {
     private readonly IWorkoutTrackingRepository _workoutTrackingRepository;
 
-    public CreateWorkoutCommandHandler(IWorkoutTrackingRepository workoutTrackingRepository)
+    public StartWorkoutCommandHandler(IWorkoutTrackingRepository workoutTrackingRepository)
     {
         _workoutTrackingRepository = workoutTrackingRepository;
     }
 
-    public async Task<Result<Guid>> Handle(CreateWorkoutTrackingCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(StartWorkoutTrackingCommand request, CancellationToken cancellationToken)
     {
         var workoutTracking = ToEntity(request);
 
         return await _workoutTrackingRepository.CreateAsync(workoutTracking);
     }
 
-    private WorkoutTracking ToEntity(CreateWorkoutTrackingCommand request)
+    private WorkoutTracking ToEntity(StartWorkoutTrackingCommand request)
         => new()
         {
             WorkoutId = request.WorkoutId,

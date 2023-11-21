@@ -3,8 +3,8 @@ using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 
 namespace GoFit.Api.Endpoints.WorkoutTracking;
 
-public class CreateWorkoutTrackingEndpoint :
-    BaseEndpoint<CreateWorkoutTrackingCommand, Guid>
+public class StartWorkoutTrackingEndpoint :
+    BaseEndpoint<StartWorkoutTrackingCommand, Guid>
 {
     public override void Configure()
     {
@@ -12,7 +12,7 @@ public class CreateWorkoutTrackingEndpoint :
         AllowAnonymous();
     }
 
-    public override async Task HandleAsync(CreateWorkoutTrackingCommand req, CancellationToken ct)
+    public override async Task HandleAsync(StartWorkoutTrackingCommand req, CancellationToken ct)
     {
         Result<Guid> result = await Mediator.Send(req, ct);
 
