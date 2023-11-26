@@ -10,8 +10,10 @@ public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<GoFitDbContext>(options =>
-                options.UseSqlite(configuration.GetConnectionString("GoFitDb")));
+        services.AddDbContext<GoFitDbContext>(options => {
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            options.UseSqlite(configuration.GetConnectionString("GoFitDb"));
+        });
 
         //services
         //    .BuildServiceProvider()
