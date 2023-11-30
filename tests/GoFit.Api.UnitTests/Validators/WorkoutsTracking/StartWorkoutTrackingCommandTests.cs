@@ -47,4 +47,18 @@ public class StartWorkoutTrackingCommandTests
 
         result.ShouldHaveValidationErrorFor(x => x.Note);
     }
+
+    [Fact]
+    [Trait("WorkoutTracking", "Note")]
+    public async Task WhenNoteIsNull_ShouldNotFail()
+    {
+        var command = new StartWorkoutTrackingCommand
+        {
+            Note = null
+        };
+
+        var result = await _validator.TestValidateAsync(command);
+
+        result.ShouldNotHaveValidationErrorFor(x => x.Note);
+    }
 }
