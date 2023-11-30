@@ -11,7 +11,9 @@ public class GoFitDbContext : DbContext
     public DbSet<WorkoutSet> WorkoutsSet { get; set; }
     public DbSet<WorkoutPlan> WorkoutsPlan { get; set; }
     public DbSet<WorkoutExercise> WorkoutsExercises { get; set; }
-
+    public DbSet<WorkoutTracking> WorkoutsTracking { get; set; }
+    public DbSet<WorkoutSetTracking> WorkoutSetsTracking { get; set; }
+    
     public GoFitDbContext(DbContextOptions<GoFitDbContext> options)
         : base(options)
     { }
