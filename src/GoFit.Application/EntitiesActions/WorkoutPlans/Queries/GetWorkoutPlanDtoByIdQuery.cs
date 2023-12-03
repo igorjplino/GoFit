@@ -6,10 +6,9 @@ using GoFit.Application.Common;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Queries;
 
-public record GetWorkoutPlanDtoByIdQuery : IRequest<Result<WorkoutPlanDto?>>
-{
-    public Guid Id { get; set; }
-}
+public record GetWorkoutPlanDtoByIdQuery(Guid Id)
+    : IRequest<Result<WorkoutPlanDto?>>
+{ }
 
 public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutPlanDtoByIdQuery, Result<WorkoutPlanDto?>>
 {
