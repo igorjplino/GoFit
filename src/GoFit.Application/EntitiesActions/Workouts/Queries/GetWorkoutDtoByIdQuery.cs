@@ -6,10 +6,9 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Workouts.Queries;
 
-public record GetWorkoutDtoByIdQuery : IRequest<Result<WorkoutDto?>>
-{
-    public Guid Id { get; set; }
-}
+public record GetWorkoutDtoByIdQuery(Guid Id)
+    : IRequest<Result<WorkoutDto?>>
+{ }
 
 public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoByIdQuery, Result<WorkoutDto?>>
 {
