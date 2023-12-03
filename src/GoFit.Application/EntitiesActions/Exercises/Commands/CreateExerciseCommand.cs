@@ -5,11 +5,9 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Commands;
 
-public record CreateExerciseCommand : IRequest<Result<Guid>>
-{
-    public string? Name { get; set; }
-    public string? Description { get; set; }
-}
+public record CreateExerciseCommand(string Name, string? Description = null) 
+    : IRequest<Result<Guid>>
+{ }
 
 public class CreateExerciseCommandhandler : IRequestHandler<CreateExerciseCommand, Result<Guid>>
 {
