@@ -28,7 +28,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleIsNull_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            Title: null, 
+            Title: null,
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -42,6 +43,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -55,6 +57,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: "ab",
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -68,6 +71,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -81,6 +85,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: "Barbell",
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -94,10 +99,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
-            Workouts: Enumerable.Empty<WorkoutDto>())
-        {
-            Description = null
-        };
+            Description: null,
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -110,10 +113,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
-            Workouts: Enumerable.Empty<WorkoutDto>())
-        {
-            Description = string.Empty
-        };
+            Description: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -126,10 +127,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
-            Workouts: Enumerable.Empty<WorkoutDto>())
-        {
-            Description = "ab"
-        };
+            Description: "ab",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -142,10 +141,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
-            Workouts: Enumerable.Empty<WorkoutDto>())
-        {
-            Description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo."
-        };
+            Description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo.",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -158,10 +155,8 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
-            Workouts: Enumerable.Empty<WorkoutDto>())
-        {
-            Description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
-        };
+            Description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
         
@@ -174,6 +169,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
+            Description: null,
             Workouts: null);
 
         var result = await _validator.TestValidateAsync(command);
@@ -187,6 +183,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
+            Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
@@ -200,6 +197,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     {
         var command = new CreateWorkoutPlanCommand(
             Title: string.Empty,
+            Description: null,
             Workouts: new List<WorkoutDto> { null });
 
         var result = await _validator.TestValidateAsync(command);

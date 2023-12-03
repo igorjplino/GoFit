@@ -9,11 +9,10 @@ namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
 public record CreateWorkoutPlanCommand(
     string Title,
+    string? Description,
     IEnumerable<WorkoutDto> Workouts)
     : IRequest<Result<Guid>>
-{
-    public string? Description { get; set; }
-}
+{ }
 
 public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>
 {

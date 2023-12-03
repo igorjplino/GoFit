@@ -8,11 +8,10 @@ namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 
 public record StartWorkoutTrackingCommand(
     Guid WorkoutId,
+    string? Note,
     IEnumerable<WorkoutSetTrackingDto> Sets)
     : IRequest<Result<Guid>>
-{
-    public string? Note { get; set; }
-}
+{ }
 
 public class StartWorkoutCommandHandler : IRequestHandler<StartWorkoutTrackingCommand, Result<Guid>>
 {
