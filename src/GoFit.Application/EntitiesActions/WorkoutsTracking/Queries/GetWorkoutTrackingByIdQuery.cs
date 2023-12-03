@@ -1,5 +1,4 @@
 ﻿using GoFit.Application.Common;
-using GoFit.Application.EntitiesActions.Workouts.Dtos;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Dtos;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
@@ -7,10 +6,9 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Queries;
 
-public record GetWorkoutTrackingByIdQuery : IRequest<Result<WorkoutTrackingDto?>>
-{
-    public Guid Id { get; set; }
-}
+public record GetWorkoutTrackingByIdQuery(Guid Id) 
+    : IRequest<Result<WorkoutTrackingDto?>>
+{ }
 
 public class GetWorkoutTrackingByIdQueryHandler : IRequestHandler<GetWorkoutTrackingByIdQuery, Result<WorkoutTrackingDto?>>
 {
