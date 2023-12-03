@@ -6,11 +6,12 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 
-public record StartWorkoutTrackingCommand : IRequest<Result<Guid>>
+public record StartWorkoutTrackingCommand(
+    Guid WorkoutId,
+    IEnumerable<WorkoutSetTrackingDto> Sets)
+    : IRequest<Result<Guid>>
 {
-    public Guid WorkoutId { get; set; }
     public string? Note { get; set; }
-    public ICollection<WorkoutSetTrackingDto> Sets { get; set; }
 }
 
 public class StartWorkoutCommandHandler : IRequestHandler<StartWorkoutTrackingCommand, Result<Guid>>
