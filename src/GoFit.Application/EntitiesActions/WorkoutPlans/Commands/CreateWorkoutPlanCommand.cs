@@ -7,11 +7,12 @@ using GoFit.Domain;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
-public record CreateWorkoutPlanCommand : IRequest<Result<Guid>>
+public record CreateWorkoutPlanCommand(
+    string Title,
+    IEnumerable<WorkoutDto> Workouts)
+    : IRequest<Result<Guid>>
 {
-    public string? Title { get; set; }
     public string? Description { get; set; }
-    public IEnumerable<WorkoutDto> Workouts { get; set; }
 }
 
 public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>

@@ -27,10 +27,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Title")]
     public async Task WhenTitleIsNull_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Title = null
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: null, 
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -41,10 +40,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Title")]
     public async Task WhenTitleIsEmpty_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Title = string.Empty
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -55,10 +53,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Title")]
     public async Task WhenTitleHasLessThan3Chars_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Title = "ab"
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: "ab",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -69,10 +66,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Title")]
     public async Task WhenTitleHasMoreThan100Chars_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Title = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa."
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -83,10 +79,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Title")]
     public async Task WhenTitleIsCorrect_ShouldNotFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Title = "Barbell"
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: "Barbell",
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -97,7 +92,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Description")]
     public async Task WhenDescriptionIsNull_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>())
         {
             Description = null
         };
@@ -111,7 +108,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Description")]
     public async Task WhenDescriptionIsEmpty_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>())
         {
             Description = string.Empty
         };
@@ -125,7 +124,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Description")]
     public async Task WhenDescriptionHasLessThan3Chars_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>())
         {
             Description = "ab"
         };
@@ -139,7 +140,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Description")]
     public async Task WhenDescriptionHasMoreThan300Chars_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>())
         {
             Description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo."
         };
@@ -153,7 +156,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Description")]
     public async Task WhenDescriptionIsCorrect_ShouldNotFail()
     {
-        var command = new CreateWorkoutPlanCommand
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>())
         {
             Description = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem."
         };
@@ -167,10 +172,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Workouts")]
     public async Task WhenWorkoutsIsNull_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Workouts = null
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: null);
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -181,10 +185,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Workouts")]
     public async Task WhenWorkoutsIsEmpty_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Workouts = Enumerable.Empty<WorkoutDto>()
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: Enumerable.Empty<WorkoutDto>());
 
         var result = await _validator.TestValidateAsync(command);
 
@@ -195,10 +198,9 @@ public class CreateWorkoutPlanCommandValidatorTests
     [Trait("WorkoutPlan", "Workouts")]
     public async Task WhenWorkoutsHasNullItem_ShouldFail()
     {
-        var command = new CreateWorkoutPlanCommand
-        {
-            Workouts = new List<WorkoutDto> { null }
-        };
+        var command = new CreateWorkoutPlanCommand(
+            Title: string.Empty,
+            Workouts: new List<WorkoutDto> { null });
 
         var result = await _validator.TestValidateAsync(command);
 
