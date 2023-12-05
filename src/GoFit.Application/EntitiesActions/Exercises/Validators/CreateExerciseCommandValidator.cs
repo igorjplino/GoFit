@@ -3,11 +3,11 @@ using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Interfaces;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Validators;
-public class CreateExerciseCommandValidation : AbstractValidator<CreateExerciseCommand>
+public class CreateExerciseCommandValidator : AbstractValidator<CreateExerciseCommand>
 {
     private readonly IExerciseRepository _exerciseRepository;
 
-    public CreateExerciseCommandValidation(IExerciseRepository exerciseRepository)
+    public CreateExerciseCommandValidator(IExerciseRepository exerciseRepository)
     {
         _exerciseRepository = exerciseRepository;
 

@@ -3,24 +3,23 @@ using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.EntitiesActions.Exercises.Validators;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
-using System.Xml.Linq;
 
 namespace GoFit.Api.UnitTests.Validators.Exercises;
 
-public class CreateExerciseCommandValidationTests
+public class CreateExerciseCommandValidatorTests
 {
-    private readonly CreateExerciseCommandValidation _validator;
+    private readonly CreateExerciseCommandValidator _validator;
 
     private readonly MockRepository _mockRepository;
     private readonly Mock<IExerciseRepository> _exerciseRepositoryMock;
 
-    public CreateExerciseCommandValidationTests()
+    public CreateExerciseCommandValidatorTests()
     {
         _mockRepository = new MockRepository(MockBehavior.Loose);
 
         _exerciseRepositoryMock = _mockRepository.Create<IExerciseRepository>();
 
-        _validator = new CreateExerciseCommandValidation(_exerciseRepositoryMock.Object);
+        _validator = new CreateExerciseCommandValidator(_exerciseRepositoryMock.Object);
     }
 
     [Fact]
