@@ -16,7 +16,8 @@ public static class ConfigureService
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         services.AddMediatR(cfg => {
             cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly());
-            cfg.AddValidation<UpdateExerciseCommand, Guid>();
+            cfg.AddValidation<CreateExerciseCommand, Guid>();
+            cfg.AddValidation<UpdateExerciseCommand, UpdateExerciseCommand>();
             cfg.AddValidation<CreateWorkoutPlanCommand, Guid>();
             cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>();
