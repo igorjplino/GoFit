@@ -14,5 +14,14 @@ public class WorkoutSetTrackingConfiguration : IEntityTypeConfiguration<WorkoutS
 
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.Repetitions)
+            .IsRequired();
+
+        builder.Property(x => x.Weight)
+            .IsRequired();
+
+        builder.Property(x => x.Order)
+            .IsRequired();
     }
 }

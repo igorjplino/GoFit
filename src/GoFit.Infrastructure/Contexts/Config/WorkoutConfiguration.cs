@@ -15,6 +15,13 @@ public class WorkoutConfiguration : IEntityTypeConfiguration<Workout>
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
 
+        builder.Property(o => o.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(o => o.Description)
+            .HasMaxLength(300);
+
         builder.HasMany(o => o.WorkoutExercises)
             .WithOne(o => o.Workout)
             .HasForeignKey(o => o.WorkoutId)

@@ -14,5 +14,17 @@ public class WorkoutSetConfiguration : IEntityTypeConfiguration<WorkoutSet>
 
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
+
+        builder.Property(x => x.WarmUp)
+            .IsRequired();
+
+        builder.Property(x => x.UntilFailure)
+            .IsRequired();
+
+        builder.Property(x => x.ResetTime)
+            .IsRequired();
+
+        builder.Property(x => x.Order)
+            .IsRequired();
     }
 }

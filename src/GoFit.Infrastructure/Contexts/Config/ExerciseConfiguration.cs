@@ -14,5 +14,12 @@ public class ExerciseConfiguration : IEntityTypeConfiguration<Exercise>
 
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
+
+        builder.Property(o => o.Name)
+            .IsRequired()
+            .HasMaxLength(100);
+
+        builder.Property(o => o.Description)
+            .HasMaxLength(300);
     }
 }
