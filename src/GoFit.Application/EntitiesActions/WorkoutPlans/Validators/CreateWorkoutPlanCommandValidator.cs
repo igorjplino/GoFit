@@ -15,10 +15,12 @@ public class CreateWorkoutPlanCommandValidator : AbstractValidator<CreateWorkout
             .MinimumLength(3)
             .MaximumLength(100);
 
-        RuleFor(x => x.Description)
-            .NotEmpty()
-            .MinimumLength(3)
-            .MaximumLength(300);
+        When(x => x.Description is not null, () =>
+        {
+            RuleFor(x => x.Description)
+                .MinimumLength(3)
+                .MaximumLength(300);
+        });
 
         RuleFor(x => x.Workouts)
             .NotEmpty();
