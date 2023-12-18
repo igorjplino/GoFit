@@ -47,7 +47,7 @@ public class WorkoutTrackingRepository : BaseRepository<WorkoutTracking>, IWorko
         catch (Exception)
         {
             //TODO: handle and log error
-
+            await transaction.RollbackAsync();
             throw;
         }
     }
