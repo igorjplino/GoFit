@@ -14,17 +14,17 @@ public class CreateExerciseCommandValidator : AbstractValidator<CreateExerciseCo
         RuleLevelCascadeMode = CascadeMode.Stop;
 
         RuleFor(x => x.Name)
-            .NotNull()
             .NotEmpty()
             .MinimumLength(3)
             .MaximumLength(100)
             .MustAsync(IsUniqueName).WithMessage("The exercise name '{PropertyValue}' already exists");
 
-        RuleFor(x => x.Description)
-            .NotNull()
-            .NotEmpty()
-            .MinimumLength(3)
-            .MaximumLength(300);
+        When(x => x.Description is not null, () =>
+        {
+            RuleFor(x => x.Description)
+                .MinimumLength(3)
+                .MaximumLength(300);
+        });
     }
 
     private async Task<bool> IsUniqueName(string name, CancellationToken ct)
