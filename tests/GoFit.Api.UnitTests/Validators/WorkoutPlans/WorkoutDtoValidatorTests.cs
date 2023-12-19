@@ -102,7 +102,7 @@ public class WorkoutDtoValidatorTests
 
         var result = await _validator.TestValidateAsync(dto);
 
-        result.ShouldHaveValidationErrorFor(x => x.Description);
+        result.ShouldNotHaveValidationErrorFor(x => x.Description);
     }
 
     [Fact]

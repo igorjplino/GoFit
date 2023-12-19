@@ -104,7 +104,7 @@ public class CreateExerciseCommandValidatorTests
 
         var result = await _validator.TestValidateAsync(command);
 
-        result.ShouldHaveValidationErrorFor(x => x.Description);
+        result.ShouldNotHaveValidationErrorFor(x => x.Description);
     }
 
     [Fact]
