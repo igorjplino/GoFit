@@ -7,6 +7,10 @@ namespace GoFit.Api.Endpoints.Exercise;
 public class GetAllExercisesEndpoint :
     BaseEndpoint<GetAllExercisesQuery, List<ExerciseDto>>
 {
+    public GetAllExercisesEndpoint(ILogger<GetAllExercisesEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Get("Exercise");

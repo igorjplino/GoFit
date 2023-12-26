@@ -6,6 +6,10 @@ namespace GoFit.Api.Endpoints.Exercise;
 public class UpdateExerciseEndpoint :
     BaseEndpoint<UpdateExerciseCommand, UpdateExerciseCommand>
 {
+    public UpdateExerciseEndpoint(ILogger<UpdateExerciseEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Put("Exercise/{ExerciseId}");

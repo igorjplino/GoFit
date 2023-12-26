@@ -7,6 +7,10 @@ namespace GoFit.Api.Endpoints.WorkoutTracking;
 public class GetWorkoutTrackingIdEndpoint :
     BaseEndpoint<GetWorkoutTrackingByIdQuery, WorkoutTrackingDto?>
 {
+    public GetWorkoutTrackingIdEndpoint(ILogger<GetWorkoutTrackingIdEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Get("WorkoutTracking/{id}");

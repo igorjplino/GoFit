@@ -6,6 +6,10 @@ namespace GoFit.Api.Endpoints.WorkoutTracking;
 public class UpdateWorkoutTrackingEndpoint :
     BaseEndpoint<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>
 {
+    public UpdateWorkoutTrackingEndpoint(ILogger<UpdateWorkoutTrackingEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Put("WorkoutTracking/{WorkoutsTrackingId}");

@@ -6,6 +6,10 @@ namespace GoFit.Api.Endpoints.Exercise;
 public class CreateExerciseEndpoint :
     BaseEndpoint<CreateExerciseCommand, Guid>
 {
+    public CreateExerciseEndpoint(ILogger<CreateExerciseEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Post("Exercise");

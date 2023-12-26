@@ -6,6 +6,10 @@ namespace GoFit.Api.Endpoints.WorkoutTracking;
 public class StartWorkoutTrackingEndpoint :
     BaseEndpoint<StartWorkoutTrackingCommand, Guid>
 {
+    public StartWorkoutTrackingEndpoint(ILogger<StartWorkoutTrackingEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Post("WorkoutTracking");

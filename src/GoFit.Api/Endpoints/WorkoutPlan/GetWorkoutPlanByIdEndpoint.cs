@@ -7,6 +7,10 @@ namespace GoFit.Api.Endpoints.WorkoutPlan;
 public class GetWorkoutPlanByIdEndpoint :
     BaseEndpoint<GetWorkoutPlanDtoByIdQuery, WorkoutPlanDto?>
 {
+    public GetWorkoutPlanByIdEndpoint(ILogger<GetWorkoutPlanByIdEndpoint> logger)
+        : base(logger)
+    { }
+
     public override void Configure()
     {
         Get("WorkoutPlan/{id}");

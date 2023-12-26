@@ -1,6 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
 using FluentValidation.Results;
+using GoFit.Api.Extentions;
 using GoFit.Application.Common;
 using MediatR;
 
@@ -10,6 +11,12 @@ public abstract class BaseEndpoint<TRequest, TResponse>
     : Endpoint<TRequest, TResponse?>
      where TRequest : notnull
 {
+    protected BaseEndpoint(ILogger<BaseEndpoint<TRequest, TResponse>> logger)
+    {
+        Logger = logger;
+    }
+
+    protected new ILogger<BaseEndpoint<TRequest, TResponse>> Logger { get; }
     public required IMediator Mediator { get; init; }
 
     protected async Task HandleResultResponse(Result<TResponse> result, CancellationToken ct)
@@ -38,9 +45,12 @@ public abstract class BaseEndpoint<TRequest, TResponse>
                 ValidationFailures.AddRange(validationFailure.Errors);
                 break;
             default:
+                Logger.NotMappedFailResponse(ex);
+
                 ValidationFailures.Add(new ValidationFailure
                 {
-                    ErrorMessage = "An unexpected error occurred",
+                    PropertyName = "Unexpected",
+                    ErrorMessage = "An unexpected error occurred"
                 });
                 break;
         }
