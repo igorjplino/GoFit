@@ -1,5 +1,6 @@
 using FastEndpoints;
 using FastEndpoints.Swagger;
+using GoFit.Api.GlobalProcessors.Pre;
 using GoFit.Application;
 using GoFit.Infrastructure;
 
@@ -27,7 +28,15 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
-app.UseFastEndpoints();
+app.UseFastEndpoints(x =>
+{
+    x.Endpoints.Configurator = ep =>
+    {
+        ep.PreProcessor<CollectMetricPreProcessor>(Order.Before);
+        
+        ep.PostProcessor<CollectMetricPostProcessor>(Order.After);
+    };
+});
 
 if (app.Environment.IsDevelopment())
 {
