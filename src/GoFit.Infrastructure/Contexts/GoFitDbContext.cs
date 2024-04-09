@@ -6,6 +6,7 @@ namespace GoFit.Infrastructure.Contexts;
 
 public class GoFitDbContext : DbContext
 {
+    public DbSet<Athlete> Athletes { get; set; }
     public DbSet<Exercise> Exercises { get; set; }
     public DbSet<Workout> Workouts { get; set; }
     public DbSet<WorkoutSet> WorkoutsSet { get; set; }

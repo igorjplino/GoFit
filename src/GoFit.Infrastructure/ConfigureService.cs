@@ -15,10 +15,11 @@ public static class ConfigureService
             options.UseSqlite(configuration.GetConnectionString("GoFitDb"));
         });
 
-        //services
-        //    .BuildServiceProvider()
-        //    .GetRequiredService<GoFitDbContext>()
-        //    .Seed();
+        services
+            .BuildServiceProvider()
+            .GetRequiredService<GoFitDbContext>()
+            .ApplyMigration()
+            .Seed();
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IWorkoutTrackingRepository, WorkoutTrackingRepository>();

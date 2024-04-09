@@ -12,12 +12,25 @@ namespace GoFit.Infrastructure.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
+                name: "Athletes",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 200, nullable: false),
+                    Type = table.Column<int>(type: "INTEGER", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Athletes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Exercises",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true)
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 300, nullable: true)
                 },
                 constraints: table =>
                 {
@@ -29,12 +42,19 @@ namespace GoFit.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Title = table.Column<string>(type: "TEXT", nullable: true),
-                    Description = table.Column<string>(type: "TEXT", nullable: true)
+                    AthleteId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    Title = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 300, nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_WorkoutsPlan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_WorkoutsPlan_Athletes_AthleteId",
+                        column: x => x.AthleteId,
+                        principalTable: "Athletes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -42,8 +62,8 @@ namespace GoFit.Infrastructure.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
-                    Name = table.Column<string>(type: "TEXT", nullable: false),
-                    Description = table.Column<string>(type: "TEXT", nullable: false),
+                    Name = table.Column<string>(type: "TEXT", maxLength: 100, nullable: false),
+                    Description = table.Column<string>(type: "TEXT", maxLength: 300, nullable: false),
                     Order = table.Column<int>(type: "INTEGER", nullable: false),
                     WorkoutPlanId = table.Column<Guid>(type: "TEXT", nullable: false)
                 },
@@ -91,8 +111,8 @@ namespace GoFit.Infrastructure.Migrations
                     Id = table.Column<Guid>(type: "TEXT", nullable: false),
                     WorkoutId = table.Column<Guid>(type: "TEXT", nullable: false),
                     StartWorkoutDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    EndWorkoutDate = table.Column<DateTime>(type: "TEXT", nullable: false),
-                    Note = table.Column<string>(type: "TEXT", nullable: false)
+                    EndWorkoutDate = table.Column<DateTime>(type: "TEXT", nullable: true),
+                    Note = table.Column<string>(type: "TEXT", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -177,6 +197,11 @@ namespace GoFit.Infrastructure.Migrations
                 column: "WorkoutTrackingId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_WorkoutsPlan_AthleteId",
+                table: "WorkoutsPlan",
+                column: "AthleteId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_WorkoutsTracking_WorkoutId",
                 table: "WorkoutsTracking",
                 column: "WorkoutId");
@@ -205,6 +230,9 @@ namespace GoFit.Infrastructure.Migrations
 
             migrationBuilder.DropTable(
                 name: "WorkoutsPlan");
+
+            migrationBuilder.DropTable(
+                name: "Athletes");
         }
     }
 }

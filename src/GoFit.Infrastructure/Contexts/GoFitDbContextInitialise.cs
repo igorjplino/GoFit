@@ -5,10 +5,15 @@ namespace GoFit.Infrastructure.Contexts;
 
 public static class GoFitDbContextInitialise
 {
-    public static void Seed(this GoFitDbContext context)
+    public static GoFitDbContext ApplyMigration(this GoFitDbContext context)
     {
         context.Database.Migrate();
 
+        return context;
+    }
+
+    public static GoFitDbContext Seed(this GoFitDbContext context)
+    {
         // Default data for tests
         if (!context.Exercises.Any())
         {
@@ -23,5 +28,7 @@ public static class GoFitDbContextInitialise
 
             context.SaveChanges();
         }
+
+        return context;
     }
 }

@@ -3,6 +3,7 @@ using GoFit.Domain.Common;
 using GoFit.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
+using System.Linq.Expressions;
 
 namespace GoFit.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
@@ -40,12 +41,24 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return await _context.FindAsync<T>(id);
     }
 
-    protected async Task<T?> GetAsync(Guid id, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes)
+    protected async Task<T?> GetAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes)
     {
-        IQueryable<T> query = _context.Set<T>();
+        IQueryable<T> query = Context.Set<T>();
 
         query = includes(query);
 
-        return await query.FirstOrDefaultAsync(o => o.Id == id);
+        return await query.FirstOrDefaultAsync(expression);
+    }
+
+    protected async Task<List<T>> ListAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null)
+    {
+        IQueryable<T> query = Context.Set<T>();
+
+        if (includes is not null)
+        {
+            query = includes(query);
+        }
+
+        return await query.Where(expression).ToListAsync();
     }
 }

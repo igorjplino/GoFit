@@ -14,7 +14,7 @@ public class WorkoutTrackingRepository : BaseRepository<WorkoutTracking>, IWorko
     public async Task<WorkoutTracking?> GetWithSetsAsync(Guid id)
     {
         return await GetAsync(
-            id: id,
+            expression: x => x.Id == id,
             includes: source =>
                 source
                     .Include(o => o.Sets)

@@ -8,6 +8,7 @@ using GoFit.Domain;
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
 public record CreateWorkoutPlanCommand(
+    Guid AthleteId,
     string Title,
     string? Description,
     IEnumerable<WorkoutDto> Workouts)
@@ -33,6 +34,7 @@ public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlan
     private static WorkoutPlan ToModel(CreateWorkoutPlanCommand request)
         => new()
         {
+            AthleteId = request.AthleteId,
             Title = request.Title,
             Description = request.Description,
             Workouts = request.Workouts.Select(w => new Workout

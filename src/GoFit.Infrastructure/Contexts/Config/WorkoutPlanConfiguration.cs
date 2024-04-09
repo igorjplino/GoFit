@@ -15,6 +15,9 @@ public class WorkoutPlanConfiguration : IEntityTypeConfiguration<WorkoutPlan>
         builder.Property(o => o.Id)
             .ValueGeneratedOnAdd();
 
+        builder.Property(x => x.AthleteId)
+            .IsRequired();
+
         builder.Property(o => o.Title)
             .IsRequired()
             .HasMaxLength(100);

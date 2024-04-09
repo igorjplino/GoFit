@@ -9,6 +9,8 @@ public class WorkoutPlan : BaseEntity
         Workouts = new List<Workout>();
     }
 
+    public Guid AthleteId { get; set; }
+    public Athlete Athlete { get; set; }
     public string Title { get; set; }
     public string? Description { get; set; }
     public ICollection<Workout> Workouts { get; set; }
