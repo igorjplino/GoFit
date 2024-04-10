@@ -1,14 +1,21 @@
 ﻿using FluentValidation;
+using GoFit.Application.Common.Validators;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.Interfaces;
+using GoFit.Domain.Entities;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Validators;
 
 public class CreateWorkoutPlanCommandValidator : AbstractValidator<CreateWorkoutPlanCommand>
 {
-    public CreateWorkoutPlanCommandValidator(IExerciseRepository exerciseRepository)
+    public CreateWorkoutPlanCommandValidator(
+        IExerciseRepository exerciseRepository,
+        IAthleteRepository athleteRepository)
     {
         RuleLevelCascadeMode = CascadeMode.Stop;
+
+        RuleFor(x => x.AthleteId)
+            .SetValidator(new EntityMustExistsValidator<Athlete>(athleteRepository));
 
         RuleFor(x => x.Title)
             .NotEmpty()

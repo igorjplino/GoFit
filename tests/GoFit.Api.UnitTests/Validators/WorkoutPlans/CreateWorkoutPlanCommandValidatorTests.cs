@@ -13,14 +13,16 @@ public class CreateWorkoutPlanCommandValidatorTests
 
     private readonly MockRepository _mockRepository;
     private readonly Mock<IExerciseRepository> _exerciseRepositoryMock;
+    private readonly Mock<IAthleteRepository> _athleteRepositoryMock;
 
     public CreateWorkoutPlanCommandValidatorTests()
     {
         _mockRepository = new MockRepository(MockBehavior.Loose);
 
         _exerciseRepositoryMock = _mockRepository.Create<IExerciseRepository>();
+        _athleteRepositoryMock = _mockRepository.Create<IAthleteRepository>();
 
-        _validator = new CreateWorkoutPlanCommandValidator(_exerciseRepositoryMock.Object);
+        _validator = new CreateWorkoutPlanCommandValidator(_exerciseRepositoryMock.Object, _athleteRepositoryMock.Object);
     }
 
     [Fact]

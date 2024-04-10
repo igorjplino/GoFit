@@ -36,16 +36,19 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return await _context.Set<T>().ToListAsync();
     }
 
-    public virtual async Task<T?> GetAsync(Guid id)
+    public async Task<T?> GetAsync(Guid id)
     {
         return await _context.FindAsync<T>(id);
     }
 
-    protected async Task<T?> GetAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>> includes)
+    protected async Task<T?> GetAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null)
     {
         IQueryable<T> query = Context.Set<T>();
 
-        query = includes(query);
+        if (includes is not null)
+        {
+            query = includes(query);
+        }
 
         return await query.FirstOrDefaultAsync(expression);
     }
