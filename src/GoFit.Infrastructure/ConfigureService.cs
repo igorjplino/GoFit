@@ -4,15 +4,23 @@ using GoFit.Application.Interfaces;
 using GoFit.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using GoFit.Infrastructure.Contexts;
+using System;
 
 namespace GoFit.Infrastructure;
 public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddDbContext<GoFitDbContext>(options => {
+        services.AddDbContext<GoFitDbContext>(options => 
+        {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             options.UseSqlite(configuration.GetConnectionString("GoFitDb"));
+        });
+
+        services.AddDbContext<AppIdentityDbContext>(options =>
+        {
+            options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
+            options.UseSqlite(configuration.GetConnectionString("IdentityDb"));
         });
 
         services

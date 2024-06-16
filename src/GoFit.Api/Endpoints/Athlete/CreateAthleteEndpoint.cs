@@ -6,7 +6,7 @@ namespace GoFit.Api.Endpoints.Athlete;
 public class CreateAthleteEndpoint :
     BaseEndpoint<CreateAthleteCommand, Guid>
 {
-    public CreateAthleteEndpoint(ILogger<BaseEndpoint<CreateAthleteCommand, Guid>> logger)
+    public CreateAthleteEndpoint(ILogger<CreateAthleteEndpoint> logger)
         : base(logger)
     { }
 

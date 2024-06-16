@@ -3,7 +3,6 @@ using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Dtos;
-using GoFit.Domain;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
