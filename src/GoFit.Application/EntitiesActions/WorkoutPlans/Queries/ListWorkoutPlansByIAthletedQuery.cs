@@ -6,7 +6,7 @@ using GoFit.Application.Common;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Queries;
 
-public record ListWorkoutPlansByIAthletedQuery(Guid AthleteId)
+public record ListWorkoutPlansByIAthletedQuery(Guid Id)
     : IRequest<Result<List<WorkoutPlanDto>>>
 { }
 
@@ -21,7 +21,7 @@ public class ListWorkoutPlansByIAthletedQueryHandler : IRequestHandler<ListWorko
 
     public async Task<Result<List<WorkoutPlanDto>>> Handle(ListWorkoutPlansByIAthletedQuery request, CancellationToken cancellationToken)
     {
-        List<WorkoutPlan> workoutPlans = await _workoutPlanRepository.ListPlansByAthleteIdAsync(request.AthleteId);
+        List<WorkoutPlan> workoutPlans = await _workoutPlanRepository.ListPlansByAthleteIdAsync(request.Id);
 
         if (workoutPlans is null)
             return Enumerable.Empty<WorkoutPlanDto>().ToList();
@@ -32,6 +32,7 @@ public class ListWorkoutPlansByIAthletedQueryHandler : IRequestHandler<ListWorko
     private static WorkoutPlanDto ToDto(WorkoutPlan workoutPlan)
         => new()
         {
+            Id = workoutPlan.Id,
             Title = workoutPlan.Title,
             Description= workoutPlan.Description,
             Workouts = workoutPlan.Workouts.Select(w => new WorkoutDto
