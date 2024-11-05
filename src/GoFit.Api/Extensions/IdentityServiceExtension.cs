@@ -1,8 +1,8 @@
 ﻿using FastEndpoints.Security;
 
-namespace GoFit.Api.Extentions;
+namespace GoFit.Api.Extensions;
 
-public static class IdentityServiceExtention
+public static class IdentityServiceExtension
 {
     public static IServiceCollection AddIdentityServices(
         this IServiceCollection services,
