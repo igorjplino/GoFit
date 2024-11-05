@@ -5,6 +5,9 @@ using GoFit.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using GoFit.Infrastructure.Contexts;
 using System;
+using GoFit.Domain.Entities.Identity;
+using GoFit.Infrastructure.Contexts.IdentityDb;
+using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Infrastructure;
 public static class ConfigureService
@@ -22,6 +25,13 @@ public static class ConfigureService
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             options.UseSqlite(configuration.GetConnectionString("IdentityDb"));
         });
+        
+        services.AddDefaultIdentity<AppUser>(opt =>
+        {
+            // add identity options here, if necessary
+        })
+        .AddEntityFrameworkStores<AppIdentityDbContext>()
+        .AddSignInManager();
 
         services
             .BuildServiceProvider()
