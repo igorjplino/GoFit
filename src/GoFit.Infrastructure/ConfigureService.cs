@@ -26,13 +26,6 @@ public static class ConfigureService
             options.UseSqlite(configuration.GetConnectionString("IdentityDb"));
         });
         
-        services.AddDefaultIdentity<AppUser>(opt =>
-        {
-            // add identity options here, if necessary
-        })
-        .AddEntityFrameworkStores<AppIdentityDbContext>()
-        .AddSignInManager();
-
         services
             .BuildServiceProvider()
             .GetRequiredService<GoFitDbContext>()

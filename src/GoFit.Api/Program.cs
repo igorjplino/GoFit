@@ -1,6 +1,6 @@
 using FastEndpoints;
-using FastEndpoints.Security;
 using FastEndpoints.Swagger;
+using GoFit.Api.Extensions;
 using GoFit.Api.GlobalProcessors.Pre;
 using GoFit.Application;
 using GoFit.Infrastructure;
@@ -9,8 +9,6 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services
-    .AddAuthenticationJwtBearer(x => x.SigningKey = "")
-    .AddAuthorization()
     .AddFastEndpoints();
 
 builder.Services.SwaggerDocument(o =>
@@ -26,6 +24,7 @@ builder.Services.SwaggerDocument(o =>
 // Services containers
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
+builder.Services.AddIdentityServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -36,10 +35,10 @@ app.UseAuthentication()
     .UseAuthorization()
     .UseFastEndpoints(x =>
     {
+        x.Endpoints.RoutePrefix = "api";
         x.Endpoints.Configurator = ep =>
         {
             ep.PreProcessor<CollectMetricPreProcessor>(Order.Before);
-        
             ep.PostProcessor<CollectMetricPostProcessor>(Order.After);
         };
     });
