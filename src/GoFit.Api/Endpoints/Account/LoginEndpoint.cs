@@ -1,7 +1,7 @@
-﻿using FastEndpoints;
-using GoFit.Domain.Entities;
+﻿using GoFit.Api.Endpoints.Account.Validators;
+using GoFit.Api.Extensions;
+using GoFit.Application.Interfaces.Services;
 using GoFit.Domain.Entities.Identity;
-using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Api.Endpoints.Account;
@@ -10,27 +10,29 @@ public class LoginEndpoint :
     BaseEndpoint<LoginRequest, LoggedUserResponse>
 {
     private readonly UserManager<AppUser> _userManager;
-    public SignInManager<IdentityUser> _signInManager;
+    private readonly IAuthorizationService _authorizationService;
 
+    public SignInManager<AppUser> SignInManager { get; set; } = default!;
     public LoginEndpoint(
         ILogger<LoginEndpoint> logger,
-        UserManager<AppUser> userManager,
-        SignInManager<IdentityUser> signInManager)
+        UserManager<AppUser> userManager, 
+        IAuthorizationService authorizationService)
         : base(logger)
     {
         _userManager = userManager;
-        _signInManager = signInManager;
+        _authorizationService = authorizationService;
     }
 
     public override void Configure()
     {
         Post("Account/Login");
         AllowAnonymous();
+        Validator<LoginRequestValidator>();
     }
 
     public override async Task HandleAsync(LoginRequest req, CancellationToken ct)
     {
-        var user = await _userManager.FindByEmailAsync(req.Email);
+        AppUser? user = await _userManager.FindByEmailAsync(req.Email);
 
         if (user is null)
         {
@@ -38,15 +40,17 @@ public class LoginEndpoint :
             return;
         }
         
-        var result = await _signInManager.CheckPasswordSignInAsync(user, req.Password, false);
+        var result = await SignInManager.CheckPasswordSignInAsync(user, req.Password, false);
 
         if (!result.Succeeded)
         {
             await SendUnauthorizedAsync(ct);
             return;
         }
+        
+        var accessToken = _authorizationService.GenerateToken(user);
 
-        var loggedUser = new LoggedUserResponse(user.DisplayName, "token here");
+        var loggedUser = new LoggedUserResponse(user.DisplayName, accessToken);
 
         await SendOkAsync(loggedUser, ct);
     }
