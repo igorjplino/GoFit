@@ -13,7 +13,6 @@ public class UpdateExerciseEndpoint :
     public override void Configure()
     {
         Put("Exercise/{ExerciseId}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(UpdateExerciseCommand req, CancellationToken ct)

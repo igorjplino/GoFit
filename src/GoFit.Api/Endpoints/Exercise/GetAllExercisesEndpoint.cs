@@ -14,7 +14,6 @@ public class GetAllExercisesEndpoint :
     public override void Configure()
     {
         Get("Exercise");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(GetAllExercisesQuery req, CancellationToken ct)
