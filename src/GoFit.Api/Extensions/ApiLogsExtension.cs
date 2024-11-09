@@ -1,6 +1,6 @@
-﻿namespace GoFit.Api.Extentions;
+﻿namespace GoFit.Api.Extensions;
 
-public static partial class ApiLogsExtention
+public static partial class ApiLogsExtension
 {
     [LoggerMessage(
         Level = LogLevel.Warning,

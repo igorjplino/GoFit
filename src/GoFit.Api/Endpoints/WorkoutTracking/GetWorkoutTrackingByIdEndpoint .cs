@@ -14,7 +14,6 @@ public class GetWorkoutTrackingIdEndpoint :
     public override void Configure()
     {
         Get("WorkoutTracking/{id}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(GetWorkoutTrackingByIdQuery req, CancellationToken ct)

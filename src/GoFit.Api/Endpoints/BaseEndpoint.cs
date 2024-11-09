@@ -1,7 +1,7 @@
 ﻿using FastEndpoints;
 using FluentValidation;
 using FluentValidation.Results;
-using GoFit.Api.Extentions;
+using GoFit.Api.Extensions;
 using GoFit.Application.Common;
 using MediatR;
 

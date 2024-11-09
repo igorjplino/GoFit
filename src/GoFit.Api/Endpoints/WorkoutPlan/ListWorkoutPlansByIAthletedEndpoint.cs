@@ -14,7 +14,6 @@ public class ListWorkoutPlansByIAthletedEndpoint :
     public override void Configure()
     {
         Get("WorkoutPlan/Athlete/{id}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(ListWorkoutPlansByIAthletedQuery req, CancellationToken ct)

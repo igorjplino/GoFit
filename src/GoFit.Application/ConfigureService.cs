@@ -7,6 +7,8 @@ using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
+using GoFit.Application.Interfaces.Services;
+using GoFit.Application.Services;
 
 namespace GoFit.Application;
 public static class ConfigureService
@@ -22,6 +24,8 @@ public static class ConfigureService
             cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>();
         });
+        
+        services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         return services;
     }

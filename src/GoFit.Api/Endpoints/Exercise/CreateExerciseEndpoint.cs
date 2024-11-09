@@ -13,7 +13,6 @@ public class CreateExerciseEndpoint :
     public override void Configure()
     {
         Post("Exercise");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CreateExerciseCommand req, CancellationToken ct)

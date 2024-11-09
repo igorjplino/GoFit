@@ -1,5 +1,5 @@
 ﻿using FastEndpoints;
-using GoFit.Api.Extentions;
+using GoFit.Api.Extensions;
 using GoFit.Api.GlobalProcessors.Models;
 
 namespace GoFit.Api.GlobalProcessors.Pre;

@@ -13,7 +13,6 @@ public class CreateWorkoutPlanEndpoint :
     public override void Configure()
     {
         Post("WorkoutPlan");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(CreateWorkoutPlanCommand req, CancellationToken ct)

@@ -13,7 +13,6 @@ public class UpdateWorkoutTrackingEndpoint :
     public override void Configure()
     {
         Put("WorkoutTracking/{WorkoutsTrackingId}");
-        AllowAnonymous();
     }
 
     public override async Task HandleAsync(UpdateWorkoutTrackingCommand req, CancellationToken ct)
