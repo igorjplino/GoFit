@@ -6,7 +6,10 @@ using MediatR;
 
 namespace GoFit.Application.EntitiesActions.Exercises.Queries;
 
-public record GetAllExercisesQuery : IRequest<Result<List<ExerciseDto>>>
+public record GetAllExercisesQuery(
+    int PageNumber,
+    int PageSize)
+    : IRequest<Result<List<ExerciseDto>>>
 { }
 
 public class GetAllExercisesQueryHandler : IRequestHandler<GetAllExercisesQuery, Result<List<ExerciseDto>>>
