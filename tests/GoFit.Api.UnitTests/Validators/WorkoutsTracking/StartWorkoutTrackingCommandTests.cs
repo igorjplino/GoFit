@@ -1,5 +1,4 @@
-﻿using FluentAssertions.Equivalency;
-using FluentValidation.TestHelper;
+﻿using FluentValidation.TestHelper;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Dtos;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Validators;
