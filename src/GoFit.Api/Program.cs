@@ -8,8 +8,8 @@ using GoFit.Infrastructure;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services
-    .AddFastEndpoints();
+builder.Services.AddFastEndpoints();
+builder.Services.AddCors();
 
 builder.Services.SwaggerDocument(o =>
 {
@@ -30,6 +30,12 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
+
+app.UseCors(x => x
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .WithOrigins("http://localhost:4200","https://localhost:4200"));
 
 app.UseAuthentication()
     .UseAuthorization()
