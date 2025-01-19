@@ -35,7 +35,7 @@ public class RegisterEndpoint :
         var user = new AppUser
         {
             DisplayName = req.Name,
-            UserName = req.Name,
+            UserName = req.Email,
             Email = req.Email
         };
         
@@ -55,8 +55,6 @@ public class RegisterEndpoint :
         {
             AddError(new ValidationFailure(error.Code, error.Description));
         }
-        
-        ThrowIfAnyErrors();
     }
 }
 
