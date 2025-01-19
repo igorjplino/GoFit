@@ -49,6 +49,14 @@ public class LoginEndpoint :
         }
         
         var accessToken = _authorizationService.GenerateToken(user);
+        
+        HttpContext.Response.Cookies.Append("access_token", accessToken, new CookieOptions
+        {
+            HttpOnly = true,
+            Secure = false,
+            SameSite = SameSiteMode.Strict,
+            Expires = DateTime.UtcNow.AddHours(1)
+        });
 
         var loggedUser = new LoggedUserResponse(user.DisplayName, accessToken);
 

@@ -9,7 +9,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddFastEndpoints();
-builder.Services.AddCors();
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.WithOrigins("http://localhost:4200","https://localhost:4200") // Angular frontend URL
+            .AllowCredentials()
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.SwaggerDocument(o =>
 {
@@ -31,15 +40,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 app.UseHttpsRedirection();
 
-app.UseCors(x => x
-    .AllowAnyHeader()
-    .AllowAnyMethod()
-    .AllowCredentials()
-    .WithOrigins("http://localhost:4200","https://localhost:4200"));
+app.UseCors();
 
-app.UseAuthentication()
-    .UseAuthorization()
-    .UseFastEndpoints(x =>
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseFastEndpoints(x =>
     {
         x.Endpoints.RoutePrefix = "api";
         x.Endpoints.Configurator = ep =>

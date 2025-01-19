@@ -10,7 +10,26 @@ public static class IdentityServiceExtension
 {
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration config)
     {
-        services.AddAuthenticationJwtBearer(x => x.SigningKey = config["Token:Key"]);
+        services.AddAuthenticationJwtBearer(
+        signingOptions =>
+        {
+            signingOptions.SigningKey = config["Token:Key"];
+        },
+        options =>
+        {
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = ctx =>
+                {
+                    if (ctx.Request.Cookies.ContainsKey("access_token"))
+                    {
+                        ctx.Token = ctx.Request.Cookies["access_token"];
+                    }
+                        
+                    return Task.CompletedTask;
+                }
+            };
+        });
         
         services.AddDefaultIdentity<AppUser>(opt =>
         {
@@ -19,11 +38,7 @@ public static class IdentityServiceExtension
         .AddEntityFrameworkStores<AppIdentityDbContext>()
         .AddSignInManager();
         
-        services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        });
+        services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
         services.AddAuthorization();
         
         return services;
