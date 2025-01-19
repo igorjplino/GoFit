@@ -26,11 +26,18 @@ public class UserInfoEndpoint :
 
     public override void Configure()
     {
+        AllowAnonymous();
         Get("Account/User-Info");
     }
 
     public override async Task HandleAsync(CancellationToken ct)
     {
+        if (User.Identity?.IsAuthenticated == false)
+        {
+            await SendNoContentAsync(ct);
+            return;
+        }
+        
         AppUser? user = await _userManager.GetUser(User);
             
         var loggedUser = new LoggedUserResponse(user.DisplayName, null);
