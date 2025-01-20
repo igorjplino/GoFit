@@ -49,12 +49,15 @@ public class RegisterEndpoint :
                 _authorizationService.GenerateToken(user));  
             
             await SendOkAsync(regitredUser, ct);
+            return;
         }
 
         foreach (var error in result.Errors)
         {
             AddError(new ValidationFailure(error.Code, error.Description));
         }
+        
+        ThrowIfAnyErrors();
     }
 }
 
