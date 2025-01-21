@@ -1,72 +1,36 @@
-<header class="bg-white">
-    <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
-        <div class="flex lg:flex-1">
-            <a href="#" class="-m-1.5 p-1.5">
-                <span class="sr-only">Your Company</span>
-                <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                    alt="">
-            </a>
-        </div>
-
-        <div class="hidden lg:flex lg:gap-x-12">
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Home</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Contact</a>
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">About</a>
-        </div>
-
-        <div class="hidden lg:flex lg:flex-1 lg:justify-end">
-            <a href="#" class="text-sm/6 font-semibold text-gray-900">Log in <span aria-hidden="true">&rarr;</span></a>
-        </div>
-
-        <div class="flex lg:hidden">
-            <button type="button" (click)="toggleMenu()" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
-                <mat-icon>menu</mat-icon>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Mobile menu, show/hide based on menu open state. -->
-    <div *ngIf="mobileMenuOpen" role="dialog" aria-modal="true">
-        <!-- Background backdrop, show/hide based on slide-over state. -->
-        <div class="fixed inset-0 z-10"></div>
-        <div
-            class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div class="flex items-center justify-between">
-                <a href="#" class="-m-1.5 p-1.5">
-                    <span class="sr-only">Your Company</span>
-                    <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600"
-                        alt="">
-                </a>
-                <button type="button" (click)="toggleMenu()" class="-m-2.5 rounded-md p-2.5 text-gray-700">
-                    <span class="sr-only">Close menu</span>
-                    <svg class="size-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
-                        aria-hidden="true" data-slot="icon">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
-                    </svg>
+<header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
+    <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
+        <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="">
+        <nav class="flex gap-3 my-2 uppercase text-2xl">
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+        </nav>
+        <div class="flex gap-3 align-middle">
+            @if (accountService.currentUser()) {
+                <button mat-button [matMenuTriggerFor]="menu">
+                    <span>{{accountService.currentUser()?.displayName}}</span>
+                    <mat-icon>arrow_drop_down</mat-icon>
                 </button>
-            </div>
-
-            <div class="mt-6 flow-root">
-                <div class="-my-6 divide-y divide-gray-500/10">
-                    <div class="space-y-2 py-6">
-                        <a href="#"
-                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Features</a>
-                        <a href="#"
-                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Marketplace</a>
-                        <a href="#"
-                            class="-mx-3 block rounded-lg px-3 py-2 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Company</a>
-                    </div>
-                    <div class="py-6">
-                        <a href="#"
-                            class="-mx-3 block rounded-lg px-3 py-2.5 text-base/7 font-semibold text-gray-900 hover:bg-gray-50">Log
-                            in</a>
-                    </div>
-                </div>
-            </div>
+            } 
+            @else {
+                <button routerLink="/account/login" mat-stroked-button class="lg:pr-4">Login</button>
+                <button routerLink="/account/register" mat-stroked-button>Register</button>
+            }
         </div>
     </div>
 </header>
 
 @if (busyService.loading) {
-<mat-progress-bar mode="indeterminate" class="fixed top-20 z-50"></mat-progress-bar>
+    <mat-progress-bar mode="indeterminate" class="fixed top-20 z-50"></mat-progress-bar>
 }
+
+<mat-menu #menu="matMenu" class="px-5">
+    <button mat-menu-item class="px-3" routerLink="/cart">
+        <mat-icon>shopping_cart</mat-icon>
+        My account
+    </button>
+    <mat-divider></mat-divider>
+    <button mat-menu-item class="px-3" (click)="logout()">
+        <mat-icon>logout</mat-icon>
+        Logout
+    </button>
+</mat-menu>

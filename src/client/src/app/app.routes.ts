@@ -8,7 +8,7 @@ export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'exercise', component: ExerciseComponent },
     { path: 'exercise/:id', component: ExerciseDetailsComponent },
-    { path: '**', redirectTo: '', pathMatch: 'full' }
+    { path: 'account', loadChildren: () => import('./features/account/routes').then(r => r.accountRoutes) },
     { path: 'not-found', component: NotFoundComponent },
     { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
 ];
