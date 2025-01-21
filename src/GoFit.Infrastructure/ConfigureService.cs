@@ -5,8 +5,10 @@ using GoFit.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using GoFit.Infrastructure.Contexts;
 using System;
+using GoFit.Application.Models;
 using GoFit.Domain.Entities.Identity;
 using GoFit.Infrastructure.Contexts.IdentityDb;
+using GoFit.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Infrastructure;
@@ -14,6 +16,8 @@ public static class ConfigureService
 {
     public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration configuration)
     {
+        services.Configure<Connections>(configuration.GetSection("ConnectionStrings"));
+        
         services.AddDbContext<GoFitDbContext>(options => 
         {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
