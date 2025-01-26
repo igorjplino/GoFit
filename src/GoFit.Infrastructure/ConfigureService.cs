@@ -7,6 +7,7 @@ using GoFit.Infrastructure.Contexts;
 using System;
 using GoFit.Application.Models;
 using GoFit.Domain.Entities.Identity;
+using GoFit.Infrastructure.Contexts.GoFitDb;
 using GoFit.Infrastructure.Contexts.IdentityDb;
 using GoFit.Infrastructure.Models;
 using Microsoft.AspNetCore.Identity;

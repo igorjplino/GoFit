@@ -1,6 +1,7 @@
 ﻿using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using GoFit.Infrastructure.Contexts;
+using GoFit.Infrastructure.Contexts.GoFitDb;
 using Microsoft.EntityFrameworkCore;
 
 namespace GoFit.Infrastructure.Repositories;

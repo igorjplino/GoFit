@@ -4,6 +4,7 @@ using GoFit.Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
+using GoFit.Infrastructure.Contexts.GoFitDb;
 
 namespace GoFit.Infrastructure.Repositories;
 public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
