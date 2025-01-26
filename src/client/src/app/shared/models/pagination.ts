@@ -1,6 +1,6 @@
 export type Pagination<T> = {
-    pageIndex: number;
+    pageNumber: number;
     pageSize: number;
-    count: number;
-    data: T[];
+    total: number;
+    items: T[];
 }

@@ -1,1 +1,15 @@
-<p>exercise works!</p>
+@if (exercises && exercises.total > 0) {
+    <div class="grid grid-cols-5 gap-4">
+        @for (exercise of exercises.items; track exercise.id) {
+            <mat-card appearance="raised" routerLink="/exercise/{{exercise.id}}" class="exercise-card">
+                <img mat-card-image src="" alt="Exercise image">
+                <mat-card-content class="mt-2">
+                    <h2 class="text-sm font-semibold uppercase">{{exercise.name}}</h2>
+                </mat-card-content>
+            </mat-card>
+        }
+    </div>
+}
+@else {
+    <p>No exercises found</p>
+}

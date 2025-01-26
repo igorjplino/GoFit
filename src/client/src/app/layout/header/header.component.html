@@ -23,7 +23,11 @@
     <mat-progress-bar mode="indeterminate" class="fixed top-20 z-50"></mat-progress-bar>
 }
 
-<mat-menu #menu="matMenu" class="px-5">
+<mat-menu #menu="matMenu" class="px-4">
+    <button mat-menu-item class="px-3" routerLink="/exercise">
+        <mat-icon>fitness_center</mat-icon>
+        Exercises
+    </button>
     <button mat-menu-item class="px-3" routerLink="/cart">
         <mat-icon>shopping_cart</mat-icon>
         My account

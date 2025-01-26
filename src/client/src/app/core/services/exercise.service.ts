@@ -2,12 +2,13 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Pagination } from '../../shared/models/pagination';
 import { Exercise } from '../../shared/models/exercise';
+import { environment } from '../../../environments/environment.development';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ExerciseService {
-  baseUrl = 'http://localhost:5001/api/';
+  baseUrl = environment.apiUrl;
   
   constructor(private http: HttpClient) {}
 
