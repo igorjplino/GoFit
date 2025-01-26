@@ -22,6 +22,7 @@
     <ProjectReference Include="..\GoFit.Domain\GoFit.Domain.csproj" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Migrations\" />
+    <Folder Include="Contexts\GoFitDb\Migrations\" />
+    <Folder Include="Contexts\IdentityDb\Migrations\" />
   </ItemGroup>
 </Project>
