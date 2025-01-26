@@ -22,13 +22,13 @@ public static class ConfigureService
         services.AddDbContext<GoFitDbContext>(options => 
         {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.UseSqlite(configuration.GetConnectionString("GoFitDb"));
+            options.UseSqlServer(configuration.GetConnectionString("GoFitDb"));
         });
 
         services.AddDbContext<AppIdentityDbContext>(options =>
         {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
-            options.UseSqlite(configuration.GetConnectionString("IdentityDb"));
+            options.UseSqlServer(configuration.GetConnectionString("IdentityDb"));
         });
         
         services

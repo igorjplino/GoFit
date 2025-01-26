@@ -1,8 +1,8 @@
-﻿using GoFit.Domain.Entities;
+﻿using System.Reflection;
+using GoFit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
-using System.Reflection;
 
-namespace GoFit.Infrastructure.Contexts;
+namespace GoFit.Infrastructure.Contexts.GoFitDb;
 
 public class GoFitDbContext : DbContext
 {

@@ -1,7 +1,7 @@
 ﻿using GoFit.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace GoFit.Infrastructure.Contexts;
+namespace GoFit.Infrastructure.Contexts.GoFitDb;
 
 public static class GoFitDbContextInitialise
 {
