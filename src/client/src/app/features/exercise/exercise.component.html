@@ -1,15 +1,82 @@
 @if (exercises && exercises.total > 0) {
-    <div class="grid grid-cols-5 gap-4">
-        @for (exercise of exercises.items; track exercise.id) {
+<div class="flex gap-3">
+    <div class="w-1/5 p-4 flex flex-col border rounded shadow">
+        <h3 class="text-lg font-semibold mb-4">Filters</h3>
+
+        <form class="relative flex items-center w-full max-w-md">
+            <mat-form-field appearance="outline" floatLabel="always" class="w-full">
+                <mat-label>Search</mat-label>
+                <input matInput />
+                <button mat-icon-button matSuffix>
+                    <mat-icon>search</mat-icon>
+                </button>
+            </mat-form-field>
+
+
+            <!-- <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Search</mat-label>
+                <input matInput class="p-2" />
+            </mat-form-field> -->
+            <!-- <input type="search" placeholder="Search" class="w-full p-2 border rounded"> -->
+            <!-- <button mat-icon-button type="submit">
+                <mat-icon>search</mat-icon>
+            </button> -->
+        </form>
+
+        <div class="mt-4">
+            <mat-form-field appearance="outline" class="w-full">
+                <mat-label>Category</mat-label>
+                <select matNativeControl class="p-2 border rounded">
+                    <option>All</option>
+                    <option>Strength</option>
+                    <option>Cardio</option>
+                    <option>Flexibility</option>
+                </select>
+            </mat-form-field>
+            <!-- <mat-form-field>
+                <mat-label>Cars</mat-label>
+                <select class="w-full p-2 border rounded">
+                    <option>Strength</option>
+                    <option>Cardio</option>
+                    <option>Flexibility</option>
+                </select>
+            </mat-form-field> -->
+        </div>
+    </div>
+
+    <div class="w-4/5">
+        <div class="flex justify-between items-center mb-4 p-2 border-b">
+            <!-- Sorting Dropdown -->
+            <div>
+                <!-- <mat-form-field>
+                    <mat-label>Cars</mat-label>
+                    <select class="p-2 border rounded">
+                        <option value="name">Name</option>
+                        <option value="difficulty">Difficulty</option>
+                        <option value="category">Category</option>
+                    </select>
+                </mat-form-field> -->
+            </div>
+
+            <!-- Create Exercise Button -->
+            <button class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+                <mat-icon class="mr-2">add</mat-icon> Create Exercise
+            </button>
+        </div>
+
+        <div class="grid grid-cols-4 gap-4">
+            @for (exercise of exercises.items; track exercise.id) {
             <mat-card appearance="raised" routerLink="/exercise/{{exercise.id}}" class="exercise-card">
                 <img mat-card-image src="" alt="Exercise image">
                 <mat-card-content class="mt-2">
                     <h2 class="text-sm font-semibold uppercase">{{exercise.name}}</h2>
                 </mat-card-content>
             </mat-card>
-        }
+            }
+        </div>
     </div>
+</div>
 }
 @else {
-    <p>No exercises found</p>
+<p>No exercises found</p>
 }
