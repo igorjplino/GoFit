@@ -30,11 +30,11 @@ public abstract class BaseEndpoint<TRequest, TResponse>
     {
         if (response is null)
         {
-            await SendNotFoundAsync(ct);
+            await Send.NotFoundAsync(ct);
             return;
         }
 
-        await SendAsync(response, cancellation: ct);
+        await Send.OkAsync(response, cancellation: ct);
     }
 
     private async Task MapFailResponse(Exception ex, CancellationToken ct)
@@ -55,6 +55,6 @@ public abstract class BaseEndpoint<TRequest, TResponse>
                 break;
         }
 
-        await SendErrorsAsync(cancellation: ct);
+        await Send.ErrorsAsync(cancellation: ct);
     }
 }

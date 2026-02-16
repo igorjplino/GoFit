@@ -48,7 +48,7 @@ public class RegisterEndpoint :
                 user.Email,
                 _authorizationService.GenerateToken(user));  
             
-            await SendOkAsync(regitredUser, ct);
+            await Send.OkAsync(regitredUser, ct);
             return;
         }
 

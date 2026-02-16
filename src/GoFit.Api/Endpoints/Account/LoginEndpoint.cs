@@ -36,7 +36,7 @@ public class LoginEndpoint :
 
         if (user is null)
         {
-            await SendUnauthorizedAsync(ct);
+            await Send.UnauthorizedAsync(ct);
             return;
         }
         
@@ -44,7 +44,7 @@ public class LoginEndpoint :
 
         if (!result.Succeeded)
         {
-            await SendUnauthorizedAsync(ct);
+            await Send.UnauthorizedAsync(ct);
             return;
         }
         
@@ -55,12 +55,12 @@ public class LoginEndpoint :
             HttpOnly = true,
             Secure = false,
             SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddHours(1)
+            Expires = DateTime.UtcNow.AddHours(1000)
         });
 
         var loggedUser = new LoggedUserResponse(user.DisplayName, accessToken);
 
-        await SendOkAsync(loggedUser, ct);
+        await Send.OkAsync(loggedUser, ct);
     }
 }
 

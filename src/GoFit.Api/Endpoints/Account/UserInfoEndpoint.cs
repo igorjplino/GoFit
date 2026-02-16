@@ -34,7 +34,7 @@ public class UserInfoEndpoint :
     {
         if (User.Identity?.IsAuthenticated == false)
         {
-            await SendNoContentAsync(ct);
+            await Send.NoContentAsync(ct);
             return;
         }
         
@@ -42,7 +42,7 @@ public class UserInfoEndpoint :
             
         var loggedUser = new LoggedUserResponse(user.DisplayName, null);
 
-        await SendOkAsync(loggedUser, ct);
+        await Send.OkAsync(loggedUser, ct);
     }
 }
 

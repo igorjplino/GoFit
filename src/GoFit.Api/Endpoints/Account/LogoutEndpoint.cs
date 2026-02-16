@@ -13,6 +13,6 @@ public class LogoutEndpoint : EndpointWithoutRequest
     public override async Task HandleAsync(CancellationToken ct)
     {
         HttpContext.Response.Cookies.Delete("access_token");
-        await SendNoContentAsync();
+        await Send.NoContentAsync();
     }
 }
