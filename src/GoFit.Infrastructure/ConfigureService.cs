@@ -3,14 +3,9 @@ using Microsoft.Extensions.DependencyInjection;
 using GoFit.Application.Interfaces;
 using GoFit.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using GoFit.Infrastructure.Contexts;
-using System;
-using GoFit.Application.Models;
-using GoFit.Domain.Entities.Identity;
 using GoFit.Infrastructure.Contexts.GoFitDb;
 using GoFit.Infrastructure.Contexts.IdentityDb;
 using GoFit.Infrastructure.Models;
-using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Infrastructure;
 public static class ConfigureService

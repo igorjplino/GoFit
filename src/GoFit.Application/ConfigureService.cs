@@ -7,6 +7,7 @@ using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
+using GoFit.Application.Interfaces.Jobs;
 using GoFit.Application.Interfaces.Services;
 using GoFit.Application.Services;
 

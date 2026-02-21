@@ -3,7 +3,10 @@ using FastEndpoints.Swagger;
 using GoFit.Api.Extensions;
 using GoFit.Api.GlobalProcessors.Pre;
 using GoFit.Application;
+using GoFit.Hangfire;
+using GoFit.Hangfire.Recurring;
 using GoFit.Infrastructure;
+using Hangfire;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,6 +37,7 @@ builder.Services.SwaggerDocument(o =>
 builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddHangfireServices(builder.Configuration);
 
 var app = builder.Build();
 
@@ -58,5 +62,8 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwaggerGen();
 }
+
+app.UseHangfireDashboard();
+app.RegisterAllRecurringJob();
 
 app.Run();

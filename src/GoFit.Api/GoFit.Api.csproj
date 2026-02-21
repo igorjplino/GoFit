@@ -8,6 +8,7 @@
     <PackageReference Include="FastEndpoints" Version="7.2.0" />
     <PackageReference Include="FastEndpoints.Security" Version="7.2.0" />
     <PackageReference Include="FastEndpoints.Swagger" Version="7.2.0" />
+    <PackageReference Include="Hangfire.AspNetCore" Version="1.8.23" />
     <PackageReference Include="MediatR" Version="14.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.3" />
@@ -18,6 +19,7 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\GoFit.Hangfire\GoFit.Hangfire.csproj" />
     <ProjectReference Include="..\GoFit.Application\GoFit.Application.csproj" />
     <ProjectReference Include="..\GoFit.Infrastructure\GoFit.Infrastructure.csproj" />
   </ItemGroup>
