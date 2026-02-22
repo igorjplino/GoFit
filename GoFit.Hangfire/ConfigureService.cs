@@ -1,6 +1,5 @@
 ﻿using GoFit.Application.Interfaces.Jobs;
 using GoFit.Hangfire.Jobs;
-using GoFit.Hangfire.Recurring;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,15 +12,21 @@ public static class ConfigureService
     {
         services.AddHangfire(options =>
         {
-            options.SetDataCompatibilityLevel(CompatibilityLevel.Version_180);
             options.UseSimpleAssemblyNameTypeSerializer();
             options.UseRecommendedSerializerSettings();
             options.UseSqlServerStorage(configuration.GetConnectionString("HangfireDb"));
+
+            options.UseFilter(new AutomaticRetryAttribute
+            {
+                Attempts = 5,
+                DelaysInSeconds = new[] { 10, 60, 300, 300, 300 },
+                OnAttemptsExceeded = AttemptsExceededAction.Fail
+            });
         });
         
         services.AddHangfireServer();
         
-        services.AddScoped<ISendNotificationJob, SendNotificationJob>();
+        services.AddSingleton<ISendMinuteNotificationJob, SendMinuteNotificationJob>();
         
         return services;
     }

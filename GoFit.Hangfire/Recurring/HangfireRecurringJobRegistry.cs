@@ -1,4 +1,4 @@
-using GoFit.Application.Interfaces.Jobs;
+using GoFit.Hangfire.Jobs;
 using Hangfire;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
@@ -9,14 +9,23 @@ public static class HangfireRecurringJobRegistry
 {
     public static void RegisterAllRecurringJob(this WebApplication app)
     {
+        RecurringJob.AddOrUpdate<SendMinuteNotificationJob>(
+            "minute-notification",
+            x => x.ExecuteAsync(),
+            Cron.Hourly);
+    }
+    
+    public static void RegisterAllRecurringJobByDI(this WebApplication app)
+    {
         using (var scope = app.Services.CreateScope())
         {
             var recurring = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-
-            recurring.AddOrUpdate<ISendNotificationJob>(
-                "notification-every-minute",
-                x => x.SendMinuteNotification(),
-                Cron.Minutely);
+            
+            // This implementations requires to put the AutomaticRetry in Interface
+            recurring.AddOrUpdate<SendMinuteNotificationJob>(
+                "minute-notification",
+                x => x.ExecuteAsync(),
+                Cron.Hourly);
         }
     }
 }

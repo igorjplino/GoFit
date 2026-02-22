@@ -16,6 +16,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\src\GoFit.Application\GoFit.Application.csproj" />
+      <ProjectReference Include="..\src\GoFit.Infrastructure\GoFit.Infrastructure.csproj" />
     </ItemGroup>
 
 </Project>
