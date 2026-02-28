@@ -26,7 +26,7 @@ public static class ConfigureService
         
         services.AddHangfireServer();
         
-        services.AddSingleton<ISendMinuteNotificationJob, SendMinuteNotificationJob>();
+        services.AddSingleton<SendMinuteNotificationJob>();
         
         return services;
     }

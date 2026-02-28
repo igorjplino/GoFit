@@ -5,7 +5,7 @@ using Microsoft.Extensions.Options;
 
 namespace GoFit.Hangfire.Jobs;
 
-public class SendMinuteNotificationJob : ISendMinuteNotificationJob
+public class SendMinuteNotificationJob
 {
     private readonly string _goFitDb;
     
