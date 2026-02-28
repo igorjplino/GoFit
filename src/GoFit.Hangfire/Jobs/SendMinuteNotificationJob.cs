@@ -1,4 +1,3 @@
-using GoFit.Application.Interfaces.Jobs;
 using GoFit.Infrastructure.Models;
 using Hangfire;
 using Microsoft.Extensions.Options;

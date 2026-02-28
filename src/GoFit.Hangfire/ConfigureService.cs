@@ -1,5 +1,4 @@
-﻿using GoFit.Application.Interfaces.Jobs;
-using GoFit.Hangfire.Jobs;
+﻿using GoFit.Hangfire.Jobs;
 using Hangfire;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
