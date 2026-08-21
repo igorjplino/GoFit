@@ -421,6 +421,22 @@ baseline.json
 # Ignore cache created with the Angular CLI.
 .angular/
 
-# Ignore AIO files, useful when changing branches 
+# Ignore AIO files, useful when changing branches
 aio/node_modules
 aio/out-tsc
+
+# GoFit project-specific
+
+# SQLite database files (local/dev data, not source)
+*.db
+*.db-shm
+*.db-wal
+
+# Per-developer local settings / secrets (connection strings, signing keys)
+src/GoFit.Api/appsettings.Local.json
+
+# Angular build output
+src/client/dist/
+
+# Local HTTPS dev certificates
+src/client/ssl/
