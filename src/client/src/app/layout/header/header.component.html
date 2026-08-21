@@ -1,19 +1,19 @@
-<header class="border-b shadow-md p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
+<header class="border-b shadow-md p-2 md:p-3 w-full max-h-20 fixed top-0 z-50 bg-white">
     <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
-        <img class="h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="">
-        <nav class="flex gap-3 my-2 uppercase text-2xl">
+        <img class="h-6 md:h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="">
+        <nav class="hidden md:flex gap-3 my-2 uppercase text-sm md:text-lg">
             <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </nav>
-        <div class="flex gap-3 align-middle">
+        <div class="flex gap-1 md:gap-3 align-middle items-center">
             @if (accountService.currentUser()) {
-                <button mat-button [matMenuTriggerFor]="menu">
-                    <span>{{accountService.currentUser()?.displayName}}</span>
+                <button mat-button [matMenuTriggerFor]="menu" class="text-xs md:text-base">
+                    <span class="hidden sm:inline">{{accountService.currentUser()?.displayName}}</span>
                     <mat-icon>arrow_drop_down</mat-icon>
                 </button>
             } 
             @else {
-                <button routerLink="/account/login" mat-stroked-button class="lg:pr-4">Login</button>
-                <button routerLink="/account/register" mat-stroked-button>Register</button>
+                <button routerLink="/account/login" mat-stroked-button class="text-xs md:text-sm px-2 md:px-4">Login</button>
+                <button routerLink="/account/register" mat-stroked-button class="text-xs md:text-sm px-2 md:px-4">Register</button>
             }
         </div>
     </div>
