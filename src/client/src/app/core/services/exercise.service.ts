@@ -12,6 +12,10 @@ export class ExerciseService {
   
   constructor(private http: HttpClient) {}
 
+  getExercise(id: string) {
+    return this.http.get<Exercise>(this.baseUrl + 'exercise/' + id);
+  }
+
   getExercises() {
     return this.http.get<Pagination<Exercise>>(this.baseUrl + 'exercise');
   }
