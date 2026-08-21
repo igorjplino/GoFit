@@ -28,6 +28,8 @@ public class GetWorkoutPlanDtoByIdQueryHandler : IRequestHandler<GetWorkoutDtoBy
 
         var workoutDto = new WorkoutDto
         {
+            Name = workout.Name,
+            Description = workout.Description
         };
 
         return workoutDto;

@@ -1,4 +1,5 @@
 ﻿using GoFit.Application.Common;
+using GoFit.Application.EntitiesActions.Workouts.Dtos;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Dtos;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
@@ -32,7 +33,12 @@ public class GetWorkoutTrackingByIdQueryHandler : IRequestHandler<GetWorkoutTrac
     private static WorkoutTrackingDto ToDto(WorkoutTracking workoutTracking)
         => new()
         {
-            WorkoutId = workoutTracking.Id,
+            WorkoutId = workoutTracking.WorkoutId,
+            Workout = new WorkoutDto
+            {
+                Name = workoutTracking.Workout.Name,
+                Description = workoutTracking.Workout.Description
+            },
             StartWorkoutDate = workoutTracking.StartWorkoutDate,
             EndWorkoutDate = workoutTracking.EndWorkoutDate,
             Note = workoutTracking.Note,
