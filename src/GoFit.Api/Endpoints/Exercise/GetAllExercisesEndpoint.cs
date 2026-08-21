@@ -14,6 +14,7 @@ public class GetAllExercisesEndpoint :
 
     public override void Configure()
     {
+        AllowAnonymous();
         Get("Exercise");
     }
 
