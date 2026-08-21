@@ -6,6 +6,7 @@ using MediatR;
 namespace GoFit.Application.EntitiesActions.Workouts.Commands;
 
 public record CreateWorkoutCommand(
+    Guid WorkoutPlanId,
     string Name,
     string? Description,
     IEnumerable<WorkoutSet>? Sets) : IRequest<Result<Guid>>
@@ -22,11 +23,13 @@ public class CreateWorkoutCommandHandler : IRequestHandler<CreateWorkoutCommand,
 
     public async Task<Result<Guid>> Handle(CreateWorkoutCommand request, CancellationToken cancellationToken)
     {
-        var workoutPlan = new Workout
+        var workout = new Workout
         {
-
+            WorkoutPlanId = request.WorkoutPlanId,
+            Name = request.Name,
+            Description = request.Description
         };
 
-        return await _workoutRepository.CreateAsync(workoutPlan);
+        return await _workoutRepository.CreateAsync(workout);
     }
 }
