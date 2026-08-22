@@ -1,12 +1,14 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './features/home/home.component';
 import { ExerciseComponent } from './features/exercise/exercise.component';
+import { ExerciseCreateComponent } from './features/exercise-create/exercise-create.component';
 import { ExerciseDetailsComponent } from './features/exercise-details/exercise-details.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'exercise', component: ExerciseComponent },
+    { path: 'exercise/create', component: ExerciseCreateComponent },
     { path: 'exercise/:id', component: ExerciseDetailsComponent },
     { path: 'account', loadChildren: () => import('./features/account/routes').then(r => r.accountRoutes) },
     { path: 'not-found', component: NotFoundComponent },

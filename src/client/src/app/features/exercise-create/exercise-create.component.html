@@ -1,0 +1,47 @@
+<mat-card class="max-w-lg mx-auto mt-12 md:mt-16 p-4 md:p-8 bg-white m-2 md:m-0">
+    <form [formGroup]="exerciseForm" (ngSubmit)="onSubmit()">
+        <div class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-semibold text-primary">Create Exercise</h1>
+            <p class="text-sm text-gray-500 mt-1">Add a new exercise to the library. Fields marked * are required.</p>
+        </div>
+
+        <app-text-input
+            label="Name"
+            formControlName="name"
+            [required]="true"
+            hint="A short, unique name for the exercise (3-100 characters)" />
+
+        <app-text-input
+            label="Description"
+            formControlName="description"
+            hint="Optional. If provided, must be 3-300 characters" />
+
+        @if (validationErrors) {
+            <div class="mb-3 p-4 bg-red-100 text-red-600">
+                <ul class="list-disc px-3">
+                    @for (error of validationErrors; track $index) {
+                        <li>{{error}}</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="flex gap-3 mt-2">
+            <button
+                mat-flat-button
+                type="submit"
+                [disabled]="exerciseForm.invalid || submitting()"
+                class="w-full py-2">
+                {{ submitting() ? 'Creating...' : 'Create Exercise' }}
+            </button>
+            <button
+                mat-stroked-button
+                type="button"
+                routerLink="/exercise"
+                [disabled]="submitting()"
+                class="w-full py-2">
+                Cancel
+            </button>
+        </div>
+    </form>
+</mat-card>

@@ -41,7 +41,7 @@
             </div>
 
             <!-- Create Exercise Button -->
-            <button class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+            <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
                 <mat-icon class="mr-2">add</mat-icon> Create Exercise
             </button>
         </div>
@@ -60,5 +60,10 @@
 </div>
 }
 @else {
-<p>No exercises found</p>
+<div class="flex flex-col items-center gap-4 mt-12">
+    <p>No exercises found</p>
+    <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+        <mat-icon class="mr-2">add</mat-icon> Create Exercise
+    </button>
+</div>
 }

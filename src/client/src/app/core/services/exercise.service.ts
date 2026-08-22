@@ -19,4 +19,8 @@ export class ExerciseService {
   getExercises() {
     return this.http.get<Pagination<Exercise>>(this.baseUrl + 'exercise');
   }
+
+  createExercise(exercise: { name: string; description: string | null }) {
+    return this.http.post<string>(this.baseUrl + 'exercise', exercise);
+  }
 }
