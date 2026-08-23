@@ -1,5 +1,6 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.Exercise;
 
@@ -13,6 +14,7 @@ public class UpdateExerciseEndpoint :
     public override void Configure()
     {
         Put("Exercise/{ExerciseId}");
+        Permissions(AppPermissions.Exercises.Edit);
     }
 
     public override async Task HandleAsync(UpdateExerciseCommand req, CancellationToken ct)

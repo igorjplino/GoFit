@@ -15,7 +15,7 @@ public class AuthorizationService : IAuthorizationService
         _key = configuration["Token:Key"]!;
     }
 
-    public string GenerateToken(AppUser user)
+    public string GenerateToken(AppUser user, IList<string> roles)
     {
         var claims = new List<Claim>
         {
@@ -24,7 +24,7 @@ public class AuthorizationService : IAuthorizationService
             // new Claim(JwtRegisteredClaimNames.Sub, userId), // The subject identifier
             // new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Unique token ID
         };
-        
+
         // var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_key));
 
         // var token = new JwtSecurityToken(
@@ -33,13 +33,13 @@ public class AuthorizationService : IAuthorizationService
         //     signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha256));
         //
         // return new JwtSecurityTokenHandler().WriteToken(token);
-        
+
         return JwtBearer.CreateToken(
             o =>
             {
                 o.SigningKey = _key;
                 o.ExpireAt = DateTime.UtcNow.AddHours(1000);
-                // o.User.Roles.Add("Manager", "Auditor");
+                o.User.Roles.Add(roles.ToArray());
                 o.User.Claims.AddRange(claims);
                 // o.User["UserId"] = "001"; //indexer based claim setting
             });

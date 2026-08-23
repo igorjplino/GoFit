@@ -1,0 +1,97 @@
+using GoFit.Domain.Authorization;
+using GoFit.Domain.Entities.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
+
+namespace GoFit.Infrastructure.Contexts.IdentityDb;
+
+public static class AppIdentityDbContextInitialise
+{
+    public static async Task ApplyMigrationAsync(this AppIdentityDbContext context)
+    {
+        await context.Database.MigrateAsync();
+    }
+
+    public static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
+    {
+        foreach (var role in AppRoles.All)
+        {
+            if (!await roleManager.RoleExistsAsync(role))
+            {
+                await roleManager.CreateAsync(new IdentityRole(role));
+            }
+        }
+    }
+
+    /// <summary>
+    /// Guarantees at least one Admin account exists, so the system can never be left without
+    /// an administrator. Only runs if no user currently holds the Admin role.
+    /// </summary>
+    public static async Task EnsureAdminAsync(
+        UserManager<AppUser> userManager,
+        IConfiguration configuration,
+        ILogger logger)
+    {
+        var existingAdmins = await userManager.GetUsersInRoleAsync(AppRoles.Admin);
+        if (existingAdmins.Count > 0)
+        {
+            return;
+        }
+
+        var email = configuration["Identity:AdminSeed:Email"];
+        var password = configuration["Identity:AdminSeed:Password"];
+
+        if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(password))
+        {
+            logger.LogWarning(
+                "No Admin user exists and Identity:AdminSeed:Email/Password are not configured - " +
+                "the application has no administrator. Set these in appsettings.Local.json to seed one.");
+            return;
+        }
+
+        var user = await userManager.FindByEmailAsync(email);
+
+        if (user is null)
+        {
+            user = new AppUser
+            {
+                DisplayName = "Admin",
+                UserName = email,
+                Email = email
+            };
+
+            var result = await userManager.CreateAsync(user, password);
+            if (!result.Succeeded)
+            {
+                logger.LogError(
+                    "Failed to seed default Admin user: {Errors}",
+                    string.Join(", ", result.Errors.Select(e => e.Description)));
+                return;
+            }
+        }
+
+        await userManager.AddToRoleAsync(user, AppRoles.Admin);
+    }
+
+    /// <summary>
+    /// Users created before roles existed have no role assigned, which would leave them with
+    /// zero permissions. Defaults them to Student - the same role new self-registered users get -
+    /// rather than silently locking them out.
+    /// </summary>
+    public static async Task BackfillMissingRolesAsync(UserManager<AppUser> userManager, ILogger logger)
+    {
+        var users = await userManager.Users.ToListAsync();
+
+        foreach (var user in users)
+        {
+            var roles = await userManager.GetRolesAsync(user);
+            if (roles.Count == 0)
+            {
+                await userManager.AddToRoleAsync(user, AppRoles.Student);
+                logger.LogWarning("User {Email} had no role - defaulted to {Role}", user.Email, AppRoles.Student);
+            }
+        }
+    }
+}

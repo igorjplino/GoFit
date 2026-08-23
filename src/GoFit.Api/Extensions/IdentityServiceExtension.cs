@@ -1,6 +1,8 @@
 using FastEndpoints.Security;
+using GoFit.Api.Authorization;
 using GoFit.Domain.Entities.Identity;
 using GoFit.Infrastructure.Contexts.IdentityDb;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 
@@ -35,12 +37,14 @@ public static class IdentityServiceExtension
         {
             // add identity options here, if necessary
         })
+        .AddRoles<IdentityRole>()
         .AddEntityFrameworkStores<AppIdentityDbContext>()
         .AddSignInManager();
-        
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme);
         services.AddAuthorization();
-        
+        services.AddTransient<IClaimsTransformation, PermissionClaimsTransformation>();
+
         return services;
     }
 }

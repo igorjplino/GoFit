@@ -1,5 +1,6 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.Athletes.Commands;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.Athlete;
 
@@ -13,6 +14,7 @@ public class CreateAthleteEndpoint :
     public override void Configure()
     {
         Post("Athlete");
+        Permissions(AppPermissions.Training.CreateAthletes);
     }
 
     public override async Task HandleAsync(CreateAthleteCommand req, CancellationToken ct)

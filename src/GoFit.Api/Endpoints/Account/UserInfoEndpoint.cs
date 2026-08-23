@@ -3,6 +3,7 @@ using FastEndpoints;
 using GoFit.Api.Endpoints.Account.Validators;
 using GoFit.Api.Extensions;
 using GoFit.Application.Interfaces.Services;
+using GoFit.Domain.Authorization;
 using GoFit.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -39,8 +40,10 @@ public class UserInfoEndpoint :
         }
         
         AppUser? user = await _userManager.GetUser(User);
-            
-        var loggedUser = new LoggedUserResponse(user.DisplayName, null);
+
+        var roles = await _userManager.GetRolesAsync(user);
+        var role = roles.FirstOrDefault() ?? string.Empty;
+        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, null, role, RolePermissions.For(role).ToArray());
 
         await Send.OkAsync(loggedUser, ct);
     }

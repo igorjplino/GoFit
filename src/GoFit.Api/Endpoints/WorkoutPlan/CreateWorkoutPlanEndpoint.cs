@@ -1,5 +1,6 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.WorkoutPlan;
 
@@ -13,6 +14,7 @@ public class CreateWorkoutPlanEndpoint :
     public override void Configure()
     {
         Post("WorkoutPlan");
+        Permissions(AppPermissions.Training.CreateWorkoutPlans);
     }
 
     public override async Task HandleAsync(CreateWorkoutPlanCommand req, CancellationToken ct)

@@ -1,6 +1,7 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.Exercises.Dtos;
 using GoFit.Application.EntitiesActions.Exercises.Queries;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.Exercise;
 
@@ -14,6 +15,7 @@ public class GetExerciseByIdEndpoint :
     public override void Configure()
     {
         Get("Exercise/{id}");
+        Permissions(AppPermissions.Exercises.View);
     }
 
     public override async Task HandleAsync(GetExerciseDtoByIdQuery req, CancellationToken ct)

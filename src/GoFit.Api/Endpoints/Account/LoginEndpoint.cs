@@ -1,6 +1,7 @@
 ﻿using GoFit.Api.Endpoints.Account.Validators;
 using GoFit.Api.Extensions;
 using GoFit.Application.Interfaces.Services;
+using GoFit.Domain.Authorization;
 using GoFit.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -48,8 +49,9 @@ public class LoginEndpoint :
             return;
         }
         
-        var accessToken = _authorizationService.GenerateToken(user);
-        
+        var roles = await _userManager.GetRolesAsync(user);
+        var accessToken = _authorizationService.GenerateToken(user, roles);
+
         HttpContext.Response.Cookies.Append("access_token", accessToken, new CookieOptions
         {
             HttpOnly = true,
@@ -58,7 +60,8 @@ public class LoginEndpoint :
             Expires = DateTime.UtcNow.AddHours(1000)
         });
 
-        var loggedUser = new LoggedUserResponse(user.DisplayName, accessToken);
+        var role = roles.FirstOrDefault() ?? string.Empty;
+        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, accessToken, role, RolePermissions.For(role).ToArray());
 
         await Send.OkAsync(loggedUser, ct);
     }
@@ -71,5 +74,8 @@ public record LoginRequest(
 
 public record LoggedUserResponse(
     string DisplayName,
-    string Token)
+    string? Email,
+    string? Token,
+    string Role,
+    string[] Permissions)
 { }

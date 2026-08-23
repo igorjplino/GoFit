@@ -4,5 +4,5 @@ namespace GoFit.Application.Interfaces.Services;
 
 public interface IAuthorizationService
 {
-    string GenerateToken(AppUser user);
+    string GenerateToken(AppUser user, IList<string> roles);
 }

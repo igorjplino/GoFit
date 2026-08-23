@@ -1,6 +1,7 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Dtos;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Queries;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.WorkoutPlan;
 
@@ -14,6 +15,7 @@ public class GetWorkoutPlanByIdEndpoint :
     public override void Configure()
     {
         Get("WorkoutPlan/{id}");
+        Permissions(AppPermissions.Training.ViewWorkoutPlans);
     }
 
     public override async Task HandleAsync(GetWorkoutPlanDtoByIdQuery req, CancellationToken ct)

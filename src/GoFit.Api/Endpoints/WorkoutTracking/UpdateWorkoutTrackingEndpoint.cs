@@ -1,5 +1,6 @@
 ﻿using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
+using GoFit.Domain.Authorization;
 
 namespace GoFit.Api.Endpoints.WorkoutTracking;
 
@@ -13,6 +14,7 @@ public class UpdateWorkoutTrackingEndpoint :
     public override void Configure()
     {
         Put("WorkoutTracking/{WorkoutsTrackingId}");
+        Permissions(AppPermissions.Training.EditWorkoutTracking);
     }
 
     public override async Task HandleAsync(UpdateWorkoutTrackingCommand req, CancellationToken ct)

@@ -2,6 +2,7 @@
 using GoFit.Api.Endpoints.Account.Validators;
 using GoFit.Api.Extensions;
 using GoFit.Application.Interfaces.Services;
+using GoFit.Domain.Authorization;
 using GoFit.Domain.Entities.Identity;
 using Microsoft.AspNetCore.Identity;
 
@@ -43,11 +44,13 @@ public class RegisterEndpoint :
 
         if (result.Succeeded)
         {
+            await _userManager.AddToRoleAsync(user, AppRoles.Student);
+
             var regitredUser = new RegistredResponse(
                 user.DisplayName,
                 user.Email,
-                _authorizationService.GenerateToken(user));  
-            
+                _authorizationService.GenerateToken(user, new[] { AppRoles.Student }));
+
             await Send.OkAsync(regitredUser, ct);
             return;
         }
