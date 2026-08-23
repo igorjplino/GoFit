@@ -10,6 +10,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { AccountService } from '../../core/services/account.service';
+import { Permissions } from '../../core/constants/permissions';
 
 @Component({
   selector: 'app-exercise',
@@ -31,8 +33,12 @@ import { FormsModule } from '@angular/forms';
 export class ExerciseComponent implements OnInit {
 
   exercises?: Pagination<Exercise>;
+  permissions = Permissions;
 
-  constructor(private exerciseService: ExerciseService) { }
+  constructor(
+    private exerciseService: ExerciseService,
+    public accountService: AccountService
+  ) { }
 
   ngOnInit(): void {
     this.getExercises();

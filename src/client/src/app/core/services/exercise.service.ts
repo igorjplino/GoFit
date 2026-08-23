@@ -23,4 +23,8 @@ export class ExerciseService {
   createExercise(exercise: { name: string; description: string | null }) {
     return this.http.post<string>(this.baseUrl + 'exercise', exercise);
   }
+
+  deleteExercise(id: string) {
+    return this.http.delete(this.baseUrl + 'exercise/' + id);
+  }
 }

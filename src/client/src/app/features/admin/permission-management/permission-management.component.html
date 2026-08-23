@@ -1,0 +1,95 @@
+<div class="max-w-screen-xl mx-auto p-2 md:p-4">
+    <div class="mb-6">
+        <h1 class="text-2xl md:text-3xl font-semibold text-primary">Permission Management</h1>
+        <p class="text-sm text-gray-500 mt-1">
+            Review what each role can do, and assign roles to users. Permissions are granted through roles -
+            change a user's role to change what they can access.
+        </p>
+    </div>
+
+    @if (error()) {
+        <div class="mb-4 p-4 bg-red-100 text-red-600">{{ error() }}</div>
+    }
+
+    @if (!loading()) {
+        <mat-card appearance="outlined" class="p-4 md:p-6 mb-6 overflow-x-auto">
+            <h2 class="text-lg font-semibold mb-4">Permission matrix</h2>
+            <table class="w-full text-sm border-collapse">
+                <thead>
+                    <tr class="border-b">
+                        <th class="text-left py-2 pr-4">Permission</th>
+                        @for (role of roles(); track role.name) {
+                            <th class="text-center py-2 px-4">{{ role.name }}</th>
+                        }
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (category of categories; track category) {
+                        <tr class="bg-gray-50">
+                            <td [attr.colspan]="roles().length + 1" class="py-1 px-2 font-semibold uppercase text-xs text-gray-500">
+                                {{ category }}
+                            </td>
+                        </tr>
+                        @for (permission of permissionsFor(category); track permission.key) {
+                            <tr class="border-b">
+                                <td class="py-2 pr-4">{{ permission.label }}</td>
+                                @for (role of roles(); track role.name) {
+                                    <td class="text-center py-2 px-4">
+                                        @if (roleGrants(role.name, permission.key)) {
+                                            <mat-icon class="text-green-600 align-middle">check</mat-icon>
+                                        } @else {
+                                            <mat-icon class="text-gray-300 align-middle">close</mat-icon>
+                                        }
+                                    </td>
+                                }
+                            </tr>
+                        }
+                    }
+                </tbody>
+            </table>
+        </mat-card>
+
+        <mat-card appearance="outlined" class="p-4 md:p-6 overflow-x-auto">
+            <h2 class="text-lg font-semibold mb-4">Users</h2>
+
+            @if (users().length === 0) {
+                <p class="text-gray-500">No users found.</p>
+            } @else {
+                <table class="w-full text-sm border-collapse">
+                    <thead>
+                        <tr class="border-b">
+                            <th class="text-left py-2 pr-4">Name</th>
+                            <th class="text-left py-2 pr-4">Email</th>
+                            <th class="text-left py-2 pr-4">Role</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (user of users(); track user.id) {
+                            <tr class="border-b">
+                                <td class="py-2 pr-4">
+                                    {{ user.displayName }}
+                                    @if (user.email === accountService.currentUser()?.email) {
+                                        <span class="text-xs text-gray-400">(you)</span>
+                                    }
+                                </td>
+                                <td class="py-2 pr-4">{{ user.email }}</td>
+                                <td class="py-2 pr-4">
+                                    <mat-form-field appearance="outline" class="w-40" subscriptSizing="dynamic">
+                                        <mat-select
+                                            [value]="user.role"
+                                            [disabled]="savingUserId() === user.id"
+                                            (selectionChange)="onRoleChange(user, $event)">
+                                            @for (role of roles(); track role.name) {
+                                                <mat-option [value]="role.name">{{ role.name }}</mat-option>
+                                            }
+                                        </mat-select>
+                                    </mat-form-field>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </mat-card>
+    }
+</div>

@@ -39,4 +39,12 @@ export class AccountService {
       tap(() => this.currentUser.set(null))
     );
   }
+
+  hasPermission(permission: string): boolean {
+    return this.currentUser()?.permissions?.includes(permission) ?? false;
+  }
+
+  hasAnyPermission(...permissions: string[]): boolean {
+    return permissions.some(permission => this.hasPermission(permission));
+  }
 }

@@ -41,9 +41,11 @@
             </div>
 
             <!-- Create Exercise Button -->
-            <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
-                <mat-icon class="mr-2">add</mat-icon> Create Exercise
-            </button>
+            @if (accountService.hasPermission(permissions.Exercises.Create)) {
+                <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+                    <mat-icon class="mr-2">add</mat-icon> Create Exercise
+                </button>
+            }
         </div>
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
@@ -62,8 +64,10 @@
 @else {
 <div class="flex flex-col items-center gap-4 mt-12">
     <p>No exercises found</p>
-    <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
-        <mat-icon class="mr-2">add</mat-icon> Create Exercise
-    </button>
+    @if (accountService.hasPermission(permissions.Exercises.Create)) {
+        <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+            <mat-icon class="mr-2">add</mat-icon> Create Exercise
+        </button>
+    }
 </div>
 }

@@ -32,6 +32,12 @@
         <mat-icon>shopping_cart</mat-icon>
         My account
     </button>
+    @if (accountService.hasPermission(permissions.RoleManagement.ManageUserRoles)) {
+        <button mat-menu-item class="px-3" routerLink="/admin/permissions">
+            <mat-icon>admin_panel_settings</mat-icon>
+            Manage Permissions
+        </button>
+    }
     <mat-divider></mat-divider>
     <button mat-menu-item class="px-3" (click)="logout()">
         <mat-icon>logout</mat-icon>
