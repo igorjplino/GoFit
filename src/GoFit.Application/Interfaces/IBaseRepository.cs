@@ -5,6 +5,7 @@ public interface IBaseRepository<T> where T : BaseEntity
 {
     Task<Guid> CreateAsync(T entity);
     Task UpdateAsync(T entity);
+    Task DeleteAsync(Guid id);
     Task<IEnumerable<T>> GetAllAsync();
     Task<T?> GetAsync(Guid id);
 }
