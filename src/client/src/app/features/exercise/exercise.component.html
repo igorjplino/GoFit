@@ -42,7 +42,7 @@
 
             <!-- Create Exercise Button -->
             @if (accountService.hasPermission(permissions.Exercises.Create)) {
-                <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+                <button routerLink="/admin/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
                     <mat-icon class="mr-2">add</mat-icon> Create Exercise
                 </button>
             }
@@ -50,7 +50,7 @@
 
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
             @for (exercise of exercises.items; track exercise.id) {
-            <mat-card appearance="raised" routerLink="/exercise/{{exercise.id}}" class="exercise-card">
+            <mat-card appearance="raised" routerLink="/admin/exercise/{{exercise.id}}" class="exercise-card">
                 <img mat-card-image src="" alt="Exercise image">
                 <mat-card-content class="mt-2">
                     <h2 class="text-sm font-semibold uppercase">{{exercise.name}}</h2>
@@ -65,7 +65,7 @@
 <div class="flex flex-col items-center gap-4 mt-12">
     <p>No exercises found</p>
     @if (accountService.hasPermission(permissions.Exercises.Create)) {
-        <button routerLink="/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
+        <button routerLink="/admin/exercise/create" class="bg-blue-500 text-white px-4 py-2 rounded shadow hover:bg-blue-600">
             <mat-icon class="mr-2">add</mat-icon> Create Exercise
         </button>
     }

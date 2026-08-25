@@ -6,6 +6,7 @@ import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { AccountService } from '../../../core/services/account.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AppRoles } from '../../../core/constants/roles';
 
 @Component({
   selector: 'app-login',
@@ -24,29 +25,40 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class LoginComponent {
   loginForm: FormGroup;
   returnUrl = '/';
+  hasExplicitReturnUrl = false;
 
   constructor(
-    private fb: FormBuilder,
+    fb: FormBuilder,
     private accountService: AccountService,
     private router: Router,
-    private activatedRoute: ActivatedRoute
+    activatedRoute: ActivatedRoute
   ) {
     this.loginForm = fb.group({
       email: [''],
       password: ['']
     });
 
-    const url = this.activatedRoute.snapshot.queryParams['returnUrl'];
+    const url = activatedRoute.snapshot.queryParams['returnUrl'];
     if (url) {
       this.returnUrl = url;
+      this.hasExplicitReturnUrl = true;
     }
   }
 
   onSubmit() {
     this.accountService.login(this.loginForm.value).subscribe({
       next: () => {
-        this.accountService.getUserInfo().subscribe();
-        this.router.navigateByUrl(this.returnUrl);
+        this.accountService.getUserInfo().subscribe(user => {
+          let target: string = '/';
+          
+          if (this.hasExplicitReturnUrl) {
+            target = this.returnUrl;
+          } else if (user.role === AppRoles.Admin) {
+            target = '/admin';
+          }
+
+          this.router.navigateByUrl(target);
+        });
       }
     });
   }

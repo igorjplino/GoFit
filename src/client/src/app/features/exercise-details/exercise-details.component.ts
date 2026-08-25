@@ -13,7 +13,7 @@ import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/c
 @Component({
   selector: 'app-exercise-details',
   standalone: true,
-  imports: [MatCard, MatButton],
+  imports: [MatButton],
   templateUrl: './exercise-details.component.html',
   styleUrl: './exercise-details.component.scss'
 })
@@ -69,7 +69,7 @@ export class ExerciseDetailsComponent {
       this.exerciseService.deleteExercise(this.exercise.id).subscribe({
         next: () => {
           this.snack.success('Exercise deleted');
-          this.router.navigateByUrl('/exercise');
+          this.router.navigateByUrl('/admin/exercise');
         },
         error: () => this.deleting = false
       });

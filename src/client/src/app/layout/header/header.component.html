@@ -2,7 +2,7 @@
     <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
         <img class="h-6 md:h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="">
         <nav class="hidden md:flex gap-3 my-2 uppercase text-sm md:text-lg">
-            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </nav>
         <div class="flex gap-1 md:gap-3 align-middle items-center">
             @if (accountService.currentUser()) {
@@ -24,7 +24,7 @@
 }
 
 <mat-menu #menu="matMenu" class="px-4">
-    <button mat-menu-item class="px-3" routerLink="/exercise">
+    <button mat-menu-item class="px-3" routerLink="/admin/exercise">
         <mat-icon>fitness_center</mat-icon>
         Exercises
     </button>

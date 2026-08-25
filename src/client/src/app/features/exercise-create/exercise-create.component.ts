@@ -50,7 +50,7 @@ export class ExerciseCreateComponent {
     }).subscribe({
       next: id => {
         this.snack.success('Exercise created successfully');
-        this.router.navigateByUrl(`/exercise/${id}`);
+        this.router.navigateByUrl(`/admin/exercise/${id}`);
       },
       error: errors => {
         this.submitting.set(false);

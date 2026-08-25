@@ -16,7 +16,6 @@ import { Permissions } from '../../core/constants/permissions';
   selector: 'app-header',
   standalone: true,
   imports: [
-    NgIf,
     MatIconModule,
     MatButtonModule,
     MatToolbarModule,
@@ -28,7 +27,7 @@ import { Permissions } from '../../core/constants/permissions';
     MatMenu,
     MatDivider,
     MatMenuItem
-  ],
+],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
