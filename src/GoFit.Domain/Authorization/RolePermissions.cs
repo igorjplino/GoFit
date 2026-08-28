@@ -11,7 +11,7 @@ public static class RolePermissions
     {
         [AppRoles.Admin] = AppPermissions.All.ToArray(),
 
-        [AppRoles.Student] = new[]
+        [AppRoles.Athlete] = new[]
         {
             AppPermissions.Exercises.View,
             AppPermissions.Training.CreateAthletes,

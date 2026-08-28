@@ -44,12 +44,12 @@ public class RegisterEndpoint :
 
         if (result.Succeeded)
         {
-            await _userManager.AddToRoleAsync(user, AppRoles.Student);
+            await _userManager.AddToRoleAsync(user, AppRoles.Athlete);
 
             var regitredUser = new RegistredResponse(
                 user.DisplayName,
                 user.Email,
-                _authorizationService.GenerateToken(user, new[] { AppRoles.Student }));
+                _authorizationService.GenerateToken(user, new[] { AppRoles.Athlete }));
 
             await Send.OkAsync(regitredUser, ct);
             return;

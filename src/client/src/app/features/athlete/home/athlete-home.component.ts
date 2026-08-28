@@ -4,12 +4,12 @@ import { MatButton } from '@angular/material/button';
 import { AccountService } from '../../../core/services/account.service';
 
 @Component({
-  selector: 'app-student-home',
+  selector: 'app-athlete-home',
   standalone: true,
   imports: [RouterLink, MatButton],
-  templateUrl: './student-home.component.html',
-  styleUrl: './student-home.component.scss'
+  templateUrl: './athlete-home.component.html',
+  styleUrl: './athlete-home.component.scss'
 })
-export class StudentHomeComponent {
+export class AthleteHomeComponent {
   accountService = inject(AccountService);
 }

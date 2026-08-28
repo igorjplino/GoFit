@@ -1,4 +1,4 @@
 export const AppRoles = {
   Admin: 'Admin',
-  Student: 'Student'
+  Athlete: 'Athlete'
 } as const;

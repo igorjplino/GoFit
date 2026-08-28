@@ -4,20 +4,20 @@ import { ExerciseComponent } from './features/exercise/exercise.component';
 import { ExerciseCreateComponent } from './features/exercise-create/exercise-create.component';
 import { ExerciseDetailsComponent } from './features/exercise-details/exercise-details.component';
 import { PermissionManagementComponent } from './features/admin/permission-management/permission-management.component';
-import { StudentHomeComponent } from './features/student/home/student-home.component';
+import { AthleteHomeComponent } from './features/athlete/home/athlete-home.component';
 import { NotFoundComponent } from './shared/components/not-found/not-found.component';
 import { ForbiddenComponent } from './shared/components/forbidden/forbidden.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
-import { StudentLayoutComponent } from './layout/student-layout/student-layout.component';
+import { AthleteLayoutComponent } from './layout/athlete-layout/athlete-layout.component';
 import { permissionGuard } from './core/guards/permission.guard';
 import { Permissions } from './core/constants/permissions';
 
 export const routes: Routes = [
     {
         path: '',
-        component: StudentLayoutComponent,
+        component: AthleteLayoutComponent,
         children: [
-            { path: '', component: StudentHomeComponent }
+            { path: '', component: AthleteHomeComponent }
         ]
     },
     {

@@ -16,6 +16,8 @@ public static class AppIdentityDbContextInitialise
 
     public static async Task EnsureRolesAsync(RoleManager<IdentityRole> roleManager)
     {
+        await RenameLegacyStudentRoleAsync(roleManager);
+
         foreach (var role in AppRoles.All)
         {
             if (!await roleManager.RoleExistsAsync(role))
@@ -23,6 +25,24 @@ public static class AppIdentityDbContextInitialise
                 await roleManager.CreateAsync(new IdentityRole(role));
             }
         }
+    }
+
+    /// <summary>
+    /// The role used to be called "Student" before it was renamed to "Athlete". Renaming it in
+    /// place (instead of letting EnsureRolesAsync create a fresh "Athlete" role) preserves
+    /// existing users' role assignments rather than orphaning them under the old name.
+    /// </summary>
+    private static async Task RenameLegacyStudentRoleAsync(RoleManager<IdentityRole> roleManager)
+    {
+        var legacyRole = await roleManager.FindByNameAsync("Student");
+        if (legacyRole is null || await roleManager.RoleExistsAsync(AppRoles.Athlete))
+        {
+            return;
+        }
+
+        legacyRole.Name = AppRoles.Athlete;
+        await roleManager.UpdateNormalizedRoleNameAsync(legacyRole);
+        await roleManager.UpdateAsync(legacyRole);
     }
 
     /// <summary>
@@ -77,7 +97,7 @@ public static class AppIdentityDbContextInitialise
 
     /// <summary>
     /// Users created before roles existed have no role assigned, which would leave them with
-    /// zero permissions. Defaults them to Student - the same role new self-registered users get -
+    /// zero permissions. Defaults them to Athlete - the same role new self-registered users get -
     /// rather than silently locking them out.
     /// </summary>
     public static async Task BackfillMissingRolesAsync(UserManager<AppUser> userManager, ILogger logger)
@@ -89,8 +109,8 @@ public static class AppIdentityDbContextInitialise
             var roles = await userManager.GetRolesAsync(user);
             if (roles.Count == 0)
             {
-                await userManager.AddToRoleAsync(user, AppRoles.Student);
-                logger.LogWarning("User {Email} had no role - defaulted to {Role}", user.Email, AppRoles.Student);
+                await userManager.AddToRoleAsync(user, AppRoles.Athlete);
+                logger.LogWarning("User {Email} had no role - defaulted to {Role}", user.Email, AppRoles.Athlete);
             }
         }
     }
