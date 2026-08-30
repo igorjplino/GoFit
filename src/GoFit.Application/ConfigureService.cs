@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using GoFit.Application.Common.PipelineBehaviours;
+using GoFit.Application.EntitiesActions.Athletes.Commands;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
@@ -26,9 +27,12 @@ public static class ConfigureService
             cfg.AddValidation<DeleteExerciseCommand, Guid>();
             cfg.AddValidation<CreateWorkoutCommand, Guid>();
             cfg.AddValidation<CreateWorkoutPlanCommand, Guid>();
+            cfg.AddValidation<UpdateWorkoutPlanCommand, Guid?>();
+            cfg.AddValidation<UpdateWorkoutCommand, Guid?>();
             cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>();
             cfg.AddValidation<UpdateUserRoleCommand, string>();
+            cfg.AddValidation<CreateAthleteCommand, Guid>();
         });
         
         services.AddScoped<IAuthorizationService, AuthorizationService>();

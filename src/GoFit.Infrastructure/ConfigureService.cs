@@ -14,7 +14,7 @@ public static class ConfigureService
     {
         services.Configure<Connections>(configuration.GetSection("ConnectionStrings"));
         
-        services.AddDbContext<GoFitDbContext>(options => 
+        services.AddDbContext<GoFitDbContext>(options =>
         {
             options.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
             options.UseSqlServer(configuration.GetConnectionString("GoFitDb"));

@@ -1,0 +1,129 @@
+@if (workoutPlan) {
+    <div class="max-w-2xl mx-auto mt-8 md:mt-12 px-2 md:px-0">
+        @if (!editingPlan()) {
+            <div class="flex items-start justify-between gap-3">
+                <div>
+                    <h1 class="text-2xl md:text-3xl font-semibold text-primary">{{ workoutPlan.title }}</h1>
+                    @if (workoutPlan.description) {
+                        <p class="text-gray-600 mt-2">{{ workoutPlan.description }}</p>
+                    }
+                </div>
+                @if (accountService.hasPermission(permissions.Training.EditWorkoutPlans)) {
+                    <button mat-icon-button type="button" (click)="startEditPlan()" aria-label="Edit workout plan">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                }
+            </div>
+        } @else {
+            <form [formGroup]="planForm" class="mt-2">
+                <app-text-input
+                    label="Title"
+                    formControlName="title"
+                    [required]="true"
+                    hint="A short, unique name for the plan (3-100 characters)" />
+
+                <app-text-input
+                    label="Description"
+                    formControlName="description"
+                    hint="Optional. If provided, must be 3-300 characters" />
+
+                @if (planValidationErrors) {
+                    <div class="mb-3 p-4 bg-red-100 text-red-600">
+                        <ul class="list-disc px-3">
+                            @for (error of planValidationErrors; track $index) {
+                                <li>{{error}}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <div class="flex gap-3">
+                    <button
+                        mat-flat-button
+                        type="button"
+                        (click)="saveWorkoutPlan()"
+                        [disabled]="!canSavePlan"
+                        class="py-2">
+                        {{ savingPlan() ? 'Saving...' : 'Save' }}
+                    </button>
+                    <button
+                        mat-stroked-button
+                        type="button"
+                        (click)="cancelEditPlan()"
+                        [disabled]="savingPlan()"
+                        class="py-2">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        }
+
+        <div class="mt-6 flex items-center justify-between">
+            <h2 class="text-lg font-medium">Workouts</h2>
+            @if (!addingWorkout() && accountService.hasPermission(permissions.Training.CreateWorkouts)) {
+                <button mat-stroked-button type="button" (click)="showAddWorkout()">Add Workout</button>
+            }
+        </div>
+
+        @if (addingWorkout()) {
+            <div class="mt-3">
+                <app-workout-form
+                    [draft]="newWorkoutDraft"
+                    (draftChange)="onNewWorkoutDraftChange($event)"
+                    (remove)="cancelAddWorkout()" />
+
+                @if (workoutValidationErrors) {
+                    <div class="mb-3 p-4 bg-red-100 text-red-600">
+                        <ul class="list-disc px-3">
+                            @for (error of workoutValidationErrors; track $index) {
+                                <li>{{error}}</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <div class="flex gap-3 mb-4">
+                    <button
+                        mat-flat-button
+                        type="button"
+                        (click)="saveWorkout()"
+                        [disabled]="!canSaveWorkout"
+                        class="py-2">
+                        {{ savingWorkout() ? 'Saving...' : 'Save Workout' }}
+                    </button>
+                    <button
+                        mat-stroked-button
+                        type="button"
+                        (click)="cancelAddWorkout()"
+                        [disabled]="savingWorkout()"
+                        class="py-2">
+                        Cancel
+                    </button>
+                </div>
+            </div>
+        }
+
+        <div class="mt-3 flex flex-col gap-3">
+            @for (workout of workoutPlan.workouts; track workout.id) {
+                <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" [routerLink]="['/workouts', workout.id]">
+                    <mat-card-content class="flex items-center justify-between">
+                        <div>
+                            <div class="font-medium">{{ workout.name }}</div>
+                            <div class="text-sm text-gray-500">{{ exerciseCount(workout) }} exercises</div>
+                        </div>
+                        @if (accountService.hasPermission(permissions.Training.EditWorkouts)) {
+                            <button
+                                mat-icon-button
+                                type="button"
+                                [disabled]="deletingWorkoutId === workout.id"
+                                (click)="onDeleteWorkout($event, workout)"
+                                aria-label="Delete workout">
+                                <mat-icon>delete</mat-icon>
+                            </button>
+                        }
+                    </mat-card-content>
+                </mat-card>
+            }
+        </div>
+    </div>
+}

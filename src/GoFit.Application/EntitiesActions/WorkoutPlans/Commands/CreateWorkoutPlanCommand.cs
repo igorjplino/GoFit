@@ -7,7 +7,7 @@ using GoFit.Application.EntitiesActions.WorkoutPlans.Dtos;
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 
 public record CreateWorkoutPlanCommand(
-    Guid AthleteId,
+    string AppUserId,
     string Title,
     string? Description,
     IEnumerable<WorkoutDto> Workouts)
@@ -17,23 +17,27 @@ public record CreateWorkoutPlanCommand(
 public class CreateWorkoutPlanCommandHandler : IRequestHandler<CreateWorkoutPlanCommand, Result<Guid>>
 {
     private readonly IWorkoutPlanRepository _workoutPlanRepository;
+    private readonly IAthleteRepository _athleteRepository;
 
-    public CreateWorkoutPlanCommandHandler(IWorkoutPlanRepository workoutPlanRepository)
+    public CreateWorkoutPlanCommandHandler(IWorkoutPlanRepository workoutPlanRepository, IAthleteRepository athleteRepository)
     {
         _workoutPlanRepository = workoutPlanRepository;
+        _athleteRepository = athleteRepository;
     }
 
     public async Task<Result<Guid>> Handle(CreateWorkoutPlanCommand request, CancellationToken cancellationToken)
     {
-        var workoutPlan = ToModel(request);
+        var athlete = await _athleteRepository.GetByAppUserIdAsync(request.AppUserId);
+
+        var workoutPlan = ToModel(request, athlete!.Id);
 
         return await _workoutPlanRepository.CreateAsync(workoutPlan);
     }
 
-    private static WorkoutPlan ToModel(CreateWorkoutPlanCommand request)
+    private static WorkoutPlan ToModel(CreateWorkoutPlanCommand request, Guid athleteId)
         => new()
         {
-            AthleteId = request.AthleteId,
+            AthleteId = athleteId,
             Title = request.Title,
             Description = request.Description,
             Workouts = request.Workouts.Select(w => new Workout

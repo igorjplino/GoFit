@@ -1,0 +1,52 @@
+@if (workout) {
+    <mat-card class="max-w-2xl mx-auto mt-12 md:mt-16 p-4 md:p-8 bg-white m-2 md:m-0">
+        <form [formGroup]="form" class="mb-6">
+            <app-text-input
+                label="Name"
+                formControlName="name"
+                [required]="true"
+                hint="A short, unique name for this workout (3-100 characters)" />
+
+            <app-text-input
+                label="Description"
+                formControlName="description"
+                hint="Optional. If provided, must be 3-300 characters" />
+        </form>
+
+        <div class="mb-6">
+            <h2 class="text-lg font-medium mb-2">Exercises</h2>
+            <app-workout-exercises-form
+                [entries]="entries"
+                (entriesChange)="onEntriesChange($event)" />
+        </div>
+
+        @if (validationErrors) {
+            <div class="mb-3 p-4 bg-red-100 text-red-600">
+                <ul class="list-disc px-3">
+                    @for (error of validationErrors; track $index) {
+                        <li>{{error}}</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="flex gap-3 mt-2">
+            <button
+                mat-flat-button
+                type="button"
+                (click)="onSave()"
+                [disabled]="!canSave"
+                class="w-full py-2">
+                {{ submitting() ? 'Saving...' : 'Save Workout' }}
+            </button>
+            <button
+                mat-stroked-button
+                type="button"
+                [routerLink]="['/workout-plans', workout.workoutPlanId]"
+                [disabled]="submitting()"
+                class="w-full py-2">
+                Cancel
+            </button>
+        </div>
+    </mat-card>
+}

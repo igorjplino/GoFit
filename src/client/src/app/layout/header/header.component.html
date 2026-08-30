@@ -2,7 +2,7 @@
     <div class="flex align-middle items-center justify-between max-w-screen-2xl mx-auto">
         <img class="h-6 md:h-8 w-auto" src="https://tailwindui.com/plus/img/logos/mark.svg?color=indigo&shade=600" alt="">
         <nav class="hidden md:flex gap-3 my-2 uppercase text-sm md:text-lg">
-            <a routerLink="/admin" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
+            <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">Home</a>
         </nav>
         <div class="flex gap-1 md:gap-3 align-middle items-center">
             @if (accountService.currentUser()) {
@@ -32,6 +32,12 @@
         <mat-icon>shopping_cart</mat-icon>
         My account
     </button>
+    @if (accountService.hasPermission(permissions.Training.ViewWorkoutPlans)) {
+        <button mat-menu-item class="px-3" routerLink="/workout-plans">
+            <mat-icon>list_alt</mat-icon>
+            My Workout Plans
+        </button>
+    }
     @if (accountService.hasPermission(permissions.RoleManagement.ManageUserRoles)) {
         <button mat-menu-item class="px-3" routerLink="/admin/permissions">
             <mat-icon>admin_panel_settings</mat-icon>

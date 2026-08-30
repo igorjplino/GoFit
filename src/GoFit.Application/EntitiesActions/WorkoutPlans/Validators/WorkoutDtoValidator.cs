@@ -19,6 +19,9 @@ public class WorkoutDtoValidator : AbstractValidator<WorkoutDto>
                 .MaximumLength(300);
         });
 
+        RuleFor(x => x.WorkoutExercises)
+            .NotEmpty();
+
         RuleForEach(x => x.WorkoutExercises)
             .SetValidator(new WorkoutExerciseDtoValidator(exerciseRepository));
     }

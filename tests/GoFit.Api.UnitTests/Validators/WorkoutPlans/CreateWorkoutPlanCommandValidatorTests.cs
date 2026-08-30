@@ -30,7 +30,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleIsNull_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: null,
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -45,7 +45,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleIsEmpty_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -60,7 +60,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleHasLessThan3Chars_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: "ab",
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -75,7 +75,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleHasMoreThan100Chars_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.",
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -90,7 +90,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenTitleIsCorrect_ShouldNotFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: "Barbell",
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -105,7 +105,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenDescriptionIsNull_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -120,7 +120,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenDescriptionIsEmpty_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: string.Empty,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -135,7 +135,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenDescriptionHasLessThan3Chars_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: "ab",
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -150,7 +150,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenDescriptionHasMoreThan300Chars_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo.",
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -165,7 +165,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenDescriptionIsCorrect_ShouldNotFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem.",
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -180,7 +180,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenWorkoutsIsNull_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: null,
             Workouts: null);
@@ -195,7 +195,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenWorkoutsIsEmpty_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: null,
             Workouts: Enumerable.Empty<WorkoutDto>());
@@ -210,7 +210,7 @@ public class CreateWorkoutPlanCommandValidatorTests
     public async Task WhenWorkoutsHasNullItem_ShouldFail()
     {
         var command = new CreateWorkoutPlanCommand(
-            AthleteId: default,
+            AppUserId: string.Empty,
             Title: string.Empty,
             Description: null,
             Workouts: new List<WorkoutDto> { null });

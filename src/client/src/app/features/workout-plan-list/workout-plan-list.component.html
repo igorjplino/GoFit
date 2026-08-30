@@ -1,0 +1,26 @@
+<div class="max-w-4xl mx-auto mt-8 md:mt-12 px-2 md:px-0">
+    <div class="flex items-center justify-between mb-6">
+        <h1 class="text-2xl md:text-3xl font-semibold text-primary">My Workout Plans</h1>
+        @if (accountService.hasPermission(permissions.Training.CreateWorkoutPlans)) {
+            <button mat-flat-button routerLink="/workout-plans/create">Create Workout Plan</button>
+        }
+    </div>
+
+    @if (workoutPlans.length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            @for (plan of workoutPlans; track plan.id) {
+                <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" [routerLink]="['/workout-plans', plan.id]">
+                    <mat-card-content>
+                        <h2 class="text-lg font-medium">{{ plan.title }}</h2>
+                        @if (plan.description) {
+                            <p class="text-sm text-gray-500 mt-1">{{ plan.description }}</p>
+                        }
+                        <p class="text-xs text-gray-400 mt-2">{{ exerciseCount(plan) }} exercises</p>
+                    </mat-card-content>
+                </mat-card>
+            }
+        </div>
+    } @else {
+        <p class="text-gray-500">You haven't created any workout plans yet.</p>
+    }
+</div>

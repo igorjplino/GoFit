@@ -1,21 +1,24 @@
 ﻿using FluentValidation;
-using GoFit.Application.Common.Validators;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.Interfaces;
-using GoFit.Domain.Entities;
 
 namespace GoFit.Application.EntitiesActions.WorkoutPlans.Validators;
 
 public class CreateWorkoutPlanCommandValidator : AbstractValidator<CreateWorkoutPlanCommand>
 {
+    private readonly IAthleteRepository _athleteRepository;
+
     public CreateWorkoutPlanCommandValidator(
         IExerciseRepository exerciseRepository,
         IAthleteRepository athleteRepository)
     {
+        _athleteRepository = athleteRepository;
+
         RuleLevelCascadeMode = CascadeMode.Stop;
 
-        RuleFor(x => x.AthleteId)
-            .SetValidator(new EntityMustExistsValidator<Athlete>(athleteRepository));
+        RuleFor(x => x.AppUserId)
+            .NotEmpty()
+            .MustAsync(HaveLinkedAthlete).WithMessage("No athlete is linked to the current account.");
 
         RuleFor(x => x.Title)
             .NotEmpty()
@@ -36,4 +39,7 @@ public class CreateWorkoutPlanCommandValidator : AbstractValidator<CreateWorkout
             .NotEmpty()
             .SetValidator(new WorkoutDtoValidator(exerciseRepository));
     }
+
+    private async Task<bool> HaveLinkedAthlete(string appUserId, CancellationToken ct)
+        => await _athleteRepository.GetByAppUserIdAsync(appUserId) is not null;
 }

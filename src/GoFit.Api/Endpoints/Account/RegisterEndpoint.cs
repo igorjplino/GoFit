@@ -1,6 +1,7 @@
 ﻿using FluentValidation.Results;
 using GoFit.Api.Endpoints.Account.Validators;
 using GoFit.Api.Extensions;
+using GoFit.Application.EntitiesActions.Athletes.Commands;
 using GoFit.Application.Interfaces.Services;
 using GoFit.Domain.Authorization;
 using GoFit.Domain.Entities.Identity;
@@ -45,6 +46,16 @@ public class RegisterEndpoint :
         if (result.Succeeded)
         {
             await _userManager.AddToRoleAsync(user, AppRoles.Athlete);
+
+            var athleteResult = await Mediator.Send(new CreateAthleteCommand(user.Id, req.Name, req.Email), ct);
+
+            athleteResult.Match<object?>(
+                succ => null,
+                fail =>
+                {
+                    Logger.LogError(fail, "Failed to create Athlete for {Email}", user.Email);
+                    return null;
+                });
 
             var regitredUser = new RegistredResponse(
                 user.DisplayName,

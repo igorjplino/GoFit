@@ -1,5 +1,8 @@
+using GoFit.Application.EntitiesActions.Athletes.Commands;
+using GoFit.Application.Interfaces;
 using GoFit.Domain.Authorization;
 using GoFit.Domain.Entities.Identity;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -112,6 +115,34 @@ public static class AppIdentityDbContextInitialise
                 await userManager.AddToRoleAsync(user, AppRoles.Athlete);
                 logger.LogWarning("User {Email} had no role - defaulted to {Role}", user.Email, AppRoles.Athlete);
             }
+        }
+    }
+
+    /// <summary>
+    /// Users created before the Athlete/AppUser link existed have no corresponding Athlete row,
+    /// which would leave them unable to own any workout data. Creates the missing Athlete via the
+    /// same CreateAthleteCommand used at registration, so it goes through the normal validation
+    /// pipeline rather than writing to the repository directly.
+    /// </summary>
+    public static async Task BackfillMissingAthletesAsync(
+        UserManager<AppUser> userManager,
+        IMediator mediator,
+        IAthleteRepository athleteRepository,
+        ILogger logger)
+    {
+        var users = await userManager.Users.ToListAsync();
+
+        foreach (var user in users)
+        {
+            var existingAthlete = await athleteRepository.GetByAppUserIdAsync(user.Id);
+
+            if (existingAthlete is not null)
+            {
+                continue;
+            }
+
+            await mediator.Send(new CreateAthleteCommand(user.Id, user.DisplayName, user.Email));
+            logger.LogWarning("User {Email} had no linked Athlete - created one", user.Email);
         }
     }
 }

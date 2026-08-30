@@ -1,0 +1,58 @@
+<form [formGroup]="entryForm" (ngSubmit)="onSave()" #entryFormDirective="ngForm" class="grid grid-cols-1 md:grid-cols-5 gap-3 items-start mb-4">
+    <mat-form-field class="md:col-span-2">
+        <mat-label>Exercise</mat-label>
+        <mat-select formControlName="exerciseId">
+            @for (exercise of exercises(); track exercise.id) {
+                <mat-option [value]="exercise.id">{{ exercise.name }}</mat-option>
+            }
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Sets</mat-label>
+        <input matInput type="number" formControlName="numberOfSets" min="1" max="20">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Weight (kg)</mat-label>
+        <input matInput type="number" formControlName="weight" min="0">
+    </mat-form-field>
+
+    <mat-form-field>
+        <mat-label>Reps</mat-label>
+        <input matInput type="number" formControlName="repetitions" min="1" max="100">
+    </mat-form-field>
+
+    <div class="flex gap-2 md:col-span-5">
+        <button mat-flat-button type="submit" [disabled]="entryForm.invalid">
+            {{ editingIndex() === null ? 'Add Exercise' : 'Update Exercise' }}
+        </button>
+        @if (editingIndex() !== null) {
+            <button mat-stroked-button type="button" (click)="onCancelEdit()">Cancel</button>
+        }
+    </div>
+</form>
+
+@if (entries.length) {
+    <div cdkDropList class="flex flex-col gap-2" (cdkDropListDropped)="onDrop($event)">
+        @for (entry of entries; track $index) {
+            <div cdkDrag class="flex items-center gap-3 border rounded p-2 bg-white">
+                <span cdkDragHandle class="cursor-move text-gray-400">
+                    <mat-icon>drag_indicator</mat-icon>
+                </span>
+                <div class="flex-1">
+                    <div class="font-medium">{{ entry.exerciseName }}</div>
+                    <div class="text-sm text-gray-500">{{ entry.numberOfSets }} × {{ entry.repetitions }} reps &#64; {{ entry.weight }} kg</div>
+                </div>
+                <button mat-icon-button type="button" (click)="onEdit($index)" aria-label="Edit exercise">
+                    <mat-icon>edit</mat-icon>
+                </button>
+                <button mat-icon-button type="button" (click)="onRemove($index)" aria-label="Remove exercise">
+                    <mat-icon>delete</mat-icon>
+                </button>
+            </div>
+        }
+    </div>
+} @else {
+    <p class="text-sm text-gray-500">No exercises added yet.</p>
+}

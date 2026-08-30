@@ -1,0 +1,61 @@
+<mat-card class="max-w-2xl mx-auto mt-12 md:mt-16 p-4 md:p-8 bg-white m-2 md:m-0">
+    <form [formGroup]="planForm" (ngSubmit)="onSubmit()">
+        <div class="mb-6">
+            <h1 class="text-2xl md:text-3xl font-semibold text-primary">Create Workout Plan</h1>
+            <p class="text-sm text-gray-500 mt-1">Build your plan from one or more workouts. Fields marked * are required.</p>
+        </div>
+
+        <app-text-input
+            label="Name"
+            formControlName="name"
+            [required]="true"
+            hint="A short, unique name for the plan (3-100 characters)" />
+
+        <app-text-input
+            label="Description"
+            formControlName="description"
+            hint="Optional. If provided, must be 3-300 characters" />
+
+        <div class="mb-6">
+            <div class="flex items-center justify-between mb-2">
+                <h2 class="text-lg font-medium">Workouts</h2>
+                <button mat-stroked-button type="button" (click)="addWorkout()">Add Workout</button>
+            </div>
+
+            @for (draft of workoutDrafts; track $index) {
+                <app-workout-form
+                    [draft]="draft"
+                    (draftChange)="onDraftChange($index, $event)"
+                    (remove)="removeWorkout($index)" />
+            }
+        </div>
+
+        @if (validationErrors) {
+            <div class="mb-3 p-4 bg-red-100 text-red-600">
+                <ul class="list-disc px-3">
+                    @for (error of validationErrors; track $index) {
+                        <li>{{error}}</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <div class="flex gap-3 mt-2">
+            <button
+                mat-flat-button
+                type="submit"
+                [disabled]="!canSubmit"
+                class="w-full py-2">
+                {{ submitting() ? 'Saving...' : 'Save Workout Plan' }}
+            </button>
+            <button
+                mat-stroked-button
+                type="button"
+                routerLink="/workout-plans"
+                [disabled]="submitting()"
+                class="w-full py-2">
+                Cancel
+            </button>
+        </div>
+    </form>
+</mat-card>

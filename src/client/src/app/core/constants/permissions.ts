@@ -17,11 +17,12 @@ export const Permissions = {
         ManagePermissions: 'role:manage-permissions'
     },
     Training: {
-        CreateAthletes: 'athlete:create',
         ViewWorkouts: 'workout:view',
         CreateWorkouts: 'workout:create',
+        EditWorkouts: 'workout:edit',
         ViewWorkoutPlans: 'workoutplan:view',
         CreateWorkoutPlans: 'workoutplan:create',
+        EditWorkoutPlans: 'workoutplan:edit',
         ViewWorkoutTracking: 'workouttracking:view',
         StartWorkoutTracking: 'workouttracking:start',
         EditWorkoutTracking: 'workouttracking:edit'
@@ -49,11 +50,12 @@ export const PermissionCatalog: PermissionCatalogEntry[] = [
     { category: 'Roles & Permissions', key: Permissions.RoleManagement.ManageUserRoles, label: 'Manage user roles' },
     { category: 'Roles & Permissions', key: Permissions.RoleManagement.ManagePermissions, label: 'Manage role permissions' },
 
-    { category: 'Training', key: Permissions.Training.CreateAthletes, label: 'Register athletes' },
     { category: 'Training', key: Permissions.Training.ViewWorkouts, label: 'View workouts' },
     { category: 'Training', key: Permissions.Training.CreateWorkouts, label: 'Create workouts' },
+    { category: 'Training', key: Permissions.Training.EditWorkouts, label: 'Edit workouts' },
     { category: 'Training', key: Permissions.Training.ViewWorkoutPlans, label: 'View workout plans' },
     { category: 'Training', key: Permissions.Training.CreateWorkoutPlans, label: 'Create workout plans' },
+    { category: 'Training', key: Permissions.Training.EditWorkoutPlans, label: 'Edit workout plans' },
     { category: 'Training', key: Permissions.Training.ViewWorkoutTracking, label: 'View workout tracking' },
     { category: 'Training', key: Permissions.Training.StartWorkoutTracking, label: 'Start workout tracking' },
     { category: 'Training', key: Permissions.Training.EditWorkoutTracking, label: 'Update workout tracking' }

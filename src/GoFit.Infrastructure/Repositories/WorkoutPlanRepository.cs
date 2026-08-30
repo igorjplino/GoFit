@@ -29,6 +29,23 @@ public class WorkoutPlanRepository : BaseRepository<WorkoutPlan>, IWorkoutPlanRe
     public async Task<List<WorkoutPlan>> ListPlansByAthleteIdAsync(Guid athleteId)
     {
         return await ListAsync(
-            expression: x => x.AthleteId == athleteId);
+            expression: x => x.AthleteId == athleteId,
+            includes: source =>
+                source
+                    .Include(plan => plan.Workouts)
+                        .ThenInclude(workout => workout.WorkoutExercises)
+                            .ThenInclude(workoutExercise => workoutExercise.Sets)
+                    .Include(plan => plan.Workouts)
+                        .ThenInclude(workout => workout.WorkoutExercises)
+                            .ThenInclude(workoutExercise => workoutExercise.Exercise));
+    }
+
+    public async Task UpdateTitleAndDescriptionAsync(Guid id, string title, string? description)
+    {
+        await Context.WorkoutsPlan
+            .Where(x => x.Id == id)
+            .ExecuteUpdateAsync(p => p
+                .SetProperty(x => x.Title, title)
+                .SetProperty(x => x.Description, description));
     }
 }

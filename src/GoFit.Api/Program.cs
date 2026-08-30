@@ -2,12 +2,14 @@ using FastEndpoints;
 using GoFit.Api.Extensions;
 using GoFit.Api.GlobalProcessors.Pre;
 using GoFit.Application;
+using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities.Identity;
 using GoFit.Hangfire;
 using GoFit.Hangfire.Recurring;
 using GoFit.Infrastructure;
 using GoFit.Infrastructure.Contexts.IdentityDb;
 using Hangfire;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -38,6 +40,11 @@ using (var scope = app.Services.CreateScope())
 
     await AppIdentityDbContextInitialise.EnsureAdminAsync(userManager, app.Configuration, identitySeedLogger);
     await AppIdentityDbContextInitialise.BackfillMissingRolesAsync(userManager, identitySeedLogger);
+    await AppIdentityDbContextInitialise.BackfillMissingAthletesAsync(
+        userManager,
+        services.GetRequiredService<IMediator>(),
+        services.GetRequiredService<IAthleteRepository>(),
+        identitySeedLogger);
 }
 
 // Configure the HTTP request pipeline.

@@ -1,0 +1,28 @@
+<mat-card class="p-4 md:p-6 bg-white mb-4">
+    <form [formGroup]="form">
+        <div class="flex items-center justify-between mb-4">
+            <h2 class="text-lg font-medium">Workout</h2>
+            <button mat-icon-button type="button" (click)="remove.emit()" aria-label="Remove workout">
+                <mat-icon>delete</mat-icon>
+            </button>
+        </div>
+
+        <app-text-input
+            label="Name"
+            formControlName="name"
+            [required]="true"
+            hint="A short, unique name for this workout (3-100 characters)" />
+
+        <app-text-input
+            label="Description"
+            formControlName="description"
+            hint="Optional. If provided, must be 3-300 characters" />
+
+        <div class="mb-2">
+            <h3 class="text-md font-medium mb-2">Exercises</h3>
+            <app-workout-exercises-form
+                [entries]="draft.exercises"
+                (entriesChange)="onExercisesChange($event)" />
+        </div>
+    </form>
+</mat-card>

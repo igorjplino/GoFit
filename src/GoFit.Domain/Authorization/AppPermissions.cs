@@ -27,11 +27,12 @@ public static class AppPermissions
 
     public static class Training
     {
-        public const string CreateAthletes = "athlete:create";
         public const string ViewWorkouts = "workout:view";
         public const string CreateWorkouts = "workout:create";
+        public const string EditWorkouts = "workout:edit";
         public const string ViewWorkoutPlans = "workoutplan:view";
         public const string CreateWorkoutPlans = "workoutplan:create";
+        public const string EditWorkoutPlans = "workoutplan:edit";
         public const string ViewWorkoutTracking = "workouttracking:view";
         public const string StartWorkoutTracking = "workouttracking:start";
         public const string EditWorkoutTracking = "workouttracking:edit";
@@ -42,9 +43,8 @@ public static class AppPermissions
         Exercises.View, Exercises.Create, Exercises.Edit, Exercises.Delete,
         Users.View, Users.Create, Users.Edit, Users.Disable,
         RoleManagement.View, RoleManagement.ManageUserRoles, RoleManagement.ManagePermissions,
-        Training.CreateAthletes,
-        Training.ViewWorkouts, Training.CreateWorkouts,
-        Training.ViewWorkoutPlans, Training.CreateWorkoutPlans,
+        Training.ViewWorkouts, Training.CreateWorkouts, Training.EditWorkouts,
+        Training.ViewWorkoutPlans, Training.CreateWorkoutPlans, Training.EditWorkoutPlans,
         Training.ViewWorkoutTracking, Training.StartWorkoutTracking, Training.EditWorkoutTracking
     };
 }

@@ -10,7 +10,8 @@ public class RegisterValidator : Validator<RegisterRequest>
     public RegisterValidator()
     {
         RuleFor(x => x.Name)
-            .NotEmpty();
+            .NotEmpty()
+            .MaximumLength(200);
 
         RuleFor(x => x.Email)
             .NotEmpty()

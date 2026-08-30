@@ -11,13 +11,21 @@ import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.compone
 import { AthleteLayoutComponent } from './layout/athlete-layout/athlete-layout.component';
 import { permissionGuard } from './core/guards/permission.guard';
 import { Permissions } from './core/constants/permissions';
+import { WorkoutPlanListComponent } from './features/workout-plan-list/workout-plan-list.component';
+import { WorkoutPlanCreateComponent } from './features/workout-plan-create/workout-plan-create.component';
+import { WorkoutPlanDetailsComponent } from './features/workout-plan-details/workout-plan-details.component';
+import { WorkoutEditComponent } from './features/workout-edit/workout-edit.component';
 
 export const routes: Routes = [
     {
         path: '',
         component: AthleteLayoutComponent,
         children: [
-            { path: '', component: AthleteHomeComponent }
+            { path: '', component: AthleteHomeComponent },
+            { path: 'workout-plans', component: WorkoutPlanListComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
+            { path: 'workout-plans/create', component: WorkoutPlanCreateComponent, canActivate: [permissionGuard(Permissions.Training.CreateWorkoutPlans)] },
+            { path: 'workout-plans/:id', component: WorkoutPlanDetailsComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
+            { path: 'workouts/:id', component: WorkoutEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkouts)] }
         ]
     },
     {
