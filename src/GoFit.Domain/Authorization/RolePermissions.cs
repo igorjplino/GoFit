@@ -13,7 +13,6 @@ public static class RolePermissions
 
         [AppRoles.Athlete] = new[]
         {
-            AppPermissions.Exercises.View,
             AppPermissions.Training.ViewWorkouts,
             AppPermissions.Training.CreateWorkouts,
             AppPermissions.Training.EditWorkouts,

@@ -33,9 +33,9 @@ export const routes: Routes = [
         component: AdminLayoutComponent,
         children: [
             { path: '', component: HomeComponent },
-            { path: 'exercise', component: ExerciseComponent },
+            { path: 'exercise', component: ExerciseComponent, canActivate: [permissionGuard(Permissions.Exercises.View)] },
             { path: 'exercise/create', component: ExerciseCreateComponent, canActivate: [permissionGuard(Permissions.Exercises.Create)] },
-            { path: 'exercise/:id', component: ExerciseDetailsComponent },
+            { path: 'exercise/:id', component: ExerciseDetailsComponent, canActivate: [permissionGuard(Permissions.Exercises.View)] },
             { path: 'permissions', component: PermissionManagementComponent, canActivate: [permissionGuard(Permissions.RoleManagement.ManageUserRoles)] }
         ]
     },
