@@ -1,5 +1,5 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatCard, MatCardContent } from '@angular/material/card';
@@ -7,6 +7,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { WorkoutPlanService } from '../../core/services/workout-plan.service';
 import { WorkoutService } from '../../core/services/workout.service';
+import { WorkoutTrackingService } from '../../core/services/workout-tracking.service';
 import { AccountService } from '../../core/services/account.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { Permissions } from '../../core/constants/permissions';
@@ -35,12 +36,16 @@ import { CreateWorkoutRequest, Workout, WorkoutDraft, WorkoutExerciseDraft, Work
 export class WorkoutPlanDetailsComponent implements OnInit {
   private workoutPlanService = inject(WorkoutPlanService);
   private workoutService = inject(WorkoutService);
+  private workoutTrackingService = inject(WorkoutTrackingService);
   private activatedRoute = inject(ActivatedRoute);
+  private router = inject(Router);
   private fb = inject(FormBuilder);
   private dialog = inject(MatDialog);
   private snack = inject(SnackbarService);
   accountService = inject(AccountService);
   permissions = Permissions;
+
+  startingWorkoutId?: string;
 
   private planId?: string;
 
@@ -185,6 +190,39 @@ export class WorkoutPlanDetailsComponent implements OnInit {
         this.savingWorkout.set(false);
         this.workoutValidationErrors = Array.isArray(errors) ? errors : undefined;
       }
+    });
+  }
+
+  // --- Start workout ---
+
+  onStartWorkout(event: Event, workout: Workout): void {
+    event.stopPropagation();
+    event.preventDefault();
+
+    if (!workout.id || this.startingWorkoutId) {
+      return;
+    }
+
+    this.startingWorkoutId = workout.id;
+
+    this.workoutTrackingService.getMine().subscribe({
+      next: active => {
+        if (active) {
+          this.startingWorkoutId = undefined;
+          this.snack.error('You already have an active workout in progress.');
+          this.router.navigateByUrl('/active-workout/' + active.id);
+          return;
+        }
+
+        this.workoutTrackingService.start({ workoutId: workout.id!, note: null, sets: [] }).subscribe({
+          next: newId => {
+            this.startingWorkoutId = undefined;
+            this.router.navigateByUrl('/active-workout/' + newId);
+          },
+          error: () => this.startingWorkoutId = undefined
+        });
+      },
+      error: () => this.startingWorkoutId = undefined
     });
   }
 

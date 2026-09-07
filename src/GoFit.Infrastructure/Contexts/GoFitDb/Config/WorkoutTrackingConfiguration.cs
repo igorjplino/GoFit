@@ -20,6 +20,16 @@ public class WorkoutTrackingConfiguration : IEntityTypeConfiguration<WorkoutTrac
             .HasForeignKey(o => o.WorkoutId)
             .IsRequired();
 
+        builder.HasOne(o => o.Athlete)
+            .WithMany()
+            .HasForeignKey(o => o.AthleteId)
+            .IsRequired()
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.HasIndex(o => o.AthleteId)
+            .IsUnique()
+            .HasFilter("[EndWorkoutDate] IS NULL AND [CancelledDate] IS NULL");
+
         builder.HasMany(o => o.Sets)
             .WithOne(o => o.WorkoutTracking)
             .HasForeignKey(o => o.WorkoutTrackingId)

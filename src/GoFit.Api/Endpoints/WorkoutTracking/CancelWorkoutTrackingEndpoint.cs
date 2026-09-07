@@ -7,13 +7,13 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Api.Endpoints.WorkoutTracking;
 
-public class StartWorkoutTrackingEndpoint :
-    BaseEndpoint<StartWorkoutTrackingCommand, Guid>
+public class CancelWorkoutTrackingEndpoint :
+    BaseEndpoint<CancelWorkoutTrackingCommand, Guid>
 {
     private readonly UserManager<AppUser> _userManager;
 
-    public StartWorkoutTrackingEndpoint(
-        ILogger<StartWorkoutTrackingEndpoint> logger,
+    public CancelWorkoutTrackingEndpoint(
+        ILogger<CancelWorkoutTrackingEndpoint> logger,
         UserManager<AppUser> userManager)
         : base(logger)
     {
@@ -22,11 +22,11 @@ public class StartWorkoutTrackingEndpoint :
 
     public override void Configure()
     {
-        Post("WorkoutTracking");
-        Permissions(AppPermissions.Training.StartWorkoutTracking);
+        Put("WorkoutTracking/{WorkoutsTrackingId}/cancel");
+        Permissions(AppPermissions.Training.EditWorkoutTracking);
     }
 
-    public override async Task HandleAsync(StartWorkoutTrackingCommand req, CancellationToken ct)
+    public override async Task HandleAsync(CancelWorkoutTrackingCommand req, CancellationToken ct)
     {
         var appUser = await _userManager.GetUser(User);
 

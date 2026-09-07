@@ -116,16 +116,28 @@
                             <div class="font-medium">{{ workout.name }}</div>
                             <div class="text-sm text-gray-500">{{ exerciseCount(workout) }} exercises</div>
                         </div>
-                        @if (accountService.hasPermission(permissions.Training.EditWorkouts)) {
-                            <button
-                                mat-icon-button
-                                type="button"
-                                [disabled]="deletingWorkoutId === workout.id"
-                                (click)="onDeleteWorkout($event, workout)"
-                                aria-label="Delete workout">
-                                <mat-icon>delete</mat-icon>
-                            </button>
-                        }
+                        <div class="flex items-center">
+                            @if (accountService.hasPermission(permissions.Training.StartWorkoutTracking)) {
+                                <button
+                                    mat-icon-button
+                                    type="button"
+                                    [disabled]="startingWorkoutId === workout.id"
+                                    (click)="onStartWorkout($event, workout)"
+                                    aria-label="Start workout">
+                                    <mat-icon>play_arrow</mat-icon>
+                                </button>
+                            }
+                            @if (accountService.hasPermission(permissions.Training.EditWorkouts)) {
+                                <button
+                                    mat-icon-button
+                                    type="button"
+                                    [disabled]="deletingWorkoutId === workout.id"
+                                    (click)="onDeleteWorkout($event, workout)"
+                                    aria-label="Delete workout">
+                                    <mat-icon>delete</mat-icon>
+                                </button>
+                            }
+                        </div>
                     </mat-card-content>
                 </mat-card>
             }

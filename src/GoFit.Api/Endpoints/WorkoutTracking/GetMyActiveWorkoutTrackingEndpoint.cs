@@ -8,32 +8,32 @@ using Microsoft.AspNetCore.Identity;
 
 namespace GoFit.Api.Endpoints.WorkoutTracking;
 
-public class GetWorkoutTrackingIdEndpoint :
-    BaseEndpoint<GetWorkoutTrackingByIdQuery, WorkoutTrackingDto?>
+public class GetMyActiveWorkoutTrackingEndpoint :
+    BaseEndpointWithoutRequest<WorkoutTrackingDto?>
 {
     private readonly UserManager<AppUser> _userManager;
 
-    public GetWorkoutTrackingIdEndpoint(
-        ILogger<GetWorkoutTrackingIdEndpoint> logger,
+    public GetMyActiveWorkoutTrackingEndpoint(
+        ILogger<GetMyActiveWorkoutTrackingEndpoint> logger,
         UserManager<AppUser> userManager)
         : base(logger)
     {
         _userManager = userManager;
     }
 
+    protected override bool NullResultIsNotFound => false;
+
     public override void Configure()
     {
-        Get("WorkoutTracking/{id}");
+        Get("WorkoutTracking/mine");
         Permissions(AppPermissions.Training.ViewWorkoutTracking);
     }
 
-    public override async Task HandleAsync(GetWorkoutTrackingByIdQuery req, CancellationToken ct)
+    public override async Task HandleAsync(CancellationToken ct)
     {
         var appUser = await _userManager.GetUser(User);
 
-        req = req with { AppUserId = appUser?.Id ?? string.Empty };
-
-        Result<WorkoutTrackingDto?> result = await Mediator.Send(req, ct);
+        Result<WorkoutTrackingDto?> result = await Mediator.Send(new GetActiveWorkoutTrackingByAthleteQuery(appUser?.Id ?? string.Empty), ct);
 
         await HandleResultResponse(result, ct);
     }

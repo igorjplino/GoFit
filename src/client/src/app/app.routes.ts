@@ -15,6 +15,7 @@ import { WorkoutPlanListComponent } from './features/workout-plan-list/workout-p
 import { WorkoutPlanCreateComponent } from './features/workout-plan-create/workout-plan-create.component';
 import { WorkoutPlanDetailsComponent } from './features/workout-plan-details/workout-plan-details.component';
 import { WorkoutEditComponent } from './features/workout-edit/workout-edit.component';
+import { ActiveWorkoutComponent } from './features/active-workout/active-workout.component';
 
 export const routes: Routes = [
     {
@@ -25,7 +26,8 @@ export const routes: Routes = [
             { path: 'workout-plans', component: WorkoutPlanListComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
             { path: 'workout-plans/create', component: WorkoutPlanCreateComponent, canActivate: [permissionGuard(Permissions.Training.CreateWorkoutPlans)] },
             { path: 'workout-plans/:id', component: WorkoutPlanDetailsComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
-            { path: 'workouts/:id', component: WorkoutEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkouts)] }
+            { path: 'workouts/:id', component: WorkoutEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkouts)] },
+            { path: 'active-workout/:id', component: ActiveWorkoutComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] }
         ]
     },
     {

@@ -18,6 +18,13 @@ public abstract class BaseEndpointWithoutRequest<TResponse>
     protected new ILogger<BaseEndpointWithoutRequest<TResponse>> Logger { get; }
     public required IMediator Mediator { get; init; }
 
+    /// <summary>
+    /// A null success value normally means "the requested resource doesn't exist" (404). Override to
+    /// false for endpoints where null means "nothing to report" instead, e.g. "get the current X" queries
+    /// where absence is a valid state, not a not-found error - those send 204 No Content instead.
+    /// </summary>
+    protected virtual bool NullResultIsNotFound => true;
+
     protected async Task HandleResultResponse(Result<TResponse> result, CancellationToken ct)
     {
         await result.Match(
@@ -27,13 +34,18 @@ public abstract class BaseEndpointWithoutRequest<TResponse>
 
     private async Task MapSuccessResponse(TResponse response, CancellationToken ct)
     {
-        if (response is null)
+        if (response is not null)
+        {
+            await Send.OkAsync(response, cancellation: ct);
+        }
+        else if (NullResultIsNotFound)
         {
             await Send.NotFoundAsync(ct);
-            return;
         }
-
-        await Send.OkAsync(response, cancellation: ct);
+        else
+        {
+            await Send.NoContentAsync(ct);
+        }
     }
 
     private async Task MapFailResponse(Exception ex, CancellationToken ct)

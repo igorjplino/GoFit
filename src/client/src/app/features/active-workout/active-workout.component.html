@@ -1,0 +1,132 @@
+@if (tracking(); as track) {
+    <div class="max-w-2xl mx-auto mt-4 md:mt-8 px-2 md:px-0 pb-28">
+        <div class="flex items-start gap-2">
+            <button
+                mat-icon-button
+                [routerLink]="track.workout.workoutPlanId ? ['/workout-plans', track.workout.workoutPlanId] : ['/']"
+                aria-label="Back">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <div class="flex-1">
+                <h1 class="text-2xl md:text-3xl font-semibold text-primary">{{ track.workout.name }}</h1>
+                <div class="flex items-center gap-2 mt-1">
+                    <span
+                        class="text-sm px-2 py-0.5 rounded"
+                        [class.bg-green-100]="isActive()"
+                        [class.text-green-700]="isActive()"
+                        [class.bg-gray-200]="!isActive()"
+                        [class.text-gray-700]="!isActive()">
+                        {{ statusLabel() }}
+                    </span>
+                    @if (plannedWorkout()) {
+                        <span class="text-sm text-gray-500">{{ completedSets() }} / {{ totalSets() }} sets completed</span>
+                    }
+                </div>
+            </div>
+        </div>
+
+        @if (plannedWorkout()) {
+        <div class="mt-6 flex flex-col gap-5">
+            @for (group of exerciseGroups(); track group.exerciseIndex) {
+                <div>
+                    <h2 class="text-lg font-medium mb-2">{{ group.exerciseName }}</h2>
+                    <div class="flex flex-col gap-2">
+                        @for (row of group.rows; track row.globalIndex) {
+                            @if (row.status === 'completed') {
+                                <div class="flex items-center justify-between p-3 rounded bg-gray-50">
+                                    <div class="flex items-center gap-2">
+                                        <mat-icon class="text-green-600">check_circle</mat-icon>
+                                        <span>Set {{ row.setNumber }}</span>
+                                    </div>
+                                    <span class="text-sm text-gray-600">{{ row.actualWeight }} kg &#215; {{ row.actualReps }} reps</span>
+                                </div>
+                            } @else if (row.status === 'next' && isActive()) {
+                                <mat-card class="border-2 border-primary">
+                                    <mat-card-content>
+                                        <div class="font-medium mb-3">
+                                            Set {{ row.setNumber }} &mdash; planned {{ row.plannedWeight ?? '-' }} kg &#215; {{ row.plannedReps }} reps
+                                        </div>
+                                        <form [formGroup]="logSetForm" class="grid grid-cols-2 gap-3">
+                                            <mat-form-field>
+                                                <mat-label>Weight (kg)</mat-label>
+                                                <input matInput type="number" formControlName="weight" min="0">
+                                            </mat-form-field>
+                                            <mat-form-field>
+                                                <mat-label>Repetitions</mat-label>
+                                                <input matInput type="number" formControlName="repetitions" min="1">
+                                            </mat-form-field>
+                                        </form>
+
+                                        @if (setValidationErrors) {
+                                            <div class="mb-3 p-3 bg-red-100 text-red-600">
+                                                <ul class="list-disc px-3">
+                                                    @for (error of setValidationErrors; track $index) {
+                                                        <li>{{ error }}</li>
+                                                    }
+                                                </ul>
+                                            </div>
+                                        }
+
+                                        <div class="flex gap-3">
+                                            <button
+                                                mat-flat-button
+                                                type="button"
+                                                [disabled]="logSetForm.invalid || loggingSet()"
+                                                (click)="logSet()"
+                                                class="py-3 flex-1">
+                                                {{ loggingSet() ? 'Saving...' : 'Complete Set' }}
+                                            </button>
+                                            @if (completedSets() > 0) {
+                                                <button
+                                                    mat-stroked-button
+                                                    type="button"
+                                                    [disabled]="loggingSet()"
+                                                    (click)="undoLastSet()"
+                                                    class="py-3">
+                                                    Undo last
+                                                </button>
+                                            }
+                                        </div>
+                                    </mat-card-content>
+                                </mat-card>
+                            } @else {
+                                <div class="flex items-center justify-between p-3 rounded border border-gray-200 text-gray-400">
+                                    <div class="flex items-center gap-2">
+                                        <mat-icon>radio_button_unchecked</mat-icon>
+                                        <span>Set {{ row.setNumber }}</span>
+                                    </div>
+                                    <span class="text-sm">{{ row.plannedWeight ?? '-' }} kg &#215; {{ row.plannedReps }} reps</span>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+        }
+    </div>
+
+    @if (plannedWorkout() && isActive()) {
+        <div class="fixed bottom-0 left-0 right-0 bg-white border-t p-3">
+            <div class="max-w-2xl mx-auto flex gap-3">
+                <button
+                    mat-stroked-button
+                    type="button"
+                    color="warn"
+                    [disabled]="cancelling() || finishing()"
+                    (click)="cancel()"
+                    class="py-3 flex-1">
+                    {{ cancelling() ? 'Cancelling...' : 'Cancel Workout' }}
+                </button>
+                <button
+                    mat-flat-button
+                    type="button"
+                    [disabled]="finishing() || cancelling()"
+                    (click)="finish()"
+                    class="py-3 flex-1">
+                    {{ finishing() ? 'Finishing...' : 'Finish Workout' }}
+                </button>
+            </div>
+        </div>
+    }
+}

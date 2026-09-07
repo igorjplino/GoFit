@@ -26,11 +26,14 @@ public static class ConfigureService
             options.UseSqlServer(configuration.GetConnectionString("IdentityDb"));
         });
         
-        services
-            .BuildServiceProvider()
-            .GetRequiredService<GoFitDbContext>()
-            .ApplyMigration()
-            .Seed();
+        if (Environment.GetEnvironmentVariable("EF_DESIGN_TIME") != "true")
+        {
+            services
+                .BuildServiceProvider()
+                .GetRequiredService<GoFitDbContext>()
+                .ApplyMigration()
+                .Seed();
+        }
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IWorkoutTrackingRepository, WorkoutTrackingRepository>();

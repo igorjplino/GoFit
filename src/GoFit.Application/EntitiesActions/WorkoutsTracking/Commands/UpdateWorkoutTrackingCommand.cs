@@ -11,7 +11,8 @@ public record UpdateWorkoutTrackingCommand(
     DateTime StartWorkoutDate,
     DateTime? EndWorkoutDate,
     string? Note,
-    IEnumerable<WorkoutSetTrackingDto> Sets)
+    IEnumerable<WorkoutSetTrackingDto> Sets,
+    string AppUserId = "")
     : IRequest<Result<UpdateWorkoutTrackingCommand>>
 { }
 

@@ -2,6 +2,25 @@
     <div class="flex flex-col items-start gap-2 mt-6">
         <h1 class="text-2xl md:text-3xl font-semibold">Welcome back, {{ user.displayName }}!</h1>
         <p class="text-gray-500">This is your personal space. More features are coming soon.</p>
+
+        @if (accountService.hasPermission(permissions.Training.ViewWorkoutTracking)) {
+            <div class="w-full mt-2">
+                <h2 class="text-lg font-medium mb-2">Current Workout</h2>
+                @if (workoutTrackingService.activeWorkout(); as active) {
+                    <mat-card class="cursor-pointer hover:shadow-lg transition-shadow" [routerLink]="['/active-workout', active.id]">
+                        <mat-card-content>
+                            <div class="font-medium">{{ active.workout.name }}</div>
+                            <div class="text-sm text-gray-500">In Progress &middot; {{ active.sets.length }} sets logged</div>
+                        </mat-card-content>
+                    </mat-card>
+                } @else {
+                    <p class="text-gray-500">
+                        No workout in progress.
+                        <a routerLink="/workout-plans" class="text-primary">Start a Workout</a>
+                    </p>
+                }
+            </div>
+        }
     </div>
 } @else {
     <div class="flex flex-col items-start gap-4 mt-6">

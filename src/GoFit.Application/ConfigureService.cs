@@ -31,6 +31,7 @@ public static class ConfigureService
             cfg.AddValidation<UpdateWorkoutCommand, Guid?>();
             cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>();
+            cfg.AddValidation<CancelWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateUserRoleCommand, string>();
             cfg.AddValidation<CreateAthleteCommand, Guid>();
         });
