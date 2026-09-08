@@ -30,9 +30,6 @@ public class StartWorkoutTrackingCommandValidator : AbstractValidator<StartWorko
         RuleFor(x => x.Note)
             .MaximumLength(300).When(x => x.Note is not null);
 
-        RuleForEach(x => x.Sets)
-            .SetValidator(new WorkoutSetTrackingDtoValidator());
-
         RuleFor(x => x.AppUserId)
             .NotEmpty()
             .MustAsync(HaveLinkedAthlete).WithMessage("No athlete is linked to the current account.");

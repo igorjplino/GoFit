@@ -91,7 +91,7 @@ export class WorkoutPlanDetailsComponent implements OnInit {
           return;
         }
 
-        this.workoutTrackingService.start({ workoutId: workout.id!, note: null, sets: [] }).subscribe({
+        this.workoutTrackingService.start({ workoutId: workout.id!, note: null }).subscribe({
           next: newId => {
             this.startingWorkoutId = undefined;
             this.router.navigateByUrl('/active-workout/' + newId);

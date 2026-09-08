@@ -1,5 +1,4 @@
 ﻿using GoFit.Application.Common;
-using GoFit.Application.EntitiesActions.WorkoutsTracking.Dtos;
 using GoFit.Application.Interfaces;
 using GoFit.Domain.Entities;
 using MediatR;
@@ -9,7 +8,6 @@ namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 public record StartWorkoutTrackingCommand(
     Guid WorkoutId,
     string? Note,
-    IEnumerable<WorkoutSetTrackingDto> Sets,
     string AppUserId = "")
     : IRequest<Result<Guid>>
 { }
@@ -41,11 +39,6 @@ public class StartWorkoutCommandHandler : IRequestHandler<StartWorkoutTrackingCo
             AthleteId = athleteId,
             StartWorkoutDate = DateTime.UtcNow,
             Note = request.Note,
-            Sets = request.Sets.Select(o => new WorkoutSetTracking
-            {
-                Repetitions = o.Repetitions,
-                Weight = o.Weight,
-                Order = o.Order
-            }).ToList()
+            Sets = []
         };
 }

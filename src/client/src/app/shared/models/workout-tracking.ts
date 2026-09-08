@@ -20,7 +20,6 @@ export type WorkoutTracking = {
 export type StartWorkoutTrackingRequest = {
     workoutId: string;
     note?: string | null;
-    sets: WorkoutSetTracking[];
 }
 
 export type UpdateWorkoutTrackingRequest = {
