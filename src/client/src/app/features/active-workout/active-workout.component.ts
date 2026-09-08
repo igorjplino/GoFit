@@ -12,7 +12,7 @@ import { WorkoutService } from '../../core/services/workout.service';
 import { SnackbarService } from '../../core/services/snackbar.service';
 import { ConfirmDialogComponent } from '../../shared/components/confirm-dialog/confirm-dialog.component';
 import { Workout } from '../../shared/models/workout-plan';
-import { WorkoutTracking } from '../../shared/models/workout-tracking';
+import { WorkoutSetTracking, WorkoutTracking } from '../../shared/models/workout-tracking';
 
 type SetRow = {
   exerciseIndex: number;
@@ -64,12 +64,22 @@ export class ActiveWorkoutComponent implements OnInit {
   tracking = signal<WorkoutTracking | null>(null);
   plannedWorkout = signal<Workout | null>(null);
 
-  loggingSet = signal(false);
+  // Single in-flight guard for every set mutation (complete/edit/remove). They all send the whole
+  // set list, so two overlapping requests would silently overwrite each other.
+  savingSet = signal(false);
   finishing = signal(false);
   cancelling = signal(false);
-  setValidationErrors?: string[];
+  setValidationErrors = signal<string[] | undefined>(undefined);
+
+  // globalIndex of the completed set being edited, which is also its index into tracking().sets.
+  editingIndex = signal<number | null>(null);
 
   logSetForm = this.fb.group({
+    weight: [0, [Validators.required, Validators.min(0)]],
+    repetitions: [0, [Validators.required, Validators.min(1)]]
+  });
+
+  editSetForm = this.fb.group({
     weight: [0, [Validators.required, Validators.min(0)]],
     repetitions: [0, [Validators.required, Validators.min(1)]]
   });
@@ -150,55 +160,66 @@ export class ActiveWorkoutComponent implements OnInit {
 
   logSet(): void {
     const track = this.tracking();
-    if (!track || this.logSetForm.invalid || this.loggingSet()) {
+    if (!track || this.logSetForm.invalid || this.savingSet()) {
       return;
     }
 
     const { weight, repetitions } = this.logSetForm.value;
     const newSets = [...track.sets, { weight: weight!, repetitions: repetitions!, order: track.sets.length }];
 
-    this.loggingSet.set(true);
-    this.setValidationErrors = undefined;
-
-    this.workoutTrackingService.update(track.id, {
-      workoutsTrackingId: track.id,
-      startWorkoutDate: track.startWorkoutDate,
-      endWorkoutDate: track.endWorkoutDate,
-      note: track.note,
-      sets: newSets
-    }).subscribe({
-      next: () => {
-        this.tracking.set({ ...track, sets: newSets });
-        this.loggingSet.set(false);
-      },
-      error: errors => {
-        this.loggingSet.set(false);
-        this.setValidationErrors = Array.isArray(errors) ? errors : undefined;
-      }
-    });
+    this.saveSets(track, newSets);
   }
 
-  undoLastSet(): void {
-    const track = this.tracking();
-    if (!track || track.sets.length === 0 || this.loggingSet()) {
+  startEdit(row: SetRow): void {
+    if (!this.isActive() || this.savingSet()) {
       return;
     }
 
-    const newSets = track.sets.slice(0, -1);
-    this.loggingSet.set(true);
+    this.setValidationErrors.set(undefined);
+    this.editSetForm.setValue({ weight: row.actualWeight ?? 0, repetitions: row.actualReps ?? 0 });
+    this.editingIndex.set(row.globalIndex);
+  }
 
-    this.workoutTrackingService.update(track.id, {
-      workoutsTrackingId: track.id,
-      startWorkoutDate: track.startWorkoutDate,
-      endWorkoutDate: track.endWorkoutDate,
-      note: track.note,
-      sets: newSets
-    }).subscribe({
-      next: () => {
-        this.tracking.set({ ...track, sets: newSets });
-        this.loggingSet.set(false);
-      },
-      error: () => this.loggingSet.set(false)
+  cancelEdit(): void {
+    this.editingIndex.set(null);
+    this.setValidationErrors.set(undefined);
+  }
+
+  saveEdit(): void {
+    const track = this.tracking();
+    const index = this.editingIndex();
+    if (!track || index === null || this.editSetForm.invalid || this.savingSet()) {
+      return;
+    }
+
+    const { weight, repetitions } = this.editSetForm.value;
+    const newSets = track.sets.map((set, i) =>
+      i === index ? { ...set, weight: weight!, repetitions: repetitions! } : set);
+
+    this.saveSets(track, newSets, () => this.editingIndex.set(null));
+  }
+
+  removeSet(row: SetRow): void {
+    const track = this.tracking();
+    if (!track || this.savingSet()) {
+      return;
+    }
+
+    const dialogRef = this.dialog.open(ConfirmDialogComponent, {
+      data: {
+        title: 'Remove set?',
+        message: `Set ${row.setNumber} of ${row.exerciseName} will be removed from this workout.`,
+        confirmLabel: 'Remove'
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(confirmed => {
+      if (!confirmed) {
+        return;
+      }
+
+      const newSets = track.sets.filter((_, i) => i !== row.globalIndex);
+      this.saveSets(track, newSets, () => this.editingIndex.set(null));
     });
   }
 
@@ -281,6 +302,38 @@ export class ActiveWorkoutComponent implements OnInit {
       },
       error: () => this.finishing.set(false)
     });
+  }
+
+  // Every set mutation is a whole-list PUT, so they all funnel through here.
+  private saveSets(track: WorkoutTracking, sets: WorkoutSetTracking[], onSuccess?: () => void): void {
+    const orderedSets = this.withSequentialOrder(sets);
+
+    this.savingSet.set(true);
+    this.setValidationErrors.set(undefined);
+
+    this.workoutTrackingService.update(track.id, {
+      workoutsTrackingId: track.id,
+      startWorkoutDate: track.startWorkoutDate,
+      endWorkoutDate: track.endWorkoutDate,
+      note: track.note,
+      sets: orderedSets
+    }).subscribe({
+      next: () => {
+        this.tracking.set({ ...track, sets: orderedSets });
+        this.savingSet.set(false);
+        onSuccess?.();
+      },
+      error: errors => {
+        this.savingSet.set(false);
+        this.setValidationErrors.set(Array.isArray(errors) ? errors : undefined);
+      }
+    });
+  }
+
+  // Removing a set from the middle would otherwise leave a gap, and the next completed set is
+  // numbered from the list length -- which would then collide with an existing order.
+  private withSequentialOrder(sets: WorkoutSetTracking[]): WorkoutSetTracking[] {
+    return sets.map((set, index) => ({ ...set, order: index }));
   }
 
   private load(): void {

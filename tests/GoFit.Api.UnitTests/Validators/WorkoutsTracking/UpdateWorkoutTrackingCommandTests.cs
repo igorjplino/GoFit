@@ -176,4 +176,27 @@ public class UpdateWorkoutTrackingCommandTests
         result.ShouldNotHaveValidationErrorFor(x => x.WorkoutsTrackingId);
         result.ShouldNotHaveValidationErrorFor(x => x.AppUserId);
     }
+
+    [Fact]
+    [Trait("WorkoutTracking", "Sets")]
+    public async Task WhenSetsIsEmpty_ShouldNotFail()
+    {
+        var trackingId = Guid.NewGuid();
+
+        _workoutTrakingRepositoryMock
+            .Setup(x => x.GetAsync(trackingId))
+            .ReturnsAsync(new WorkoutTracking { Id = trackingId, AthleteId = AthleteId });
+
+        var command = new UpdateWorkoutTrackingCommand(
+            WorkoutsTrackingId: trackingId,
+            StartWorkoutDate: DateTime.Now,
+            EndWorkoutDate: null,
+            Note: null,
+            Sets: Enumerable.Empty<WorkoutSetTrackingDto>(),
+            AppUserId: ValidAppUserId);
+
+        var result = await _validator.TestValidateAsync(command);
+
+        result.ShouldNotHaveValidationErrorFor(x => x.Sets);
+    }
 }

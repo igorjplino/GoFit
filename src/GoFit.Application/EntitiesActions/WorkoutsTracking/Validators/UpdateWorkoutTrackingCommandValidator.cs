@@ -24,9 +24,6 @@ public class UpdateWorkoutTrackingCommandValidator : AbstractValidator<UpdateWor
         RuleFor(x => x.Note)
             .MaximumLength(300).When(x => x.Note is not null);
 
-        RuleFor(x => x.Sets)
-            .NotEmpty();
-
         RuleForEach(x => x.Sets)
             .SetValidator(new WorkoutSetTrackingDtoValidator());
 
