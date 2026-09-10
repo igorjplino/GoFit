@@ -40,6 +40,12 @@
             My Workout Plans
         </button>
     }
+    @if (accountService.hasPermission(permissions.Training.ViewWorkoutTracking)) {
+        <button mat-menu-item class="px-3" routerLink="/workout-history">
+            <mat-icon>history</mat-icon>
+            Workout History
+        </button>
+    }
     @if (accountService.hasPermission(permissions.RoleManagement.ManageUserRoles)) {
         <button mat-menu-item class="px-3" routerLink="/admin/permissions">
             <mat-icon>admin_panel_settings</mat-icon>

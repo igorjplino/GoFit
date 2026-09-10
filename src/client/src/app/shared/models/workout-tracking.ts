@@ -29,3 +29,14 @@ export type UpdateWorkoutTrackingRequest = {
     note?: string | null;
     sets: WorkoutSetTracking[];
 }
+
+export type WorkoutTrackingSummary = {
+    id: string;
+    workoutId: string;
+    workoutName?: string | null;
+    startWorkoutDate: string;
+    endWorkoutDate?: string | null;
+    cancelledDate?: string | null;
+    note?: string | null;
+    setCount: number;
+}

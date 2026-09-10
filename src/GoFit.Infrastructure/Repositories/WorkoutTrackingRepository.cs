@@ -32,6 +32,17 @@ public class WorkoutTrackingRepository : BaseRepository<WorkoutTracking>, IWorko
                     .Include(o => o.Workout));
     }
 
+    public async Task<List<WorkoutTracking>> ListHistoryByAthleteIdAsync(Guid athleteId)
+    {
+        return await ListAsync(
+            expression: x => x.AthleteId == athleteId && (x.EndWorkoutDate != null || x.CancelledDate != null),
+            includes: source =>
+                source
+                    .Include(o => o.Sets)
+                    .Include(o => o.Workout),
+            orderBy: source => source.OrderByDescending(x => x.StartWorkoutDate));
+    }
+
     public async Task CancelWorkoutTrackingAsync(Guid id, DateTime cancelledDate)
     {
         await Context.WorkoutsTracking

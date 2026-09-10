@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { StartWorkoutTrackingRequest, UpdateWorkoutTrackingRequest, WorkoutTracking } from '../../shared/models/workout-tracking';
+import { StartWorkoutTrackingRequest, UpdateWorkoutTrackingRequest, WorkoutTracking, WorkoutTrackingSummary } from '../../shared/models/workout-tracking';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +23,11 @@ export class WorkoutTrackingService {
     return this.http.get<WorkoutTracking>(this.baseUrl + 'workouttracking/' + id).pipe(
       tap(tracking => this.activeWorkout.set(tracking))
     );
+  }
+
+  // No tap into activeWorkout: history is finished work, unrelated to the active-workout signal.
+  listHistory() {
+    return this.http.get<WorkoutTrackingSummary[]>(this.baseUrl + 'workouttracking/mine/history');
   }
 
   start(payload: StartWorkoutTrackingRequest) {

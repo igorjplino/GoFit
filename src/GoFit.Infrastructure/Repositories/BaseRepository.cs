@@ -67,7 +67,10 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
         return await query.FirstOrDefaultAsync(expression);
     }
 
-    protected async Task<List<T>> ListAsync(Expression<Func<T, bool>> expression, Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null)
+    protected async Task<List<T>> ListAsync(
+        Expression<Func<T, bool>> expression,
+        Func<IQueryable<T>, IIncludableQueryable<T, object>>? includes = null,
+        Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null)
     {
         IQueryable<T> query = Context.Set<T>();
 
@@ -76,6 +79,13 @@ public class BaseRepository<T> : IBaseRepository<T> where T : BaseEntity
             query = includes(query);
         }
 
-        return await query.Where(expression).ToListAsync();
+        query = query.Where(expression);
+
+        if (orderBy is not null)
+        {
+            query = orderBy(query);
+        }
+
+        return await query.ToListAsync();
     }
 }

@@ -1,0 +1,58 @@
+<div class="max-w-4xl mx-auto mt-8 md:mt-12 px-2 md:px-0">
+    <div class="flex items-center justify-between flex-wrap gap-3 mb-6">
+        <h1 class="text-2xl md:text-3xl font-semibold text-primary">Workout History</h1>
+        @if (trackings().length) {
+            <mat-button-toggle-group [value]="filter()" (change)="filter.set($event.value)" aria-label="Filter workouts">
+                <mat-button-toggle value="all">All ({{ trackings().length }})</mat-button-toggle>
+                <mat-button-toggle value="completed">Completed ({{ completedCount() }})</mat-button-toggle>
+                <mat-button-toggle value="cancelled">Cancelled ({{ cancelledCount() }})</mat-button-toggle>
+            </mat-button-toggle-group>
+        }
+    </div>
+
+    @if (loaded()) {
+        @if (visible().length) {
+            <div class="flex flex-col gap-3">
+                @for (tracking of visible(); track tracking.id) {
+                    <mat-card>
+                        <mat-card-content>
+                            <div class="flex items-start justify-between gap-3">
+                                <div>
+                                    <h2 class="text-lg font-medium">{{ tracking.workoutName }}</h2>
+                                    <p class="text-sm text-gray-500 mt-1">
+                                        {{ tracking.startWorkoutDate | date:'MMM d, y' }} at {{ tracking.startWorkoutDate | date:'shortTime' }}
+                                    </p>
+                                    @if (tracking.note) {
+                                        <p class="text-sm text-gray-500 mt-1 italic">{{ tracking.note }}</p>
+                                    }
+                                </div>
+                                <span
+                                    class="text-sm px-2 py-0.5 rounded shrink-0"
+                                    [class.bg-green-100]="!isCancelled(tracking)"
+                                    [class.text-green-700]="!isCancelled(tracking)"
+                                    [class.bg-gray-200]="isCancelled(tracking)"
+                                    [class.text-gray-700]="isCancelled(tracking)">
+                                    {{ statusLabel(tracking) }}
+                                </span>
+                            </div>
+                            <p class="text-xs text-gray-400 mt-2">
+                                @if (!isCancelled(tracking)) {
+                                    {{ durationLabel(tracking) }} &middot;
+                                }
+                                {{ setsLabel(tracking) }}
+                            </p>
+                        </mat-card-content>
+                    </mat-card>
+                }
+            </div>
+        } @else if (trackings().length) {
+            <p class="text-gray-500">No {{ filter() }} workouts to show.</p>
+        } @else {
+            <p class="text-gray-500">
+                You haven't finished any workouts yet.
+                <a routerLink="/workout-plans" class="text-primary">Start a workout</a>
+                and it will appear here once you finish or cancel it.
+            </p>
+        }
+    }
+</div>
