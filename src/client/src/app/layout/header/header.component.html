@@ -30,10 +30,12 @@
             Exercises
         </button>
     }
-    <button mat-menu-item class="px-3" routerLink="/cart">
-        <mat-icon>shopping_cart</mat-icon>
-        My account
-    </button>
+    @if (accountService.hasPermission(permissions.Profile.View)) {
+        <button mat-menu-item class="px-3" routerLink="/profile">
+            <mat-icon>person</mat-icon>
+            My Profile
+        </button>
+    }
     @if (accountService.hasPermission(permissions.Training.ViewWorkoutPlans)) {
         <button mat-menu-item class="px-3" routerLink="/workout-plans">
             <mat-icon>list_alt</mat-icon>

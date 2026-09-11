@@ -18,6 +18,8 @@ import { WorkoutPlanEditComponent } from './features/workout-plan-edit/workout-p
 import { WorkoutEditComponent } from './features/workout-edit/workout-edit.component';
 import { ActiveWorkoutComponent } from './features/active-workout/active-workout.component';
 import { WorkoutHistoryComponent } from './features/workout-history/workout-history.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { PersonalInformationComponent } from './features/profile/personal-information/personal-information.component';
 
 export const routes: Routes = [
     {
@@ -31,7 +33,16 @@ export const routes: Routes = [
             { path: 'workout-plans/:id', component: WorkoutPlanDetailsComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
             { path: 'workouts/:id', component: WorkoutEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkouts)] },
             { path: 'active-workout/:id', component: ActiveWorkoutComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] },
-            { path: 'workout-history', component: WorkoutHistoryComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] }
+            { path: 'workout-history', component: WorkoutHistoryComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] },
+            {
+                path: 'profile',
+                component: ProfileComponent,
+                canActivate: [permissionGuard(Permissions.Profile.View)],
+                children: [
+                    { path: '', pathMatch: 'full', redirectTo: 'personal-information' },
+                    { path: 'personal-information', component: PersonalInformationComponent }
+                ]
+            }
         ]
     },
     {

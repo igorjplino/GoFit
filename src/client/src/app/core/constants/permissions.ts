@@ -26,6 +26,10 @@ export const Permissions = {
         ViewWorkoutTracking: 'workouttracking:view',
         StartWorkoutTracking: 'workouttracking:start',
         EditWorkoutTracking: 'workouttracking:edit'
+    },
+    Profile: {
+        View: 'profile:view',
+        Edit: 'profile:edit'
     }
 } as const;
 
@@ -58,5 +62,8 @@ export const PermissionCatalog: PermissionCatalogEntry[] = [
     { category: 'Training', key: Permissions.Training.EditWorkoutPlans, label: 'Edit workout plans' },
     { category: 'Training', key: Permissions.Training.ViewWorkoutTracking, label: 'View workout tracking' },
     { category: 'Training', key: Permissions.Training.StartWorkoutTracking, label: 'Start workout tracking' },
-    { category: 'Training', key: Permissions.Training.EditWorkoutTracking, label: 'Update workout tracking' }
+    { category: 'Training', key: Permissions.Training.EditWorkoutTracking, label: 'Update workout tracking' },
+
+    { category: 'Profile', key: Permissions.Profile.View, label: 'View own profile' },
+    { category: 'Profile', key: Permissions.Profile.Edit, label: 'Edit own profile' }
 ];

@@ -21,7 +21,9 @@ public static class RolePermissions
             AppPermissions.Training.EditWorkoutPlans,
             AppPermissions.Training.ViewWorkoutTracking,
             AppPermissions.Training.StartWorkoutTracking,
-            AppPermissions.Training.EditWorkoutTracking
+            AppPermissions.Training.EditWorkoutTracking,
+            AppPermissions.Profile.View,
+            AppPermissions.Profile.Edit
         }
     };
 

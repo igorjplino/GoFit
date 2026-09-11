@@ -38,6 +38,12 @@ public static class AppPermissions
         public const string EditWorkoutTracking = "workouttracking:edit";
     }
 
+    public static class Profile
+    {
+        public const string View = "profile:view";
+        public const string Edit = "profile:edit";
+    }
+
     public static readonly IReadOnlyList<string> All = new[]
     {
         Exercises.View, Exercises.Create, Exercises.Edit, Exercises.Delete,
@@ -45,6 +51,7 @@ public static class AppPermissions
         RoleManagement.View, RoleManagement.ManageUserRoles, RoleManagement.ManagePermissions,
         Training.ViewWorkouts, Training.CreateWorkouts, Training.EditWorkouts,
         Training.ViewWorkoutPlans, Training.CreateWorkoutPlans, Training.EditWorkoutPlans,
-        Training.ViewWorkoutTracking, Training.StartWorkoutTracking, Training.EditWorkoutTracking
+        Training.ViewWorkoutTracking, Training.StartWorkoutTracking, Training.EditWorkoutTracking,
+        Profile.View, Profile.Edit
     };
 }

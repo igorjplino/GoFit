@@ -5,6 +5,8 @@ using System.Reflection;
 using GoFit.Application.Common.PipelineBehaviours;
 using GoFit.Application.EntitiesActions.Athletes.Commands;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
+using GoFit.Application.EntitiesActions.Profile.Commands;
+using GoFit.Application.EntitiesActions.Profile.Dtos;
 using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.EntitiesActions.Workouts.Commands;
@@ -34,6 +36,7 @@ public static class ConfigureService
             cfg.AddValidation<CancelWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateUserRoleCommand, string>();
             cfg.AddValidation<CreateAthleteCommand, Guid>();
+            cfg.AddValidation<UpdateMyProfileCommand, ProfileDto>();
         });
         
         services.AddScoped<IAuthorizationService, AuthorizationService>();

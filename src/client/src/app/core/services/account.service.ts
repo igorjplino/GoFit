@@ -2,6 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { environment } from '../../../environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../../shared/models/user';
+import { Profile, UpdateProfileRequest } from '../../shared/models/profile';
 import { map, tap } from 'rxjs';
 
 @Injectable({
@@ -38,6 +39,20 @@ export class AccountService {
     return this.http.post(this.baseUrl + 'account/logout', {}).pipe(
       tap(() => this.currentUser.set(null))
     );
+  }
+
+  getProfile() {
+    return this.http.get<Profile>(this.baseUrl + 'profile/me');
+  }
+
+  updateProfile(payload: UpdateProfileRequest) {
+    return this.http.put<Profile>(this.baseUrl + 'profile/me', payload).pipe(
+      tap(profile => this.setDisplayName(profile.name))
+    );
+  }
+
+  setDisplayName(displayName: string) {
+    this.currentUser.update(user => user ? { ...user, displayName } : user);
   }
 
   hasPermission(permission: string): boolean {
