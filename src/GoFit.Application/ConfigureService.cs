@@ -37,6 +37,7 @@ public static class ConfigureService
             cfg.AddValidation<UpdateUserRoleCommand, string>();
             cfg.AddValidation<CreateAthleteCommand, Guid>();
             cfg.AddValidation<UpdateMyProfileCommand, ProfileDto>();
+            cfg.AddValidation<ChangeMyPasswordCommand, bool>();
         });
         
         services.AddScoped<IAuthorizationService, AuthorizationService>();

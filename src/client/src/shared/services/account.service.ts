@@ -2,7 +2,7 @@ import { Injectable, signal } from '@angular/core';
 import { environment } from '@gofit/shared/environments/environment';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { User } from '../models/user';
-import { Profile, UpdateProfileRequest } from '../models/profile';
+import { ChangePasswordRequest, Profile, UpdateProfileRequest } from '../models/profile';
 import { map, tap } from 'rxjs';
 
 @Injectable({
@@ -49,6 +49,10 @@ export class AccountService {
     return this.http.put<Profile>(this.baseUrl + 'profile/me', payload).pipe(
       tap(profile => this.setDisplayName(profile.name))
     );
+  }
+
+  changePassword(payload: ChangePasswordRequest) {
+    return this.http.post(this.baseUrl + 'profile/change-password', payload);
   }
 
   setDisplayName(displayName: string) {

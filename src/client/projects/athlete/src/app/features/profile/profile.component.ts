@@ -32,7 +32,8 @@ export class ProfileComponent {
     {
       label: 'Account & Security',
       description: 'Password and sign-in',
-      icon: 'lock'
+      icon: 'lock',
+      route: '/profile/account-security'
     },
     {
       label: 'Preferences',

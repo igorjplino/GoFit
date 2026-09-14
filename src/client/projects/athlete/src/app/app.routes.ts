@@ -14,6 +14,7 @@ import { ActiveWorkoutComponent } from './features/active-workout/active-workout
 import { WorkoutHistoryComponent } from './features/workout-history/workout-history.component';
 import { ProfileComponent } from './features/profile/profile.component';
 import { PersonalInformationComponent } from './features/profile/personal-information/personal-information.component';
+import { AccountSecurityComponent } from './features/profile/account-security/account-security.component';
 
 export const routes: Routes = [
     {
@@ -34,7 +35,8 @@ export const routes: Routes = [
                 canActivate: [permissionGuard(Permissions.Profile.View)],
                 children: [
                     { path: '', pathMatch: 'full', redirectTo: 'personal-information' },
-                    { path: 'personal-information', component: PersonalInformationComponent }
+                    { path: 'personal-information', component: PersonalInformationComponent },
+                    { path: 'account-security', component: AccountSecurityComponent }
                 ]
             }
         ]

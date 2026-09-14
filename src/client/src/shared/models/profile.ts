@@ -6,3 +6,8 @@ export type Profile = {
 export type UpdateProfileRequest = {
     name: string
 }
+
+export type ChangePasswordRequest = {
+    currentPassword: string,
+    newPassword: string
+}
