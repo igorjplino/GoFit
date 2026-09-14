@@ -1,0 +1,46 @@
+import { Routes } from '@angular/router';
+import { AthleteHomeComponent } from './features/home/athlete-home.component';
+import { NotFoundComponent } from '@gofit/shared/components/not-found/not-found.component';
+import { ForbiddenComponent } from '@gofit/shared/components/forbidden/forbidden.component';
+import { AthleteLayoutComponent } from './layout/athlete-layout/athlete-layout.component';
+import { permissionGuard } from '@gofit/shared/guards/permission.guard';
+import { Permissions } from '@gofit/shared/constants/permissions';
+import { WorkoutPlanListComponent } from './features/workout-plan-list/workout-plan-list.component';
+import { WorkoutPlanCreateComponent } from './features/workout-plan-create/workout-plan-create.component';
+import { WorkoutPlanDetailsComponent } from './features/workout-plan-details/workout-plan-details.component';
+import { WorkoutPlanEditComponent } from './features/workout-plan-edit/workout-plan-edit.component';
+import { WorkoutEditComponent } from './features/workout-edit/workout-edit.component';
+import { ActiveWorkoutComponent } from './features/active-workout/active-workout.component';
+import { WorkoutHistoryComponent } from './features/workout-history/workout-history.component';
+import { ProfileComponent } from './features/profile/profile.component';
+import { PersonalInformationComponent } from './features/profile/personal-information/personal-information.component';
+
+export const routes: Routes = [
+    {
+        path: '',
+        component: AthleteLayoutComponent,
+        children: [
+            { path: '', component: AthleteHomeComponent },
+            { path: 'workout-plans', component: WorkoutPlanListComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
+            { path: 'workout-plans/create', component: WorkoutPlanCreateComponent, canActivate: [permissionGuard(Permissions.Training.CreateWorkoutPlans)] },
+            { path: 'workout-plans/:id/edit', component: WorkoutPlanEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkoutPlans)] },
+            { path: 'workout-plans/:id', component: WorkoutPlanDetailsComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutPlans)] },
+            { path: 'workouts/:id', component: WorkoutEditComponent, canActivate: [permissionGuard(Permissions.Training.EditWorkouts)] },
+            { path: 'active-workout/:id', component: ActiveWorkoutComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] },
+            { path: 'workout-history', component: WorkoutHistoryComponent, canActivate: [permissionGuard(Permissions.Training.ViewWorkoutTracking)] },
+            {
+                path: 'profile',
+                component: ProfileComponent,
+                canActivate: [permissionGuard(Permissions.Profile.View)],
+                children: [
+                    { path: '', pathMatch: 'full', redirectTo: 'personal-information' },
+                    { path: 'personal-information', component: PersonalInformationComponent }
+                ]
+            }
+        ]
+    },
+    { path: 'account', loadChildren: () => import('./features/account/routes').then(r => r.accountRoutes) },
+    { path: 'forbidden', component: ForbiddenComponent },
+    { path: 'not-found', component: NotFoundComponent },
+    { path: '**', redirectTo: 'not-found', pathMatch: 'full' }
+];

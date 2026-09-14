@@ -3,10 +3,14 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "start:admin": "ng serve admin",
+    "start:athlete": "ng serve athlete",
+    "build:admin": "ng build admin",
+    "build:athlete": "ng build athlete",
+    "watch:admin": "ng build admin --watch --configuration development",
+    "watch:athlete": "ng build athlete --watch --configuration development",
+    "test:admin": "ng test admin",
+    "test:athlete": "ng test athlete"
   },
   "private": true,
   "dependencies": {

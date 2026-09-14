@@ -3,17 +3,31 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ng serve",
+      "name": "ng serve admin",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: start",
-      "url": "http://localhost:4200/"
+      "preLaunchTask": "npm: start:admin",
+      "url": "https://localhost:4201/"
     },
     {
-      "name": "ng test",
+      "name": "ng serve athlete",
       "type": "chrome",
       "request": "launch",
-      "preLaunchTask": "npm: test",
+      "preLaunchTask": "npm: start:athlete",
+      "url": "https://localhost:4200/"
+    },
+    {
+      "name": "ng test admin",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: test:admin",
+      "url": "http://localhost:9876/debug.html"
+    },
+    {
+      "name": "ng test athlete",
+      "type": "chrome",
+      "request": "launch",
+      "preLaunchTask": "npm: test:athlete",
       "url": "http://localhost:9876/debug.html"
     }
   ]

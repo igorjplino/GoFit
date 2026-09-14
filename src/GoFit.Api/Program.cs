@@ -49,11 +49,13 @@ using (var scope = app.Services.CreateScope())
 
 // Configure the HTTP request pipeline.
 
+var corsAllowedOrigins = app.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>() ?? [];
+
 app.UseCors(x => x
     .AllowAnyHeader()
     .AllowAnyMethod()
     .AllowCredentials()
-    .WithOrigins("http://localhost:4200","https://localhost:4200"));
+    .WithOrigins(corsAllowedOrigins));
 
 app.UseAuthentication()
     .UseAuthorization()

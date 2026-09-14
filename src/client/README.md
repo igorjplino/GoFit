@@ -1,22 +1,43 @@
-# Client
+# GoFit Client
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 18.2.12.
+Angular CLI workspace (generated with Angular CLI version 18.2.12) holding two separate application projects that share one codebase:
+
+- `projects/admin` — the admin app (exercise catalog, permission management).
+- `projects/athlete` — the athlete app (workout plans, workout tracking, profile).
+- `src/shared` — code shared between both apps (services, guards, interceptors, models, constants, generic UI components, environment config), imported via the `@gofit/shared/*` path alias.
+
+There is no default project — every `ng`/`npm` command below must name `admin` or `athlete` explicitly.
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+```
+npm run start:admin      # https://localhost:4201/
+npm run start:athlete    # https://localhost:4200/
+```
+
+Run both in separate terminals to work on the two apps at once. Each reloads automatically on source changes.
 
 ## Code scaffolding
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Run `ng generate component component-name --project=admin` (or `--project=athlete`) to generate a new component in that app. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+```
+npm run build:admin
+npm run build:athlete
+```
+
+Build artifacts are stored in `dist/admin/` and `dist/athlete/` respectively.
 
 ## Running unit tests
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+```
+npm run test:admin
+npm run test:athlete
+```
+
+Runs each app's unit tests via [Karma](https://karma-runner.github.io).
 
 ## Running end-to-end tests
 
