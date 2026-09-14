@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatCard } from '@angular/material/card';
@@ -20,30 +20,38 @@ import { TextInputComponent } from '@gofit/shared/components/text-input/text-inp
   styleUrl: './register.component.scss'
 })
 export class RegisterComponent {
+  private fb = inject(FormBuilder);
+  private accountService = inject(AccountService);
+  private route = inject(Router);
+  private snack = inject(SnackbarService);
 
-  registerForm: FormGroup;
   validationErrors?: string[];
-
-  constructor(
-    private fb: FormBuilder,
-    private accountService: AccountService,
-    private route: Router,
-    private snack: SnackbarService
-  ) {
-    this.registerForm = this.fb.group({
+  submitting = signal(false);
+  
+  registerForm: FormGroup = this.fb.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
-    });
-  }
+  });
 
   onSubmit() {
+    if (this.registerForm.invalid || this.submitting()) {
+      return;
+    }
+
+    this.submitting.set(true);
+    this.validationErrors = undefined;
+
     this.accountService.register(this.registerForm.value).subscribe({
       next: () => {
+        this.submitting.set(false);
         this.snack.success('Registration successful');
         this.route.navigateByUrl('/account/login');
       },
-      error: errors => this.validationErrors = errors
+      error: errors => {
+        this.submitting.set(false);
+        this.validationErrors = Array.isArray(errors) ? errors : undefined;
+      }
     })
   }
 }
