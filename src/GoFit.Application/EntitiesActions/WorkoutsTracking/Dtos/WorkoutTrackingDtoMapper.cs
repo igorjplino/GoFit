@@ -22,8 +22,8 @@ internal static class WorkoutTrackingDtoMapper
             EndWorkoutDate = workoutTracking.EndWorkoutDate,
             CancelledDate = workoutTracking.CancelledDate,
             Note = workoutTracking.Note,
-            // Ordered explicitly: the client matches the n-th logged set to the n-th planned set by
-            // position, and UpdateWorkoutTrackingAsync reinserts every row with a fresh key on each save.
+            // Ordered explicitly: the n-th logged set pairs with the n-th planned set by position, and nothing
+            // else guarantees the order rows come back from the database in. The set commands keep it contiguous.
             Sets = workoutTracking.Sets.OrderBy(o => o.Order).Select(o => new WorkoutSetTrackingDto
             {
                 Order = o.Order,

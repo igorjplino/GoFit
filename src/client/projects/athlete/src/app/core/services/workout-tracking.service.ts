@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable, signal } from '@angular/core';
 import { tap } from 'rxjs';
 import { environment } from '@gofit/shared/environments/environment';
-import { StartWorkoutTrackingRequest, UpdateWorkoutTrackingRequest, WorkoutTracking, WorkoutTrackingSummary } from '@gofit/shared/models/workout-tracking';
+import { StartWorkoutTrackingRequest, WorkoutSetRequest, WorkoutTracking, WorkoutTrackingSummary } from '@gofit/shared/models/workout-tracking';
 
 @Injectable({
   providedIn: 'root'
@@ -34,8 +34,27 @@ export class WorkoutTrackingService {
     return this.http.post<string>(this.baseUrl + 'workouttracking', payload);
   }
 
-  update(id: string, payload: UpdateWorkoutTrackingRequest) {
-    return this.http.put<UpdateWorkoutTrackingRequest>(this.baseUrl + 'workouttracking/' + id, payload);
+  // Set changes are answered with the updated tracking: the server owns set order, so its copy replaces the local one.
+  logSet(id: string, payload: WorkoutSetRequest) {
+    return this.http.post<WorkoutTracking>(this.baseUrl + 'workouttracking/' + id + '/sets', payload).pipe(
+      tap(tracking => this.activeWorkout.set(tracking))
+    );
+  }
+
+  updateSet(id: string, order: number, payload: WorkoutSetRequest) {
+    return this.http.put<WorkoutTracking>(this.baseUrl + 'workouttracking/' + id + '/sets/' + order, payload).pipe(
+      tap(tracking => this.activeWorkout.set(tracking))
+    );
+  }
+
+  removeSet(id: string, order: number) {
+    return this.http.delete<WorkoutTracking>(this.baseUrl + 'workouttracking/' + id + '/sets/' + order).pipe(
+      tap(tracking => this.activeWorkout.set(tracking))
+    );
+  }
+
+  finish(id: string) {
+    return this.http.put<string>(this.baseUrl + 'workouttracking/' + id + '/finish', {});
   }
 
   cancel(id: string) {

@@ -6,16 +6,23 @@ using Microsoft.Extensions.Configuration;
 
 namespace GoFit.Application.Services;
 
-public class AuthorizationService : IAuthorizationService 
+public class AuthorizationService : IAuthorizationService
 {
+    // There is no refresh token, so the lifetime is how long a login lasts before the user has to sign in again.
+    private const int DefaultLifetimeHours = 168;
+
     private readonly string _key;
-    
+    private readonly int _lifetimeHours;
+
     public AuthorizationService(IConfiguration configuration)
     {
         _key = configuration["Token:Key"]!;
+        _lifetimeHours = int.TryParse(configuration["Token:LifetimeHours"], out var hours) && hours > 0
+            ? hours
+            : DefaultLifetimeHours;
     }
 
-    public string GenerateToken(AppUser user, IList<string> roles)
+    public GeneratedToken GenerateToken(AppUser user, IList<string> roles)
     {
         var claims = new List<Claim>
         {
@@ -34,14 +41,18 @@ public class AuthorizationService : IAuthorizationService
         //
         // return new JwtSecurityTokenHandler().WriteToken(token);
 
-        return JwtBearer.CreateToken(
+        var expiresAt = DateTime.UtcNow.AddHours(_lifetimeHours);
+
+        var token = JwtBearer.CreateToken(
             o =>
             {
                 o.SigningKey = _key;
-                o.ExpireAt = DateTime.UtcNow.AddHours(1000);
+                o.ExpireAt = expiresAt;
                 o.User.Roles.Add(roles.ToArray());
                 o.User.Claims.AddRange(claims);
                 // o.User["UserId"] = "001"; //indexer based claim setting
             });
+
+        return new GeneratedToken(token, expiresAt);
     }
 }

@@ -37,6 +37,7 @@ public static class ConfigureService
 
         services.AddScoped<IWorkoutRepository, WorkoutRepository>();
         services.AddScoped<IWorkoutTrackingRepository, WorkoutTrackingRepository>();
+        services.AddScoped<IWorkoutSetTrackingRepository, WorkoutSetTrackingRepository>();
         services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
         services.AddScoped<IExerciseRepository, ExerciseRepository>();
         services.AddScoped<IAthleteRepository, AthleteRepository>();

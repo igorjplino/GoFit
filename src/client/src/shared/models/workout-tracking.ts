@@ -22,12 +22,9 @@ export type StartWorkoutTrackingRequest = {
     note?: string | null;
 }
 
-export type UpdateWorkoutTrackingRequest = {
-    workoutsTrackingId: string;
-    startWorkoutDate: string;
-    endWorkoutDate?: string | null;
-    note?: string | null;
-    sets: WorkoutSetTracking[];
+export type WorkoutSetRequest = {
+    repetitions: number;
+    weight: number;
 }
 
 export type WorkoutTrackingSummary = {

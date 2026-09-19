@@ -43,7 +43,7 @@ public class UserInfoEndpoint :
 
         var roles = await _userManager.GetRolesAsync(user);
         var role = roles.FirstOrDefault() ?? string.Empty;
-        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, null, role, RolePermissions.For(role).ToArray());
+        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, role,RolePermissions.For(role).ToArray());
 
         await Send.OkAsync(loggedUser, ct);
     }

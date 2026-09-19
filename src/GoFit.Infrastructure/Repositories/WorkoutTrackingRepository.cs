@@ -50,34 +50,10 @@ public class WorkoutTrackingRepository : BaseRepository<WorkoutTracking>, IWorko
             .ExecuteUpdateAsync(wt => wt.SetProperty(x => x.CancelledDate, cancelledDate));
     }
 
-    public async Task UpdateWorkoutTrackingAsync(WorkoutTracking workoutTracking)
+    public async Task FinishWorkoutTrackingAsync(Guid id, DateTime endWorkoutDate)
     {
-        using var transaction = Context.Database.BeginTransaction();
-
-        try
-        {
-            await Context.WorkoutSetsTracking
-                .Where(x => x.WorkoutTrackingId == workoutTracking.Id)
-                .ExecuteDeleteAsync();
-
-            await Context.WorkoutsTracking
-                .Where(x => x.Id == workoutTracking.Id)
-                .ExecuteUpdateAsync(wt => wt
-                    .SetProperty(x => x.StartWorkoutDate, workoutTracking.StartWorkoutDate)
-                    .SetProperty(x => x.EndWorkoutDate, workoutTracking.EndWorkoutDate)
-                    .SetProperty(x => x.Note, workoutTracking.Note));
-
-            await Context.WorkoutSetsTracking.AddRangeAsync(workoutTracking.Sets);
-
-            await Context.SaveChangesAsync();
-
-            await transaction.CommitAsync();
-        }
-        catch (Exception)
-        {
-            //TODO: handle and log error
-            await transaction.RollbackAsync();
-            throw;
-        }
+        await Context.WorkoutsTracking
+            .Where(x => x.Id == id)
+            .ExecuteUpdateAsync(wt => wt.SetProperty(x => x.EndWorkoutDate, endWorkoutDate));
     }
 }

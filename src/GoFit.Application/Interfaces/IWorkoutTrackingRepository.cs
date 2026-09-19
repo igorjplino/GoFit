@@ -5,9 +5,9 @@ namespace GoFit.Application.Interfaces;
 public interface IWorkoutTrackingRepository : IBaseRepository<WorkoutTracking>
 {
     Task<WorkoutTracking?> GetWithSetsAsync(Guid id);
-    Task UpdateWorkoutTrackingAsync(WorkoutTracking workoutTracking);
     Task<WorkoutTracking?> GetActiveByAthleteIdAsync(Guid athleteId);
     Task CancelWorkoutTrackingAsync(Guid id, DateTime cancelledDate);
+    Task FinishWorkoutTrackingAsync(Guid id, DateTime endWorkoutDate);
 
     /// <summary>
     /// Lists the athlete's workout trackings that are no longer active - finished or cancelled -

@@ -1,4 +1,5 @@
-﻿using GoFit.Api.Endpoints.Account.Validators;
+using GoFit.Api.Authorization;
+using GoFit.Api.Endpoints.Account.Validators;
 using GoFit.Api.Extensions;
 using GoFit.Application.Interfaces.Services;
 using GoFit.Domain.Authorization;
@@ -16,7 +17,7 @@ public class LoginEndpoint :
     public SignInManager<AppUser> SignInManager { get; set; } = default!;
     public LoginEndpoint(
         ILogger<LoginEndpoint> logger,
-        UserManager<AppUser> userManager, 
+        UserManager<AppUser> userManager,
         IAuthorizationService authorizationService)
         : base(logger)
     {
@@ -40,7 +41,7 @@ public class LoginEndpoint :
             await Send.UnauthorizedAsync(ct);
             return;
         }
-        
+
         var result = await SignInManager.CheckPasswordSignInAsync(user, req.Password, false);
 
         if (!result.Succeeded)
@@ -48,20 +49,15 @@ public class LoginEndpoint :
             await Send.UnauthorizedAsync(ct);
             return;
         }
-        
+
         var roles = await _userManager.GetRolesAsync(user);
         var accessToken = _authorizationService.GenerateToken(user, roles);
 
-        HttpContext.Response.Cookies.Append("access_token", accessToken, new CookieOptions
-        {
-            HttpOnly = true,
-            Secure = false,
-            SameSite = SameSiteMode.Strict,
-            Expires = DateTime.UtcNow.AddHours(1000)
-        });
+        // The token only travels in this HttpOnly cookie - it is deliberately not part of the response body.
+        HttpContext.Response.Cookies.Append(AuthCookie.Name, accessToken.Value, AuthCookie.Options(accessToken.ExpiresAt));
 
         var role = roles.FirstOrDefault() ?? string.Empty;
-        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, accessToken, role, RolePermissions.For(role).ToArray());
+        var loggedUser = new LoggedUserResponse(user.DisplayName, user.Email, role, RolePermissions.For(role).ToArray());
 
         await Send.OkAsync(loggedUser, ct);
     }
@@ -75,7 +71,6 @@ public record LoginRequest(
 public record LoggedUserResponse(
     string DisplayName,
     string? Email,
-    string? Token,
     string Role,
     string[] Permissions)
 { }

@@ -7,12 +7,13 @@ import { MatIcon } from '@angular/material/icon';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable } from 'rxjs';
 import { WorkoutTrackingService } from '../../core/services/workout-tracking.service';
 import { WorkoutService } from '../../core/services/workout.service';
 import { SnackbarService } from '@gofit/shared/services/snackbar.service';
 import { ConfirmDialogComponent } from '@gofit/shared/components/confirm-dialog/confirm-dialog.component';
 import { Workout } from '@gofit/shared/models/workout-plan';
-import { WorkoutSetTracking, WorkoutTracking } from '@gofit/shared/models/workout-tracking';
+import { WorkoutTracking } from '@gofit/shared/models/workout-tracking';
 
 type SetRow = {
   exerciseIndex: number;
@@ -64,14 +65,14 @@ export class ActiveWorkoutComponent implements OnInit {
   tracking = signal<WorkoutTracking | null>(null);
   plannedWorkout = signal<Workout | null>(null);
 
-  // Single in-flight guard for every set mutation (complete/edit/remove). They all send the whole
-  // set list, so two overlapping requests would silently overwrite each other.
+  // Single in-flight guard for every set mutation (complete/edit/remove). Sets are addressed by position, so a
+  // request sent before an earlier one shifted the positions could otherwise hit the wrong set.
   savingSet = signal(false);
   finishing = signal(false);
   cancelling = signal(false);
   setValidationErrors = signal<string[] | undefined>(undefined);
 
-  // globalIndex of the completed set being edited, which is also its index into tracking().sets.
+  // globalIndex of the completed set being edited, which is also its index into tracking().sets and its order on the server.
   editingIndex = signal<number | null>(null);
 
   logSetForm = this.fb.group({
@@ -165,9 +166,8 @@ export class ActiveWorkoutComponent implements OnInit {
     }
 
     const { weight, repetitions } = this.logSetForm.value;
-    const newSets = [...track.sets, { weight: weight!, repetitions: repetitions!, order: track.sets.length }];
 
-    this.saveSets(track, newSets);
+    this.mutateSets(this.workoutTrackingService.logSet(track.id, { weight: weight!, repetitions: repetitions! }));
   }
 
   startEdit(row: SetRow): void {
@@ -193,10 +193,10 @@ export class ActiveWorkoutComponent implements OnInit {
     }
 
     const { weight, repetitions } = this.editSetForm.value;
-    const newSets = track.sets.map((set, i) =>
-      i === index ? { ...set, weight: weight!, repetitions: repetitions! } : set);
 
-    this.saveSets(track, newSets, () => this.editingIndex.set(null));
+    this.mutateSets(
+      this.workoutTrackingService.updateSet(track.id, index, { weight: weight!, repetitions: repetitions! }),
+      () => this.editingIndex.set(null));
   }
 
   removeSet(row: SetRow): void {
@@ -218,8 +218,9 @@ export class ActiveWorkoutComponent implements OnInit {
         return;
       }
 
-      const newSets = track.sets.filter((_, i) => i !== row.globalIndex);
-      this.saveSets(track, newSets, () => this.editingIndex.set(null));
+      this.mutateSets(
+        this.workoutTrackingService.removeSet(track.id, row.globalIndex),
+        () => this.editingIndex.set(null));
     });
   }
 
@@ -287,13 +288,7 @@ export class ActiveWorkoutComponent implements OnInit {
   private doFinish(track: WorkoutTracking): void {
     this.finishing.set(true);
 
-    this.workoutTrackingService.update(track.id, {
-      workoutsTrackingId: track.id,
-      startWorkoutDate: track.startWorkoutDate,
-      endWorkoutDate: new Date().toISOString(),
-      note: track.note,
-      sets: track.sets
-    }).subscribe({
+    this.workoutTrackingService.finish(track.id).subscribe({
       next: () => {
         this.finishing.set(false);
         this.workoutTrackingService.clearActive();
@@ -304,22 +299,14 @@ export class ActiveWorkoutComponent implements OnInit {
     });
   }
 
-  // Every set mutation is a whole-list PUT, so they all funnel through here.
-  private saveSets(track: WorkoutTracking, sets: WorkoutSetTracking[], onSuccess?: () => void): void {
-    const orderedSets = this.withSequentialOrder(sets);
-
+  // Every set mutation funnels through here. The server numbers the sets, so its updated tracking replaces the local one.
+  private mutateSets(request: Observable<WorkoutTracking>, onSuccess?: () => void): void {
     this.savingSet.set(true);
     this.setValidationErrors.set(undefined);
 
-    this.workoutTrackingService.update(track.id, {
-      workoutsTrackingId: track.id,
-      startWorkoutDate: track.startWorkoutDate,
-      endWorkoutDate: track.endWorkoutDate,
-      note: track.note,
-      sets: orderedSets
-    }).subscribe({
-      next: () => {
-        this.tracking.set({ ...track, sets: orderedSets });
+    request.subscribe({
+      next: tracking => {
+        this.tracking.set(tracking);
         this.savingSet.set(false);
         onSuccess?.();
       },
@@ -328,12 +315,6 @@ export class ActiveWorkoutComponent implements OnInit {
         this.setValidationErrors.set(Array.isArray(errors) ? errors : undefined);
       }
     });
-  }
-
-  // Removing a set from the middle would otherwise leave a gap, and the next completed set is
-  // numbered from the list length -- which would then collide with an existing order.
-  private withSequentialOrder(sets: WorkoutSetTracking[]): WorkoutSetTracking[] {
-    return sets.map((set, index) => ({ ...set, order: index }));
   }
 
   private load(): void {

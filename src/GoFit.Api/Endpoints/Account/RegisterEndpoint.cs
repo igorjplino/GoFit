@@ -1,89 +1,26 @@
-﻿using FluentValidation.Results;
-using GoFit.Api.Endpoints.Account.Validators;
-using GoFit.Api.Extensions;
+using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.Athletes.Commands;
-using GoFit.Application.Interfaces.Services;
-using GoFit.Domain.Authorization;
-using GoFit.Domain.Entities.Identity;
-using Microsoft.AspNetCore.Identity;
+using GoFit.Application.EntitiesActions.Athletes.Dtos;
 
 namespace GoFit.Api.Endpoints.Account;
 
 public class RegisterEndpoint :
-    BaseEndpoint<RegisterRequest, RegistredResponse>
+    BaseEndpoint<RegisterAthleteCommand, RegisteredAthleteDto>
 {
-    private readonly UserManager<AppUser> _userManager;
-    private readonly IAuthorizationService _authorizationService;
-
-    public RegisterEndpoint(
-        ILogger<RegisterEndpoint> logger,
-        UserManager<AppUser> userManager,
-        IAuthorizationService authorizationService)
+    public RegisterEndpoint(ILogger<RegisterEndpoint> logger)
         : base(logger)
-    {
-        _userManager = userManager;
-        _authorizationService = authorizationService;
-    }
+    { }
 
     public override void Configure()
     {
         Post("Account/Register");
         AllowAnonymous();
-        Validator<RegisterValidator>();
     }
 
-    public override async Task HandleAsync(RegisterRequest req, CancellationToken ct)
+    public override async Task HandleAsync(RegisterAthleteCommand req, CancellationToken ct)
     {
-        var user = new AppUser
-        {
-            DisplayName = req.Name,
-            UserName = req.Email,
-            Email = req.Email
-        };
-        
-        var result = await _userManager.CreateAsync(user, req.Password);
+        Result<RegisteredAthleteDto> result = await Mediator.Send(req, ct);
 
-        if (result.Succeeded)
-        {
-            await _userManager.AddToRoleAsync(user, AppRoles.Athlete);
-
-            var athleteResult = await Mediator.Send(new CreateAthleteCommand(user.Id, req.Name, req.Email), ct);
-
-            athleteResult.Match<object?>(
-                succ => null,
-                fail =>
-                {
-                    Logger.LogError(fail, "Failed to create Athlete for {Email}", user.Email);
-                    return null;
-                });
-
-            var regitredUser = new RegistredResponse(
-                user.DisplayName,
-                user.Email,
-                _authorizationService.GenerateToken(user, new[] { AppRoles.Athlete }));
-
-            await Send.OkAsync(regitredUser, ct);
-            return;
-        }
-
-        foreach (var error in result.Errors)
-        {
-            AddError(new ValidationFailure(error.Code, error.Description));
-        }
-        
-        ThrowIfAnyErrors();
+        await HandleResultResponse(result, ct);
     }
 }
-
-public record RegisterRequest(
-    string Name,
-    string Email,
-    string Password)
-{ }
-
-public record RegistredResponse(
-    string DisplayName,
-    string Email,
-    string AccessToken)
-{ }
-

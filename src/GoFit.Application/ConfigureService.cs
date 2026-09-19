@@ -1,9 +1,10 @@
-﻿using FluentValidation;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using GoFit.Application.Common.PipelineBehaviours;
 using GoFit.Application.EntitiesActions.Athletes.Commands;
+using GoFit.Application.EntitiesActions.Athletes.Dtos;
 using GoFit.Application.EntitiesActions.Exercises.Commands;
 using GoFit.Application.EntitiesActions.Profile.Commands;
 using GoFit.Application.EntitiesActions.Profile.Dtos;
@@ -11,6 +12,7 @@ using GoFit.Application.Common;
 using GoFit.Application.EntitiesActions.WorkoutPlans.Commands;
 using GoFit.Application.EntitiesActions.Workouts.Commands;
 using GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
+using GoFit.Application.EntitiesActions.WorkoutsTracking.Dtos;
 using GoFit.Application.EntitiesActions.Users.Commands;
 using GoFit.Application.Interfaces.Jobs;
 using GoFit.Application.Interfaces.Services;
@@ -32,14 +34,18 @@ public static class ConfigureService
             cfg.AddValidation<UpdateWorkoutPlanCommand, Guid?>();
             cfg.AddValidation<UpdateWorkoutCommand, Guid?>();
             cfg.AddValidation<StartWorkoutTrackingCommand, Guid>();
-            cfg.AddValidation<UpdateWorkoutTrackingCommand, UpdateWorkoutTrackingCommand>();
+            cfg.AddValidation<LogWorkoutSetCommand, WorkoutTrackingDto>();
+            cfg.AddValidation<UpdateWorkoutSetCommand, WorkoutTrackingDto>();
+            cfg.AddValidation<RemoveWorkoutSetCommand, WorkoutTrackingDto>();
+            cfg.AddValidation<FinishWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<CancelWorkoutTrackingCommand, Guid>();
             cfg.AddValidation<UpdateUserRoleCommand, string>();
             cfg.AddValidation<CreateAthleteCommand, Guid>();
+            cfg.AddValidation<RegisterAthleteCommand, RegisteredAthleteDto>();
             cfg.AddValidation<UpdateMyProfileCommand, ProfileDto>();
             cfg.AddValidation<ChangeMyPasswordCommand, bool>();
         });
-        
+
         services.AddScoped<IAuthorizationService, AuthorizationService>();
 
         return services;

@@ -7,7 +7,7 @@ namespace GoFit.Application.EntitiesActions.WorkoutsTracking.Commands;
 public record CancelWorkoutTrackingCommand(
     Guid WorkoutsTrackingId,
     string AppUserId = "")
-    : IRequest<Result<Guid>>
+    : IRequest<Result<Guid>>, IWorkoutTrackingCommand
 { }
 
 public class CancelWorkoutTrackingCommandHandler : IRequestHandler<CancelWorkoutTrackingCommand, Result<Guid>>

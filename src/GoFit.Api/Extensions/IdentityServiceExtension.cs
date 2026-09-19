@@ -23,9 +23,9 @@ public static class IdentityServiceExtension
             {
                 OnMessageReceived = ctx =>
                 {
-                    if (ctx.Request.Cookies.ContainsKey("access_token"))
+                    if (ctx.Request.Cookies.ContainsKey(AuthCookie.Name))
                     {
-                        ctx.Token = ctx.Request.Cookies["access_token"];
+                        ctx.Token = ctx.Request.Cookies[AuthCookie.Name];
                     }
                         
                     return Task.CompletedTask;
